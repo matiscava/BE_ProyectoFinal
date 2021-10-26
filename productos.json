@@ -1,0 +1,92 @@
+[
+  {
+    "nombre": "Caramelo media hora",
+    "timestamp": "26/10/2021 11:47:36",
+    "descripcion": "Caramelo de abuelo sabor Aníz",
+    "codigo": 1,
+    "stock": 6,
+    "precio": 45,
+    "foto": "https://vinomanos.com/wp-content/uploads/2020/08/bazaart7-4-600x600-1.png",
+    "id": 1
+  },
+  {
+    "nombre": "Pico Dulce",
+    "timestamp": "26/10/2021 11:47:36",
+    "descripcion": "Chupetin multicolor",
+    "codigo": 2,
+    "stock": 10,
+    "precio": 20,
+    "foto": "https://almacencooperativo.com.ar/wp-content/uploads/2020/11/picodulce.jpg",
+    "id": 2
+  },
+  {
+    "nombre": "Chocolate Jack",
+    "timestamp": "26/10/2021 11:47:36",
+    "descripcion": "Chocolate con juguete de regalo",
+    "codigo": 3,
+    "stock": 6,
+    "precio": 45,
+    "foto": "http://d3ugyf2ht6aenh.cloudfront.net/stores/135/794/products/d_nq_np_665301-mla25956161225_092017-o1-f7e3f3d35fbf9f9e9016001697986976-640-0.jpg",
+    "id": 3
+  },
+  {
+    "nombre": "Naranju",
+    "timestamp": "26/10/2021 11:47:36",
+    "descripcion": "Jugo de fruta congelado en empaque de dudosa procedencia",
+    "codigo": 4,
+    "stock": 8,
+    "precio": 50,
+    "foto": "https://cotillongonic.com.ar/wp-content/uploads/2020/10/NARANJUGONIC.jpg",
+    "id": 4
+  },
+  {
+    "nombre": "Tubby 4",
+    "timestamp": "26/10/2021 11:47:36",
+    "descripcion": "Oblea de 4 pisos bañada en chocolate",
+    "codigo": 5,
+    "stock": 2,
+    "precio": 150,
+    "foto": "https://pbs.twimg.com/media/DhTqqNtXkAU_jbn.jpg",
+    "id": 5
+  },
+  {
+    "nombre": "Chupelatin",
+    "timestamp": "26/10/2021 11:47:36",
+    "descripcion": "Chupetin de chocolate",
+    "codigo": 6,
+    "stock": 12,
+    "precio": 500,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_697980-MLA42179185856_062020-O.jpg",
+    "id": 6
+  },
+  {
+    "nombre": "Push Pop",
+    "timestamp": "26/10/2021 11:47:36",
+    "descripcion": "Chupetín de caramelo en envase de plastico",
+    "codigo": 7,
+    "stock": 51,
+    "precio": 540,
+    "foto": "https://superonline.ar/wp-content/uploads/2020/09/25007-1.jpg",
+    "id": 7
+  },
+  {
+    "nombre": "Crazy dips",
+    "timestamp": "26/10/2021 11:47:36",
+    "descripcion": "Chupetín con forma de pie y polvo explosivo",
+    "codigo": 8,
+    "stock": 22,
+    "precio": 420,
+    "foto": "https://m.media-amazon.com/images/I/51ILmlzL-zL.jpg",
+    "id": 8
+  },
+  {
+    "nombre": "Mielsitas",
+    "imagen": "http://d3ugyf2ht6aenh.cloudfront.net/stores/001/128/610/products/mielcitas1-019aabe60106362f2415970769045829-640-0.jpg",
+    "descripcion": "miel de color en pequeños sachet de plastico",
+    "stock": 22,
+    "precio": 15,
+    "id": 9,
+    "codigo": 9,
+    "timestamp": "26/10/2021 14:24:40"
+  }
+]
