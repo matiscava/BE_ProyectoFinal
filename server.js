@@ -29,7 +29,7 @@ app.use('/api/productos', productosRouter);
 
 app.use((req, res) => {
     res.status(404).json(
-        {error: -2, descripcion: `ruta ${req.originalUrl} método ${req.method} no implementada`}
+        {error: -2, descripcion: `ruta ${req.originalUrl} método ${req.method} no implementada`}    
     )
 })
 
