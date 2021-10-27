@@ -35,7 +35,7 @@ app.use((req, res) => {
 })
 
 app.listen(process.env.PORT, ()=>{
-    console.log(`Servidor funcionando en le puerto: ${PORT}`);
+    console.log(`Servidor funcionando en el puerto: ${PORT}`);
 })
 
 
