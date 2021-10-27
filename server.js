@@ -1,7 +1,8 @@
 
 const express = require('express');
-const productosRouter = require('./serverProductos');
-const carritoRouter = require('./serverCarrito');
+const productosRouter = require('./router/routeProductos');
+const carritoRoute = require('./router/routeCarrito')
+const carritoRouter = require('./router/routeCarrito');
 const app = express();
 
 const { Router } = express;
@@ -23,9 +24,9 @@ app.get('/', (req,res)=>{
     res.send('Bienvenido')
 });
 
-app.use('/api/carrito', carritoRouter);
-
 app.use('/api/productos', productosRouter);
+
+app.use( '/api/carrito', carritoRoute);
 
 app.use((req, res) => {
     res.status(404).json(

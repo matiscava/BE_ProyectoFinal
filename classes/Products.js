@@ -35,6 +35,7 @@ module.exports = class ObjetoFS {
         objeto.push(agregarData);
         const dataToJSON = JSON.stringify(objeto,null,2);
         fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+        return agregarData;
     }
     async deleteById(idNum){
         const objeto = await this.getAll();

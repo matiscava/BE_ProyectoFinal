@@ -2,17 +2,20 @@
 const express = require('express');
 const carritoRouter = express.Router();
 
-const ObjetoFS = require('./Objetos');
-const productos = new ObjetoFS('./productos.json');
+const ObjetoFS = require('../classes/Products');
+const productos = new ObjetoFS('./db/productos.json');
 
-const CarritoFS = require('./Carrito');
-const carritos = new CarritoFS('./carritos.json');
+const CarritoFS = require('../classes/Carrito');
+const carritos = new CarritoFS('./db/carritos.json');
 
+//CREA UN CARRITO NUEVO
 
 carritoRouter.post('/', async (req,res)=>{
     const carritoID = await carritos.newCarrito();
     res.send({message: `Carrito creado con el ID ${carritoID}`})
 })
+
+//CARGA UN PRODUCTO AL CARRITO SELECCIONADO
 
 carritoRouter.post('/:id/productos/:id_prod', async (req,res) => {
     const carritoID = parseInt(req.params.id);
@@ -35,6 +38,8 @@ carritoRouter.post('/:id/productos/:id_prod', async (req,res) => {
     
 })
 
+//MUESTRA LOS PRODUCTOS DEL CARRITO
+
 carritoRouter.get('/:id/productos', async (req,res) => {
     const carritoID = parseInt(req.params.id);
     const carritoElegido = await carritos.getCarrito(carritoID);
@@ -44,6 +49,8 @@ carritoRouter.get('/:id/productos', async (req,res) => {
         res.send(carritoElegido)
     }
 })
+
+//BORRA EL CARRITO
 
 carritoRouter.delete('/:id', async (req,res) => {
     const carritoID = parseInt(req.params.id);
@@ -55,6 +62,9 @@ carritoRouter.delete('/:id', async (req,res) => {
         res.send({message: `Se ha eliminado el carrito ID ${carritoID}`})
     }
 })
+
+//BORRA UN PRODUCTO DEL CARRITO
+
 carritoRouter.delete('/:id/productos/:id_prod', async (req,res) => {
     const carritoID = parseInt(req.params.id);
     const productoID = parseInt(req.params.id_prod);
