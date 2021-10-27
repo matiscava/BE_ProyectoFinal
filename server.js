@@ -9,7 +9,7 @@ const { Router } = express;
 const router = Router();
 
 
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 
 
 app.use(express.json());
@@ -34,7 +34,7 @@ app.use((req, res) => {
     )
 })
 
-app.listen(PORT , ()=>{
+app.listen(process.env.PORT, ()=>{
     console.log(`Servidor funcionando en le puerto: ${PORT}`);
 })
 
