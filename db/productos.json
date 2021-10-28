@@ -81,12 +81,22 @@
   },
   {
     "nombre": "Mielsitas",
-    "imagen": "http://d3ugyf2ht6aenh.cloudfront.net/stores/001/128/610/products/mielcitas1-019aabe60106362f2415970769045829-640-0.jpg",
+    "foto": "http://d3ugyf2ht6aenh.cloudfront.net/stores/001/128/610/products/mielcitas1-019aabe60106362f2415970769045829-640-0.jpg",
     "descripcion": "miel de color en pequeños sachet de plastico",
     "stock": 22,
     "precio": 15,
     "id": 9,
     "codigo": 9,
     "timestamp": "26/10/2021 14:24:40"
+  },
+  {
+    "nombre": "Bubaloo",
+    "descripcion": "chicle globo",
+    "precio": "50",
+    "stock": "60",
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_810098-MLA43188120344_082020-O.jpg",
+    "id": 10,
+    "codigo": 10,
+    "timestamp": "28/10/2021 12:46:58"
   }
 ]

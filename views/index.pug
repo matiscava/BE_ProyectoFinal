@@ -1,0 +1,24 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Carga producto
+        style 
+            include ../public/style.css
+    body 
+        h1(class='titulo')="Ingrese Producto"
+        if admin===true 
+            form(action="/api/productos", method="post" class="contenedorProductos") 
+                label(for="nombre")='Nombre del Producto:' 
+                input(required, type="text", name="nombre", class='inputForm', placeholder="Ingrese el nombre del producto")
+                label(for="descripcion")='Descripciçon del Producto:' 
+                input(required, type="text", name="descripcion", class='inputForm', placeholder="Ingrese el nombre del producto")
+                label(for="precio")='Precio del Producto:' 
+                input(required, type="number", name="precio", class='inputForm', placeholder="Ingrese el precio del producto")
+                label(for="stock")='Productos en Stock:' 
+                input(required, type="number", name="stock", class='inputForm', placeholder="Ingrese el precio del producto")
+                label(for="foto")='URL a la imagen del Producto:' 
+                input(required, type="text", name="foto", class='inputForm', placeholder="Ingrese el link de la imagen del producto")
+                input(type="submit", value="Cargar", class='btnLink btnLink--form') 

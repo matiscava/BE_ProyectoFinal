@@ -1,0 +1,122 @@
+body{
+    margin:0;
+    padding: 0;
+    box-sizing:border-box;
+}
+
+.titulo{
+    color: burlywood;
+    font-size: 42px;
+    margin-left: 15px;
+}
+
+.contenedorProductos{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: fit-content;
+    margin: 15px;
+    box-shadow: 0 0 0 1px #d3d3bf;
+    padding: 10px;
+}
+.contenedorImg{
+    width: 120px;
+    height: 100%;
+    display: flex;
+    margin: auto 0;
+    margin-right: 20px;
+}
+.producto{
+    background-color: cadetblue;
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+    padding: 10px;
+    box-shadow: 0 0 10px 5px #958b8b ;
+    width: 400px;
+}
+.productoImagen{
+    width: 120px;
+    margin-right: 20px;
+}
+.productoTitulo{
+    color: cornsilk;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.productoPrecio{
+    color: darkgreen;
+    text-align: right;
+    font-size: 18px;
+    margin: 0;
+    margin-top: auto;
+}
+.productoDescripcion{
+    color: rgb(219, 201, 128);
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    margin: 0;
+}
+.productoStock{
+    color: rgb(84 80 80);
+    font-family:Verdana, sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    margin: 0;
+    font-weight: 600;
+}
+
+.productoTextos{
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+}
+
+.btnLink{
+    margin: 15px;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #15a3b1;
+    color: white;
+    display: block;
+    width: fit-content;
+    border-radius: 19px;
+    border: 1px solid #15a3b1;
+    transition: 0.3s;
+    font-family: system-ui;
+}
+.btnLink:hover{
+    background-color: white;
+    color: #15a3b1;
+    box-shadow: 0 0 15px #409d83;
+}
+
+.inputForm{
+    margin: 5px 0;
+    width: 400px;
+}
+.btnLink--form{
+    width: fit-content;
+    margin: 5px auto;
+    padding: 6px 13px;
+    background: gray;
+    border-color: gray;
+}
+.btnLink--form:hover{
+    background-color: white;
+    color: gray;
+    box-shadow: 0 0 10px #aab8b4;
+}
+
+.contenedorNotFound{
+    background-color: #ffeebb;
+    padding: 10px;
+}
+.textoNotFound{
+    margin: 5px;
+    color: #775f16;
+    font-weight: 700;
+    font-family: sans-serif;
+}
