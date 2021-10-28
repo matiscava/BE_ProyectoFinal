@@ -29,12 +29,11 @@ module.exports = class CarritoFS {
         const carrito = JSON.parse(data);
         const carritoElegido = carrito.find( (carro) => carro.id === carritoId );
         const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === carritoId);
-        carritoElegido.productos.push(producto);
+        carritoElegido.productos.push(...producto);
         carrito.splice(carritoElegidoIndex,1,carritoElegido);
         const dataToJSON = JSON.stringify(carrito,null,2);
         fs.writeFileSync(`./${this.archivo}` , dataToJSON);
 
-        return carrito
     }
     async getCarrito(carritoId){
         const data = await fs.promises.readFile(`./${this.archivo}` );
