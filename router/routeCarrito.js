@@ -38,22 +38,20 @@ carritoRouter.post('/:id/productos/:id_prod', async (req,res) => {
     
 })
 
-// carritoRouter.post('/:id/productos', async (req,res) => {
-//     const productoID = req.body;
-//     const nuevaCarga = [];
-//     await productoID.map( async (idNuevo) => {
-//         const producto = await productos.getById(idNuevo);
-//         if(producto===null){
-//             res.send({error: -3, descripcion: `el objeto ID ${idNuevo} no existe ingrese otro ID`});
-//         }else{
-//            nuevaCarga.push(producto)
-//         }
-//         console.log('0',nuevaCarga);
-//     })
-//     console.log('1',nuevaCarga);
+carritoRouter.post('/:id/productos', async (req,res) => {
+    const productoID = req.body;
+    const nuevaCarga = [];
+    await productoID.map( async (idNuevo) => {
+        const producto = await productos.getById(idNuevo);
+        if(producto!==null){
+           nuevaCarga.push(producto)
+        }
+        console.log('0',nuevaCarga);
+    })
+    console.log('1',nuevaCarga);
 
-//     res.send(nuevaCarga);    
-// })
+    res.send(nuevaCarga);    
+})
 
 //MUESTRA LOS PRODUCTOS DEL CARRITO
 
