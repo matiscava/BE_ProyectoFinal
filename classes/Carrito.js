@@ -33,6 +33,7 @@ module.exports = class CarritoFS {
         carrito.splice(carritoElegidoIndex,1,carritoElegido);
         const dataToJSON = JSON.stringify(carrito,null,2);
         fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+<<<<<<< Updated upstream
         
 
     }
@@ -58,6 +59,8 @@ module.exports = class CarritoFS {
         carrito.splice(carritoElegidoIndex,1,carritoElegido);
         const dataToJSON = JSON.stringify(carrito,null,2);
         fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+=======
+>>>>>>> Stashed changes
     }
     async getCarrito(carritoId){
         const data = await fs.promises.readFile(`./${this.archivo}` );

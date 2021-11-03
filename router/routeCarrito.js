@@ -46,6 +46,7 @@ carritoRouter.post('/:id/productos', async (req,res) => {
 
 
     const productoID = req.body;
+<<<<<<< Updated upstream
     const producto = await productos.getById(productoID);
     const carritoElegido = await carritos.getCarrito(carritoID);
     console.log(productoID);
@@ -59,6 +60,31 @@ carritoRouter.post('/:id/productos', async (req,res) => {
             console.log('ASAS',productoID);
         }
     }
+=======
+    const carritoID = parseInt(req.params.id);
+    const carritoElegido = await carritos.getCarrito(carritoID);
+    if (carritoElegido===undefined){
+        res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
+    }else{
+        productoID.map(async (id) => {
+            const productoElegido = await productos.getById(id);
+            console.log(productoElegido);
+
+            if(productoElegido===null){
+                res.send({error: -3, descripcion: `el producto ID ${producto} no existe ingrese otro ID`});
+            }else{
+                carritos.agregarProducto(carritoID,productoElegido)
+            }
+        })
+    }
+    const carritoActualizado = await carritos.getCarrito(carritoID);
+    res.send({
+        message: 'Se ha modificado el carrito',
+        data: carritoActualizado
+    })
+    //     const nuevaCarga = await carritos.agregarProducto(carritoID);
+    // }
+>>>>>>> Stashed changes
     
     if (carritoElegido===undefined){
         res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
