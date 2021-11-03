@@ -42,10 +42,11 @@ module.exports = class CarritoFS {
         const carritoElegido = carrito.find( (carro) => carro.id === carritoId );
         const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === carritoId);
 
+        console.log(arrayProductos);
         arrayProductos.forEach((produ) => {
+           
             const productoRepetido = carritoElegido.products.find( (producto) => producto.id === produ.id);
             if(productoRepetido===undefined){
-                
                 carritoElegido.products.push(produ);
             }else{
                 productoRepetido.quantity+=produ.quantity;
