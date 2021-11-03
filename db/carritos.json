@@ -1,99 +1,59 @@
 [
   {
     "id": 1,
-    "timestamp": "26/10/2021 11:30:03",
-    "productos": [
+    "timestamp": "3/11/2021 11:39:53",
+    "products": [
       {
-        "nombre": "Tubby 4",
-        "timestamp": "26/10/2021 11:47:36",
-        "descripcion": "Oblea de 4 pisos bañada en chocolate",
-        "codigo": 5,
-        "stock": 2,
-        "precio": 150,
-        "foto": "https://pbs.twimg.com/media/DhTqqNtXkAU_jbn.jpg",
-        "id": 5
+        "id": 5,
+        "quantity": 3
       },
       {
-        "nombre": "Chocolate Jack",
-        "timestamp": "26/10/2021 11:47:36",
-        "descripcion": "Chocolate con juguete de regalo",
-        "codigo": 3,
-        "stock": 6,
-        "precio": 45,
-        "foto": "http://d3ugyf2ht6aenh.cloudfront.net/stores/135/794/products/d_nq_np_665301-mla25956161225_092017-o1-f7e3f3d35fbf9f9e9016001697986976-640-0.jpg",
-        "id": 3
+        "id": 6,
+        "quantity": 1
       },
       {
-        "nombre": "Tubby 4",
-        "timestamp": "26/10/2021 11:47:36",
-        "descripcion": "Oblea de 4 pisos bañada en chocolate",
-        "codigo": 5,
-        "stock": 2,
-        "precio": 150,
-        "foto": "https://pbs.twimg.com/media/DhTqqNtXkAU_jbn.jpg",
-        "id": 5
+        "id": 8,
+        "quantity": 1
+      },
+      {
+        "id": 7,
+        "quantity": 1
+      },
+      {
+        "id": 1,
+        "quantity": 2
       }
     ]
   },
   {
     "id": 2,
-    "timestamp": "26/10/2021 11:47:36",
-    "productos": [
+    "timestamp": "3/11/2021 11:40:36",
+    "products": [
       {
-        "nombre": "Naranju",
-        "timestamp": "26/10/2021 11:47:36",
-        "descripcion": "Jugo de fruta congelado en empaque de dudosa procedencia",
-        "codigo": 4,
-        "stock": 8,
-        "precio": 50,
-        "foto": "https://cotillongonic.com.ar/wp-content/uploads/2020/10/NARANJUGONIC.jpg",
-        "id": 4
+        "id": 5,
+        "quantity": 1
+      },
+      {
+        "id": 1,
+        "quantity": 1
       }
     ]
   },
   {
     "id": 3,
-    "timestamp": "27/10/2021 9:48:52",
-    "productos": [
+    "timestamp": "3/11/2021 11:40:39",
+    "products": [
       {
-        "nombre": "Push Pop",
-        "timestamp": "26/10/2021 11:47:36",
-        "descripcion": "Chupetín de caramelo en envase de plastico",
-        "codigo": 7,
-        "stock": 51,
-        "precio": 540,
-        "foto": "https://superonline.ar/wp-content/uploads/2020/09/25007-1.jpg",
-        "id": 7
+        "id": 1,
+        "quantity": 1
       },
       {
-        "nombre": "Pico Dulce",
-        "timestamp": "26/10/2021 11:47:36",
-        "descripcion": "Chupetin multicolor",
-        "codigo": 2,
-        "stock": 10,
-        "precio": 20,
-        "foto": "https://almacencooperativo.com.ar/wp-content/uploads/2020/11/picodulce.jpg",
-        "id": 2
+        "id": 5,
+        "quantity": 13
       },
       {
-        "nombre": "Naranju",
-        "timestamp": "26/10/2021 11:47:36",
-        "descripcion": "Jugo de fruta congelado en empaque de dudosa procedencia",
-        "codigo": 4,
-        "stock": 8,
-        "precio": 50,
-        "foto": "https://cotillongonic.com.ar/wp-content/uploads/2020/10/NARANJUGONIC.jpg",
-        "id": 4
-      },
-      {
-        "nombre": "Crazy dips",
-        "timestamp": "26/10/2021 11:47:36",
-        "descripcion": "Chupetín con forma de pie y polvo explosivo",
-        "codigo": 8,
-        "stock": 22,
-        "precio": 420,
-        "foto": "https://m.media-amazon.com/images/I/51ILmlzL-zL.jpg",
-        "id": 8
+        "id": 6,
+        "quantity": 1
       }
     ]
   }

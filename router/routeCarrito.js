@@ -38,27 +38,49 @@ carritoRouter.post('/', async (req,res)=>{
     
 // })
 
+//AGREGA LOS PRODUCTOS AL CARRITO INGRESANDO UN ARRAY CON LOS ID
+
 carritoRouter.post('/:id/productos', async (req,res) => {
     const carritoID = parseInt(req.params.id);
+    const error = []
 
 
     const productoID = req.body;
-    const nuevaCarga = [];
+    const producto = await productos.getById(productoID);
+    const carritoElegido = await carritos.getCarrito(carritoID);
+    console.log(productoID);
     for(idNuevo of productoID) {
         const producto = await productos.getById(idNuevo);
-        if(producto!==null){
-           nuevaCarga.push(producto)
+        if(producto===null){
+            const filtroIndex = productoID.findIndex((idProd) => idProd===idNuevo);
+            error.push({error: -3, descripcion: `el objeto ID ${idNuevo} no existe ingrese otro ID`});
+
+            productoID.splice(1,filtroIndex);
+            console.log(productoID);
         }
     }
-    await carritos.agregarProducto(carritoID,nuevaCarga);
-
-    const carritoActualizado = await carritos.getCarrito(carritoID);
+    
+    if (carritoElegido===undefined){
+        res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
+    }else{
+        await carritos.agregarXId(carritoID,productoID);
+    }
         
-    res.send({
-        message: 'Se ha modificado el carrito',
-        data: carritoActualizado
-    })    
-})
+    const carritoActualizado = await carritos.getCarrito(carritoID);
+    console.log(error);
+    if(error.length!==0){
+        res.send({
+            message: 'Se ha modificado el carrito',
+            data: carritoActualizado,
+            error: error
+        })
+    }else{
+        res.send({
+            message: 'Se ha modificado el carrito',
+            data: carritoActualizado
+        })
+    }
+    })
 
 //MUESTRA LOS PRODUCTOS DEL CARRITO
 

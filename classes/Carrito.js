@@ -10,14 +10,14 @@ module.exports = class CarritoFS {
         let carritoNuevo;
         const fecha = new Date().toLocaleString();
         if(objeto.length===0){
-            carritoNuevo={id: nextID, timestamp: fecha}
+            carritoNuevo={id: nextID, timestamp: fecha, products:[] }
         }else{
             for (let i=0;i<objeto.length ;i++) {
                 while( objeto[i].id >= nextID ){
                     nextID++;
                 }
             }
-            carritoNuevo={id: nextID, timestamp: fecha, productos:[]}
+            carritoNuevo={id: nextID, timestamp: fecha, products:[]}
         }
         objeto.push(carritoNuevo);
         const dataToJSON = JSON.stringify(objeto,null,2);
@@ -33,7 +33,32 @@ module.exports = class CarritoFS {
         carrito.splice(carritoElegidoIndex,1,carritoElegido);
         const dataToJSON = JSON.stringify(carrito,null,2);
         fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+        
 
+    }
+    async agregarXId(carritoId,producto){
+        const data = await fs.promises.readFile(`./${this.archivo}` );
+        const carrito = JSON.parse(data);
+        const carritoElegido = carrito.find( (carro) => carro.id === carritoId );
+        const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === carritoId);
+        const cantidad = 1;     
+
+        producto.forEach((prodId) => {
+            const productoRepetido = carritoElegido.products.find( (producto) => producto.id === prodId);
+            if(productoRepetido===undefined){
+                const productoNuevo = {id:prodId,quantity:cantidad}
+                carritoElegido.products.push(productoNuevo);
+            }else{
+                productoRepetido.quantity+=cantidad;
+            }
+
+
+        });
+ 
+        console.log('4',carritoElegido);
+        carrito.splice(carritoElegidoIndex,1,carritoElegido);
+        const dataToJSON = JSON.stringify(carrito,null,2);
+        fs.writeFileSync(`./${this.archivo}` , dataToJSON);
     }
     async getCarrito(carritoId){
         const data = await fs.promises.readFile(`./${this.archivo}` );
