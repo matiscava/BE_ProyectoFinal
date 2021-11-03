@@ -17,11 +17,15 @@
       },
       {
         "id": 7,
-        "quantity": 1
+        "quantity": 3
       },
       {
         "id": 1,
         "quantity": 2
+      },
+      {
+        "id": 4,
+        "quantity": 8
       }
     ]
   },
@@ -58,10 +62,20 @@
       {
         "id": 2,
         "quantity": 2
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "timestamp": "3/11/2021 18:43:32",
+    "products": [
+      {
+        "id": 1,
+        "quantity": 4
       },
       {
-        "id": 88,
-        "quantity": 4
+        "id": 6,
+        "quantity": 7
       }
     ]
   }

@@ -35,7 +35,7 @@ module.exports = class CarritoFS {
         fs.writeFileSync(`./${this.archivo}` , dataToJSON);
 
     }
-    
+
     async agregarXId(carritoId,arrayProductos){
         const data = await fs.promises.readFile(`./${this.archivo}` );
         const carrito = JSON.parse(data);
@@ -54,7 +54,6 @@ module.exports = class CarritoFS {
 
         });
  
-        console.log('4',carritoElegido);
         carrito.splice(carritoElegidoIndex,1,carritoElegido);
         const dataToJSON = JSON.stringify(carrito,null,2);
         fs.writeFileSync(`./${this.archivo}` , dataToJSON);
@@ -82,12 +81,9 @@ module.exports = class CarritoFS {
         const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === carritoId);
         const productosCarrito = carritoElegido.productos;
         const producto = productosCarrito.find((carro) => carro.id === productoId)
-        console.log(producto);
         if(producto!==undefined){
             const carritoFiltrado = productosCarrito.filter( (carro) => carro.id !== productoId);
-            console.log('Probando',carritoFiltrado);
             carritoElegido.productos.splice(0,productosCarrito.length)
-            console.log(carritoElegido);
             carritoElegido.productos.push(...carritoFiltrado);    
             carrito.splice(carritoElegidoIndex,1,carritoElegido);
             const dataToJSON = JSON.stringify(carrito,null,2);
