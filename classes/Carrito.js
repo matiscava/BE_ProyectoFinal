@@ -28,8 +28,11 @@ module.exports = class CarritoFS {
         const data = await fs.promises.readFile(`./${this.archivo}` );
         const carrito = JSON.parse(data);
         const carritoElegido = carrito.find( (carro) => carro.id === carritoId );
+        const fecha = new Date().toLocaleString();
+       
+        carritoElegido.timestamp = fecha;
         const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === carritoId);
-        carritoElegido.productos.push(...producto);
+        carritoElegido.products.push(...producto);
         carrito.splice(carritoElegidoIndex,1,carritoElegido);
         const dataToJSON = JSON.stringify(carrito,null,2);
         fs.writeFileSync(`./${this.archivo}` , dataToJSON);
@@ -41,8 +44,9 @@ module.exports = class CarritoFS {
         const carrito = JSON.parse(data);
         const carritoElegido = carrito.find( (carro) => carro.id === carritoId );
         const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === carritoId);
-
-        console.log(arrayProductos);
+        const fecha = new Date().toLocaleString();
+       
+        carritoElegido.timestamp = fecha;
         arrayProductos.forEach((produ) => {
            
             const productoRepetido = carritoElegido.products.find( (producto) => producto.id === produ.id);
@@ -79,13 +83,16 @@ module.exports = class CarritoFS {
         const data = await fs.promises.readFile(`./${this.archivo}` );
         const carrito = JSON.parse(data);
         const carritoElegido = carrito.find( (carro) => carro.id === carritoId );
+        const fecha = new Date().toLocaleString();
+       
+        carritoElegido.timestamp = fecha;
         const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === carritoId);
-        const productosCarrito = carritoElegido.productos;
+        const productosCarrito = carritoElegido.products;
         const producto = productosCarrito.find((carro) => carro.id === productoId)
         if(producto!==undefined){
             const carritoFiltrado = productosCarrito.filter( (carro) => carro.id !== productoId);
-            carritoElegido.productos.splice(0,productosCarrito.length)
-            carritoElegido.productos.push(...carritoFiltrado);    
+            carritoElegido.products.splice(0,productosCarrito.length)
+            carritoElegido.products.push(...carritoFiltrado);    
             carrito.splice(carritoElegidoIndex,1,carritoElegido);
             const dataToJSON = JSON.stringify(carrito,null,2);
             fs.writeFileSync(`./${this.archivo}` , dataToJSON);
