@@ -36,20 +36,19 @@ module.exports = class CarritoFS {
         
 
     }
-    async agregarXId(carritoId,producto){
+    async agregarXId(carritoId,arrayProductos){
         const data = await fs.promises.readFile(`./${this.archivo}` );
         const carrito = JSON.parse(data);
         const carritoElegido = carrito.find( (carro) => carro.id === carritoId );
         const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === carritoId);
-        const cantidad = 1;     
 
-        producto.forEach((prodId) => {
-            const productoRepetido = carritoElegido.products.find( (producto) => producto.id === prodId);
+        arrayProductos.forEach((produ) => {
+            const productoRepetido = carritoElegido.products.find( (producto) => producto.id === produ.id);
             if(productoRepetido===undefined){
-                const productoNuevo = {id:prodId,quantity:cantidad}
-                carritoElegido.products.push(productoNuevo);
+                
+                carritoElegido.products.push(produ);
             }else{
-                productoRepetido.quantity+=cantidad;
+                productoRepetido.quantity+=produ.quantity;
             }
 
 

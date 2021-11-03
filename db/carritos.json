@@ -49,11 +49,19 @@
       },
       {
         "id": 5,
-        "quantity": 13
+        "quantity": 9
       },
       {
         "id": 6,
         "quantity": 1
+      },
+      {
+        "id": 2,
+        "quantity": 2
+      },
+      {
+        "id": 88,
+        "quantity": 4
       }
     ]
   }

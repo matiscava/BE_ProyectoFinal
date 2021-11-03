@@ -38,7 +38,7 @@ carritoRouter.post('/', async (req,res)=>{
     
 // })
 
-//AGREGA LOS PRODUCTOS AL CARRITO INGRESANDO UN ARRAY CON LOS ID
+//AGREGA LOS PRODUCTOS AL CARRITO INGRESANDO UN ARRAY CON LOS ID Y LA QUANTITY DE CADA UNO
 
 carritoRouter.post('/:id/productos', async (req,res) => {
     const carritoID = parseInt(req.params.id);
@@ -49,14 +49,14 @@ carritoRouter.post('/:id/productos', async (req,res) => {
     const producto = await productos.getById(productoID);
     const carritoElegido = await carritos.getCarrito(carritoID);
     console.log(productoID);
-    for(idNuevo of productoID) {
-        const producto = await productos.getById(idNuevo);
+    for(prod of productoID) {
+        const producto = await productos.getById(prod.id);
         if(producto===null){
-            const filtroIndex = productoID.findIndex((idProd) => idProd===idNuevo);
-            error.push({error: -3, descripcion: `el objeto ID ${idNuevo} no existe ingrese otro ID`});
+            const filtroIndex = productoID.findIndex((producto) => producto.id===prod.id);
+            error.push({error: -3, descripcion: `el objeto ID ${prod.id} no existe ingrese otro ID`});
 
             productoID.splice(1,filtroIndex);
-            console.log(productoID);
+            console.log('ASAS',productoID);
         }
     }
     
