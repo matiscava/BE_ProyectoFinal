@@ -45,10 +45,8 @@ carritoRouter.post('/:id/productos', async (req,res) => {
     const error = []
 
     const productoReq = req.body;
-    const productList = productoReq.products;
     const carritoElegido = await carritos.getCarrito(carritoID);
-    const ListaDeProductos = []
-
+    const productsList = []
     for await (prod of productoReq.products)  {
         const producto = await productos.getById(prod.id);
         let productoACargar ;
@@ -58,24 +56,24 @@ carritoRouter.post('/:id/productos', async (req,res) => {
             error.push({error: -3, descripcion: `el objeto ID ${prod.id} no existe ingrese otro ID`});
             await productoReq.products.splice(1,filtroIndex);
         }
+
         const cantidad = parseInt(prod.quantity);
-        console.log('Prueba 4',isNaN(cantidad));
         if( isNaN(cantidad) ||cantidad===""||cantidad===undefined){
             productoACargar = {...producto,quantity:1}
         }else{
             productoACargar = {...producto,quantity:cantidad}
         }
-        console.log(productoACargar);
-        ListaDeProductos.push(productoACargar)
+        productsList.push(productoACargar)
     }
-    // console.log('prueba 1',ListaDeProductos);
+    // console.log('prueba 1',productsList);
     // res.send(productoReq.products)
 
     
     if (carritoElegido===undefined){
         res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
     }else{
-        await carritos.agregarXId(carritoID,ListaDeProductos);
+
+        await carritos.agregarXId(carritoID,productsList);
     }
         
     const carritoActualizado = await carritos.getCarrito(carritoID);

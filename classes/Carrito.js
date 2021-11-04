@@ -53,6 +53,7 @@ module.exports = class CarritoFS {
             if(productoRepetido===undefined){
                 carritoElegido.products.push(produ);
             }else{
+                productoRepetido.timestamp=fecha
                 productoRepetido.quantity+=produ.quantity;
             }
 
