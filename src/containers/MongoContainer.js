@@ -15,7 +15,7 @@ class MongoContainer {
   
   async getAll() {
     try {
-      const documents = await this.collection.find({})
+      const documents = await this.collection.find({},{__v:0})
       return documents;
     } catch (error) {
       console.error('Error:', error);
@@ -28,17 +28,20 @@ class MongoContainer {
         let nextID = 1;
         let agregarData;
         if(productsList.length===0){
-            agregarData={...producto,codigo:nextID,timstamp:fecha}
+            agregarData={...producto,code:nextID,timestamp:fecha}
         }else{
-            for(let i=0;i<productsList;i++){
+            for(let i=0;i<productsList.length;i++){
                 while( productsList[i].code >= nextID){
                     nextID++;
                 }
             }
-            agregarData={...producto,codigo:nextID,timstamp:fecha}
+            agregarData={...producto,code:nextID,timestamp:fecha}
         }
-      const document = await this.collection.create(agregarData);
-      console.log('create: ', {document});
+
+      const document = await new this.collection(agregarData);
+      const response = await document.save()
+
+      console.log('create: ', {response});
       return document._id; 
     } catch (error) {
       console.error(error); throw error;
@@ -46,7 +49,7 @@ class MongoContainer {
   }
   async getById(id) {
     try {
-      const documents = await this.collection.find({ _id: id })
+      const documents = await this.collection.find({ _id: id },{__v:0})
       console.log({documents});
       if (documents.length === 0) {
         return null;

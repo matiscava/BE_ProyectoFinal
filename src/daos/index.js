@@ -1,5 +1,6 @@
 const ProductDaoMongo = require('./products/ProductDaoMongo');
 const ProductDaoMemory = require('./products/ProductDaoMemory');
+const ProductDaoSqlite = require('./products/ProductDaoSqlite.js');
 const ProductDaoFirestore = require('./products/ProductDaoFirestore');
 const ProductDaoFile = require('./products/ProductDaoFile');
 
@@ -22,6 +23,12 @@ if (process.env.storage === 'memory') {
 if (process.env.storage === 'firestore') {
   daos['productDao'] = ProductDaoFirestore;
   console.log('Se conecto al firestore');
+
+}
+// si setamos firestore vamos a exportar los daos de firestore
+if (process.env.storage === 'sqlite') {
+  daos['productDao'] = ProductDaoSqlite;
+  console.log('Se conecto al sqlite');
 
 }
 

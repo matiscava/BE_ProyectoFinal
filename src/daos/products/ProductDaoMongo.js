@@ -11,7 +11,7 @@ class ProductDaoMongo extends MongoContainer {
       price: { type: Number, required: true },
       stock: { type: Number, required: true },
       photo: { type: String, required: true },
-      timestamp : {type: String, required: true}
+      timestamp: {type: String, required: true}
     }))
   }
 };

@@ -11,7 +11,6 @@ const admin = true;
 //MUESTRA LA LISTA DE PRODUCTOS
 
 productosRouter.get('/', async (req,res)=>{   
-    // const data = await productos.getAll()
     const data = await productsDao.getAll();
     res.send(data )
 });
@@ -34,7 +33,7 @@ productosRouter.post('/', async (req,res)=>{
 //BORRA EL PRODUCTO SELECCIONADO
 
 productosRouter.delete('/:id', async (req,res)=>{
-    const findID = parseInt(req.params.id);
+    const findID = req.params.id;
     const producto = await productsDao.getById(findID);
     if(producto===null){
         res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
@@ -55,7 +54,7 @@ productosRouter.delete('/:id', async (req,res)=>{
 //MUESTRA UN PRODUCTO ESPECIFICO
 
 productosRouter.get('/:id', async (req,res)=>{   
-    const findID = parseInt(req.params.id);
+    const findID = req.params.id;
     const findObjeto = await productsDao.getById(findID)
     if(findObjeto===null){
         res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
@@ -68,7 +67,7 @@ productosRouter.get('/:id', async (req,res)=>{
 
 productosRouter.put('/:id', async (req,res)=>{   
 
-    findID = parseInt(req.params.id);
+    findID = req.params.id;
     const productoPostman = req.body;
     const findObjeto = await productsDao.getById(findID)
     if(findObjeto===null){

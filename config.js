@@ -23,10 +23,22 @@ const options = {
       "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-bx8rj%40probando-d0b5e.iam.gserviceaccount.com"
     },
     mysql: {
-  
+      client: 'mysql',
+      connection: {
+          host: 'localhost',
+          port: 3306,
+          user: 'root',
+          password: 'matinico11',
+          database: 'productsdb'
+      },
+      pool: { min: 0, max: 7}
     },
     sqlite: {
-  
+      client: 'sqlite3',
+      connection: {
+          filename: './db/sqlite'
+      },
+      useNullAsDefault: true
     }
   };
   

@@ -16,7 +16,7 @@ module.exports = class ObjetoFS {
     async getById (idNum) {
         try{
             const objeto = await this.getAll()
-            const objetoFiltrado = objeto.filter(obj => obj.id === idNum);
+            const objetoFiltrado = objeto.filter(obj => obj.id === parseInt(idNum));
             if (objetoFiltrado[0]===undefined) {
                 return null;
             }else{
@@ -34,14 +34,14 @@ module.exports = class ObjetoFS {
             let nextID = 1
             let agregarData;
             if(objeto.length===0){
-                agregarData= {...objetoNuevo, id: nextID, codigo:nextID, timestamp: fecha}
+                agregarData= {...objetoNuevo, id: nextID, code:nextID, timestamp: fecha}
             }else{
                 for (let i=0;i<objeto.length ;i++) {
                     while( objeto[i].id >= nextID ){
                         nextID++;
                     }
                 }
-                agregarData= {...objetoNuevo, id: nextID, codigo:nextID, timestamp: fecha}
+                agregarData= {...objetoNuevo, id: nextID, code:nextID, timestamp: fecha}
             }
             objeto.push(agregarData);
             const dataToJSON = JSON.stringify(objeto,null,2);
@@ -55,7 +55,7 @@ module.exports = class ObjetoFS {
     async deleteById(idNum){
         try{
             const objeto = await this.getAll();
-            const objetoFiltrado = objeto.filter(obj => obj.id !== idNum);
+            const objetoFiltrado = objeto.filter(obj => obj.id !== parseInt(idNum));
             const dataToJSON = JSON.stringify(objetoFiltrado,null,2);
             fs.writeFileSync(`./${this.archivo}` , dataToJSON);
         } catch (error) {
@@ -67,8 +67,8 @@ module.exports = class ObjetoFS {
         try{
             const data = await fs.promises.readFile(`./${this.archivo}` );
             const lista = JSON.parse(data);
-            const elementoGuardado = lista.find((obj)=> obj.id === id)
-            const elementoIndex = lista.findIndex((obj)=> obj.id === id)
+            const elementoGuardado = lista.find((obj)=> obj.id === parseInt(id))
+            const elementoIndex = lista.findIndex((obj)=> obj.id === parseInt(id))
             if (!elementoGuardado){
                 console.error(`El elemento con el id: ${id}, no existe`);
                 return null;
