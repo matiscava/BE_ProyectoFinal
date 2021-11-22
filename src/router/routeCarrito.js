@@ -2,8 +2,8 @@
 const express = require('express');
 const carritoRouter = express.Router();
 
-const ObjetoFS = require('../classes/Products');
-const productos = new ObjetoFS('./db/productos.json');
+// const ObjetoFS = require('../classes/Products');
+// const productos = new ObjetoFS('./db/productos.json');
 
 const CarritoFS = require('../classes/Carrito');
 const carritos = new CarritoFS('./db/carritos.json');

@@ -1,16 +1,19 @@
 const express = require('express');
 const productosRouter = express.Router();
 
-const ObjetoFS = require('../classes/Products');
-const productos = new ObjetoFS('./db/productos.json');
+// const ObjetoFS = require('../containers/FileContainer');
+// const productos = new ObjetoFS('./db/productos.json');
+const { productDao } = require('../daos');
+const productsDao = new productDao();
 
 const admin = true;
 
 //MUESTRA LA LISTA DE PRODUCTOS
 
 productosRouter.get('/', async (req,res)=>{   
-    const productsList = await productos.getAll()
-    res.json(productsList)
+    // const data = await productos.getAll()
+    const data = await productsDao.getAll();
+    res.send(data )
 });
 
 //CARGA UN PRODUCTO NUEVO
@@ -18,7 +21,7 @@ productosRouter.get('/', async (req,res)=>{
 productosRouter.post('/', async (req,res)=>{
     const objetoNuevo = req.body;
     if(admin){
-        const productoNuevo = await productos.save(objetoNuevo);
+        const productoNuevo = await productsDao.save(objetoNuevo);
         res.send({
             message: 'Se ha cargado un nuevo producto',
             data: productoNuevo
@@ -32,12 +35,12 @@ productosRouter.post('/', async (req,res)=>{
 
 productosRouter.delete('/:id', async (req,res)=>{
     const findID = parseInt(req.params.id);
-    const producto = await productos.getById(findID);
+    const producto = await productsDao.getById(findID);
     if(producto===null){
         res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
     } else if(admin){
-        await productos.deleteById(findID);
-        const productsList = await productos.getAll()
+        await productDao.deleteById(findID);
+        const productsList = await productsDao.getAll()
     
         res.send({
             message: 'Se ha eleiminado el producto',
@@ -53,7 +56,7 @@ productosRouter.delete('/:id', async (req,res)=>{
 
 productosRouter.get('/:id', async (req,res)=>{   
     const findID = parseInt(req.params.id);
-    const findObjeto = await productos.getById(findID)
+    const findObjeto = await productsDao.getById(findID)
     if(findObjeto===null){
         res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
     }else{
@@ -67,11 +70,11 @@ productosRouter.put('/:id', async (req,res)=>{
 
     findID = parseInt(req.params.id);
     const productoPostman = req.body;
-    const findObjeto = await productos.getById(findID)
+    const findObjeto = await productsDao.getById(findID)
     if(findObjeto===null){
         res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
     }else if(admin){
-        const productoModificado = await productos.update(findID,productoPostman)
+        const productoModificado = await productsDao.update(findID,productoPostman)
         
         res.send({
             message: 'Se modifico el producto',
