@@ -2,53 +2,37 @@
 const express = require('express');
 const carritoRouter = express.Router();
 
-// const ObjetoFS = require('../classes/Products');
-// const productos = new ObjetoFS('./db/productos.json');
 
-const CarritoFS = require('../classes/Carrito');
-const carritos = new CarritoFS('./db/carritos.json');
+const { cartDao } = require('../daos');
+const cartsDao = new cartDao();
+
+const { productDao } = require('../daos');
+const productsDao = new productDao();
+
+carritoRouter.get('/', async (req,res)=>{
+    const data = await cartsDao.getAll();
+    res.send(data )
+})
 
 //CREA UN CARRITO NUEVO
 
 carritoRouter.post('/', async (req,res)=>{
-    const carritoID = await carritos.newCarrito();
+    const carritoID = await cartsDao.newCarrito();
     res.send({message: `Carrito creado con el ID ${carritoID}`})
 })
 
-//CARGA UN PRODUCTO AL CARRITO SELECCIONADO
-
-// carritoRouter.post('/:id/productos/:id_prod', async (req,res) => {
-//     const carritoID = parseInt(req.params.id);
-//     const productoID = parseInt(req.params.id_prod);
-//     const producto = await productos.getById(productoID);
-//     const carritoElegido = await carritos.getCarrito(carritoID);
-//     if(producto===null){
-//         res.send({error: -3, descripcion: `el objeto ID ${productoID} no existe ingrese otro ID`});
-//     }else if (carritoElegido===undefined){
-//         res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
-//     }else{
-//         const nuevaCarga = await carritos.agregarProducto(carritoID,producto);
-//         const carritoActualizado = await carritos.getCarrito(carritoID);
-        
-//         res.send({
-//             message: 'Se ha modificado el carrito',
-//             data: carritoActualizado
-//         })
-//     }
-    
-// })
 
 //AGREGA LOS PRODUCTOS AL CARRITO INGRESANDO UN ARRAY CON LOS ID Y LA QUANTITY DE CADA UNO
 
 carritoRouter.post('/:id/productos', async (req,res) => {
-    const carritoID = parseInt(req.params.id);
+    const carritoID = req.params.id;
     const error = []
 
     const productoReq = req.body;
-    const carritoElegido = await carritos.getCarrito(carritoID);
+    const carritoElegido = await cartsDao.getCarrito(carritoID);
     const productsList = []
     for await (prod of productoReq.products)  {
-        const producto = await productos.getById(prod.id);
+        const producto = await productsDao.getById(prod.id);
         let productoACargar ;
 
         if(producto===null){
@@ -65,18 +49,16 @@ carritoRouter.post('/:id/productos', async (req,res) => {
         }
         productsList.push(productoACargar)
     }
-    // console.log('prueba 1',productsList);
-    // res.send(productoReq.products)
 
     
     if (carritoElegido===undefined){
         res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
     }else{
 
-        await carritos.agregarXId(carritoID,productsList);
+        await cartsDao.agregarXId(carritoID,productsList);
     }
         
-    const carritoActualizado = await carritos.getCarrito(carritoID);
+    const carritoActualizado = await cartsDao.getCarrito(carritoID);
     if(error.length!==0){
         res.send({
             message: 'Se ha modificado el carrito',
@@ -94,8 +76,8 @@ carritoRouter.post('/:id/productos', async (req,res) => {
 //MUESTRA LOS PRODUCTOS DEL CARRITO
 
 carritoRouter.get('/:id/productos', async (req,res) => {
-    const carritoID = parseInt(req.params.id);
-    const carritoElegido = await carritos.getCarrito(carritoID);
+    const carritoID = req.params.id;
+    const carritoElegido = await cartsDao.getCarrito(carritoID);
     if (carritoElegido===undefined){
         res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
     }else{
@@ -106,8 +88,8 @@ carritoRouter.get('/:id/productos', async (req,res) => {
 //BORRA EL CARRITO
 
 carritoRouter.delete('/:id', async (req,res) => {
-    const carritoID = parseInt(req.params.id);
-    const carritoElegido = await carritos.getCarrito(carritoID);
+    const carritoID = req.params.id;
+    const carritoElegido = await cartsDao.getCarrito(carritoID);
     if (carritoElegido===undefined){
         res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
     }else{
@@ -119,16 +101,16 @@ carritoRouter.delete('/:id', async (req,res) => {
 //BORRA UN PRODUCTO DEL CARRITO
 
 carritoRouter.delete('/:id/productos/:id_prod', async (req,res) => {
-    const carritoID = parseInt(req.params.id);
-    const productoID = parseInt(req.params.id_prod);
-    const producto = await productos.getById(productoID);
-    const carritoElegido = await carritos.getCarrito(carritoID);
+    const carritoID = req.params.id;
+    const productoID = req.params.id_prod;
+    const producto = await productsDao.getById(productoID);
+    const carritoElegido = await cartsDao.getCarrito(carritoID);
     if(producto===null){
         res.send({error: -3, descripcion: `el producto ID ${productoID} no existe ingrese otro ID`});
     }else if (carritoElegido===undefined){
         res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
     }else{
-        const eliminado =  await carritos.borrarItem(carritoID, productoID);
+        const eliminado =  await cartsDao.borrarItem(carritoID, productoID);
         if(eliminado){
             res.send({message: `Se ha eliminado el producto ID ${productoID} del carrito ID ${carritoID}`})
         }else{

@@ -1,10 +1,23 @@
 const knex = require('knex');
 
-
 class SqliteContainer {
   constructor(config, table) {
-    this.table = table;
-    this.conexion = knex(config);
+    this.table =  new knex(config).Database(table);
+    this.init;
+  }
+  async init () {
+    const db = new knex(this.config).Database(this.table);
+    if(!fs.existsSync(this.table)){
+      console.log("creating database file");
+      fs.openSync(this.table, "w");
+      db.run("CREATE TABLE users (username TEXT, password TEXT, email TEXT)", function(createResult){
+        if(createResult) throw createResult;
+      });
+      
+      console.log("database initialized");
+    }
+  
+    return db;
   }
   async getAll() {
     try {

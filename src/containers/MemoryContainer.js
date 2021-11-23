@@ -1,13 +1,11 @@
 const fs = require('fs');
 module.exports = class ObjetoFS {
-    constructor ( archivo ) {
-        this.archivo = archivo;
+    constructor ( array ) {
+        this.array = array;
     }
     async getAll(){ 
-        try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
-            const objeto = JSON.parse(data);
-            return objeto;
+        try{ 
+            return await this.array;
         } catch (error) {
             console.error('Error: ', error);
             throw error;
@@ -15,8 +13,7 @@ module.exports = class ObjetoFS {
     }
     async getById (idNum) {
         try{
-            const objeto = await this.getAll()
-            const objetoFiltrado = objeto.filter(obj => obj.id === parseInt(idNum));
+            const objetoFiltrado = await this.array.filter(obj => obj.id === parseInt(idNum));
             if (objetoFiltrado[0]===undefined) {
                 return null;
             }else{
@@ -43,9 +40,7 @@ module.exports = class ObjetoFS {
                 }
                 agregarData= {...objetoNuevo, id: nextID, code:nextID, timestamp: fecha}
             }
-            objeto.push(agregarData);
-            const dataToJSON = JSON.stringify(objeto,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            this.array.push(agregarData);
             return agregarData;
         } catch (error) {
             console.error('Error: ', error);
@@ -54,10 +49,8 @@ module.exports = class ObjetoFS {
     }
     async deleteById(idNum){
         try{
-            const objeto = await this.getAll();
-            const objetoFiltrado = objeto.filter(obj => obj.id !== parseInt(idNum));
-            const dataToJSON = JSON.stringify(objetoFiltrado,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            const elementoIndex = lista.findIndex((obj)=> obj.id === parseInt(idNum))
+            this.array.splice(elementoIndex,1)
         } catch (error) {
             console.error('Error: ', error);
             throw error;
@@ -65,10 +58,9 @@ module.exports = class ObjetoFS {
     }
     async update(id,elemento){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
-            const lista = JSON.parse(data);
-            const elementoGuardado = lista.find((obj)=> obj.id === parseInt(id))
-            const elementoIndex = lista.findIndex((obj)=> obj.id === parseInt(id))
+            const data = this.array;
+            const elementoGuardado = data.find((obj)=> obj.id === parseInt(id))
+            const elementoIndex = data.findIndex((obj)=> obj.id === parseInt(id))
             if (!elementoGuardado){
                 console.error(`El elemento con el id: ${id}, no existe`);
                 return null;
@@ -77,9 +69,7 @@ module.exports = class ObjetoFS {
                 ...elementoGuardado,
                 ...elemento
             }
-            lista.splice(elementoIndex,1,elementoSubido)
-            const dataToJSON = await JSON.stringify(lista,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            this.array.splice(elementoIndex,1,elementoSubido)
 
             return elementoSubido;
         } catch (error) {
@@ -89,8 +79,7 @@ module.exports = class ObjetoFS {
     }
     async newCarrito(){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
-            const objeto = JSON.parse(data);
+            const objeto = this.array;
             let nextID = 1;
             let carritoNuevo;
             const fecha = new Date().toLocaleString();
@@ -104,9 +93,8 @@ module.exports = class ObjetoFS {
                 }
                 carritoNuevo={id: nextID, timestamp: fecha, products:[]}
             }
-            objeto.push(carritoNuevo);
-            const dataToJSON = JSON.stringify(objeto,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            this.array.push(carritoNuevo);
+            
             return nextID;
         } catch (error) {
             console.error('Error: ', error);
@@ -115,17 +103,16 @@ module.exports = class ObjetoFS {
     }
     async agregarProducto(carritoId,producto){
         try {
-        const data = await fs.promises.readFile(`./${this.archivo}` );
-        const carrito = JSON.parse(data);
+        
+        const carrito = this.array;
         const carritoElegido = carrito.find( (carro) => carro.id === parseInt(carritoId) );
         const fecha = new Date().toLocaleString();
        
         carritoElegido.timestamp = fecha;
         const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === parseInt(carritoId));
         carritoElegido.products.push(...producto);
-        carrito.splice(carritoElegidoIndex,1,carritoElegido);
-        const dataToJSON = JSON.stringify(carrito,null,2);
-        fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+        this.array.splice(carritoElegidoIndex,1,carritoElegido);
+        
     } catch (error) {
         console.error('Error: ', error);
         throw error;
@@ -134,8 +121,8 @@ module.exports = class ObjetoFS {
 
     async agregarXId(carritoId,arrayProductos){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
-            const carrito = JSON.parse(data);
+            
+            const carrito = this.array;
             const carritoElegido = carrito.find( (carro) => carro.id === carritoId );
             const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === parseInt(carritoId));
             const fecha = new Date().toLocaleString();
@@ -151,12 +138,9 @@ module.exports = class ObjetoFS {
                     productoRepetido.quantity+=produ.quantity;
                 }
 
-
             });
     
-            carrito.splice(carritoElegidoIndex,1,carritoElegido);
-            const dataToJSON = JSON.stringify(carrito,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            this.array.splice(carritoElegidoIndex,1,carritoElegido);
         } catch (error) {
             console.error('Error: ', error);
             throw error;
@@ -164,10 +148,9 @@ module.exports = class ObjetoFS {
     }
     async getCarrito(carritoId){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
-            const carrito = JSON.parse(data);
-            const carritoElegido = carrito.find( (carro) => carro.id === parseInt(carritoId) );
-
+            const carrito = this.array;
+            const carritoElegido = await carrito.find( (carro) => carro.id === parseInt(carritoId) );
+            console.log(carritoElegido);
             return carritoElegido;
         } catch (error) {
             console.error('Error: ', error);
@@ -177,11 +160,9 @@ module.exports = class ObjetoFS {
 
     async vaciarCarrito(carritoId){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
-            const carrito = JSON.parse(data);
-            const carritoFiltrado = carrito.filter( (carro) => carro.id !== parseInt(carritoId));
-            const dataToJSON = JSON.stringify(carritoFiltrado,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            const carrito = this.array;
+            const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === parseInt(carritoId));
+            this.array.splice(carritoElegidoIndex,1);
         } catch (error) {
             console.error('Error: ', error);
             throw error;
@@ -189,8 +170,8 @@ module.exports = class ObjetoFS {
     }
     async borrarItem(carritoId, productoId){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
-            const carrito = JSON.parse(data);
+            const carrito = this.array;
+
             const carritoElegido = carrito.find( (carro) => carro.id === parseInt(carritoId) );
             const fecha = new Date().toLocaleString();
         
@@ -202,9 +183,7 @@ module.exports = class ObjetoFS {
                 const carritoFiltrado = productosCarrito.filter( (carro) => carro.id !== parseInt(productoId));
                 carritoElegido.products.splice(0,productosCarrito.length)
                 carritoElegido.products.push(...carritoFiltrado);    
-                carrito.splice(carritoElegidoIndex,1,carritoElegido);
-                const dataToJSON = JSON.stringify(carrito,null,2);
-                fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+                this.array.splice(carritoElegidoIndex,1,carritoElegido);
                 return true;
             }else{
                 return false;

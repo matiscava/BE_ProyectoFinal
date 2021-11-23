@@ -1,8 +1,6 @@
 const express = require('express');
 const productosRouter = express.Router();
 
-// const ObjetoFS = require('../containers/FileContainer');
-// const productos = new ObjetoFS('./db/productos.json');
 const { productDao } = require('../daos');
 const productsDao = new productDao();
 

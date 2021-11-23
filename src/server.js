@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const productosRouter = require('./router/routeProductos');
-// const carritoRoute = require('./router/routeCarrito')
+const carritoRoute = require('./router/routeCarrito')
 const app = express();
 
 const { Router } = express;
@@ -26,7 +26,7 @@ app.get('/', (req,res)=>{
 
 app.use('/api/productos', productosRouter);
 
-// app.use( '/api/carrito', carritoRoute);
+app.use( '/api/carrito', carritoRoute);
 
 app.use((req, res) => {
     res.status(404).json(

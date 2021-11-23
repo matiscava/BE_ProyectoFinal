@@ -41,7 +41,7 @@ class MongoContainer {
       const document = await new this.collection(agregarData);
       const response = await document.save()
 
-      console.log('create: ', {response});
+      console.log('create new product: ', {response});
       return document._id; 
     } catch (error) {
       console.error(error); throw error;
@@ -78,8 +78,10 @@ class MongoContainer {
     };
   }
   async update(id, element) {
+    const fecha = new Date().toLocaleString();
+
     const { n, nModified } = await this.collection.updateOne({ _id: id }, {
-      $set: element
+      $set: {element,timestamp:fecha}
     })
     if (n == 0 || nModified == 0) {
       console.error(`Elemento con el id: '${id}' no fue encontrado`);
@@ -90,6 +92,64 @@ class MongoContainer {
 
     return elementUpdated;
   }
+  
+  async newCarrito(){
+    try{
+        const fecha = new Date().toLocaleString();
+        let carritoNuevo={timestamp: fecha, products:[] };
+        const document = await new this.collection(carritoNuevo);
+        const response = await document.save()
+        console.log('create new cart: ', {response});
+        return document._id; 
+    } catch (error) {
+        console.error('Error: ', error);
+        throw error;
+    }
+  }
+  async agregarProductos(carritoId,productos){
+    try {
+      const fecha = new Date().toLocaleString();
+      const documents = await this.collection.updateOne({ _id: carritoId },{
+        $set: {products:productos},$set:{timestamp: fecha}
+      })
+    
+    } catch (error) {
+      console.error('Error: ', error);
+      throw error;
+    }
+  }
+
+  async getCarrito(carritoId){
+    try{
+      const documents = await this.collection.find({ _id: carritoId },{__v:0})
+        return documents;
+    } catch (error) {
+        console.error('Error: ', error);
+        throw error;
+    }
+  }
+  async vaciarCarrito(carritoId){
+    try{
+      const fecha = new Date().toLocaleString();
+
+      this.collection.updateOne({ _id: carritoId },{$set: {products:[]}});
+      this.collection.updateOne({ _id: carritoId },{$set: {timestamp:fecha}});
+    
+    } catch (error) {
+        console.error('Error: ', error);
+        throw error;
+    }
+  }
+  async borrarItem(carritoId, productoId){
+    try{
+      this.collection.findOneAndDelete({ _id: carritoId },{products:[{_id:productoId}]});
+      this.collection.updateOne({ _id: carritoId },{$set: {timestamp:fecha}});
+      return true
+    } catch (error) {
+        console.error('Error: ', error);
+        throw error;
+    }
+}
 }
 
 module.exports = MongoContainer;
