@@ -1,45 +1,46 @@
-const knex = require('knex');
+const options = require('../../config');
+const knex = require('knex')(options.sqlite);
 
 class SqliteContainer {
-  constructor(config, table) {
-    this.table =  new knex(config).Database(table);
-    this.init;
+  constructor(collection,table) {
+    this.collection = knex.schema.createTable(collection, table)
   }
-  async init () {
-    const db = new knex(this.config).Database(this.table);
-    if(!fs.existsSync(this.table)){
-      console.log("creating database file");
-      fs.openSync(this.table, "w");
-      db.run("CREATE TABLE users (username TEXT, password TEXT, email TEXT)", function(createResult){
-        if(createResult) throw createResult;
-      });
-      
-      console.log("database initialized");
-    }
-  
-    return db;
-  }
+    
   async getAll() {
     try {
-      const listado = [];
-      await this.conexion.from(this.table)
-        .select('*')
+      const listado = []; 
+      await knex.from(this.collection).select('*')
         .then((rows) => {
-          rows.forEach( (row) => {
-            listado.push(row)
-          });
+            rows.forEach( (row) => {
+                listado.push(row);
+            });
         })
       return listado;
     } catch (error) {
       console.error('Error:', error);
     }
   }
+  async getById(id) {
+    try {
+        const item = [];
+        await knex.from(this.collection).select('*').where('id',id)
+            .then((rows) => {
+                rows.forEach( (row) => {
+                    item.push(row);
+                });
+            })
+        return item[0];
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
   async save(producto) {
     try {
-        const productsList = await this.getAll();
         const fecha = new Date().toLocaleString();
         let nextID = 1;
         let agregarData;
+        const productsList = this.getAll();
+
         if(productsList.length===0){
             agregarData={...producto,code:nextID,timestamp:fecha}
         }else{
@@ -51,30 +52,25 @@ class SqliteContainer {
             agregarData={...producto,code:nextID,timestamp:fecha}
         }
 
-      const [id] = await this.conexion(this.table).insert(agregarData);
-      return id; 
+      await knex(this.collection).insert(agregarData)
+        .then(()=> console.log('Product Inserted'));
+        const document = []
+        await knex.from(this.collection).select('*').where('code',nextID)
+        .then((rows) => {
+            rows.forEach( (row) => {
+                document.push(row);
+            });
+        })
+      console.log('create new product: ', {response});
+      return document[0].id; 
     } catch (error) {
       console.error(error); throw error;
     }
   }
-  async getById(id) {
-    try {
-      const contenido = await this.conexion.from(this.table)
-        .select('*').where('id', '=', id);
-      console.log({contenido});
-      if (contenido.length === 0) {
-        return null;
-      } else {
-        return contenido[0];
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
   async deleteById(id) {
     try {
-       const response =  await this.conexion(this.table).where('id',id).del();
-       console.log('deleteById: ', {response});
+      await knex(this.collection).where('id',id).del()
+        .then(()=> console.log('Data deleted'));
     }catch (error) {
       console.error('Error:', error);
     };
@@ -82,23 +78,99 @@ class SqliteContainer {
 
   async deleteAll() {
     try {
-      const response =  await this.conexion(this.table).del();
-       console.log('deleteById: ', {response});
+        await knex(this.collection).del()
+            .then(()=> console.log('Data deleted'));
     } catch (error) {
       console.error('Error:', error);
     };
   }
   async update(id, element) {
-    const response =  await this.conexion(this.table).where('id',id).update(element);
-
-    if (!response) {
-      console.error(`Elemento con el id: '${id}' no fue encontrado`);
-      return null;
-    }
-
-    console.log('Elemente updated: ', {response});
-    return response;
+    const fecha = new Date().toLocaleString();
+    const productUpdate = {timestamp: fecha,...element};
+    await knex.from(this.collection).where('id',id).update(productUpdate)
+            .then(()=> console.log('Product updated'))
+            .catch((error)=> {  console.log('Error: ',error); throw error});
+    const elementUpdated = await this.getById(id);
+    return elementUpdated;
   }
+  
+  async newCarrito(){
+    try{
+        const fecha = new Date().toLocaleString();
+        let carritoNuevo={timestamp: fecha,products:[] };
+        const document = await knex(this.collection).insert(carritoNuevo)
+            .then(()=> console.log('Cart created'))
+        return document.id; 
+    } catch (error) {
+        console.error('Error: ', error);
+        throw error;
+    }
+  }
+  async agregarProductos(carritoId,productos){
+    try {
+      const fecha = new Date().toLocaleString();
+      const productsList = [] 
+      await knex(this.collection).select('*').where('id',id)
+        .then((rows)=> {
+            rows.forEach( (row) => {
+                productsList.push(row.products);
+            })
+        })
+        productsList.push(...productos)
+        const productLoader = JSON.stringify(productsList,null,2);
+        const documents = await knex.from(this.collection).where('id',carritoId).update({timestamp:fecha,products:productLoader});
+
+    } catch (error) {
+      console.error('Error: ', error);
+      throw error;
+    }
+  }
+
+  async getCarrito(carritoId){
+    try{
+        const item = [];
+        await knex.from(this.collection).select('*').where('id',carritoId)
+            .then((rows) => {
+                rows.forEach( (row) => {
+                    item.push(row);
+                });
+            })
+        return item[0];
+    } catch (error) {
+        console.error('Error: ', error);
+        throw error;
+    }
+  }
+  async vaciarCarrito(carritoId){
+    try{
+      const fecha = new Date().toLocaleString();
+      await knex.from(this.collection).where('id',carritoId).update({timestamp:fecha,products: {}});
+    } catch (error) {
+        console.error('Error: ', error);
+        throw error;
+    }
+  }
+  async borrarItem(carritoId, productoId){
+    try{
+        const fecha = new Date().toLocaleString();
+        const productsList = [] 
+        await knex(this.collection).select('*').where('id',id)
+          .then((rows)=> {
+              rows.forEach( (row) => {
+                  productsList.push(JSON.parse(row.products));
+              })
+          })
+        const productIndex = productsList.findIndex((prod) => prod.id === productoId);
+        productsList.splice(productIndex,1);
+        const productLoader = JSON.stringify(productsList,null,2);
+        const documents = await knex.from(this.collection).where('id',carritoId).update({timestamp:fecha,products:productLoader});
+        if(documents) return true;  
+      return false;
+    } catch (error) {
+        console.error('Error: ', error);
+        throw error;
+    }
+}
 }
 
 module.exports = SqliteContainer;

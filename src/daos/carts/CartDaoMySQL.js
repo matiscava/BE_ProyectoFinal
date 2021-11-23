@@ -1,8 +1,8 @@
-const SqliteContainer = require("../../containers/SqliteContainer");
+const MySQLContainer = require("../../containers/MySQLContainer");
 const options = require('../../../config');
-const knex = require('knex')(options.sqlite);
+const knex = require('knex')(options.mysql);
 
-class CartDaoSqlite extends SqliteContainer {
+class CartDaoMySQL extends MySQLContainer {
   constructor() {
     super('carts', table => { 
         table.increments('id').unique().notNullable();
@@ -12,4 +12,4 @@ class CartDaoSqlite extends SqliteContainer {
   }
 };
 
-module.exports = CartDaoSqlite;
+module.exports = CartDaoMySQL;

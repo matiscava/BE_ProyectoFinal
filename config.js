@@ -29,14 +29,14 @@ const options = {
           port: 3306,
           user: 'root',
           password: 'matinico11',
-          database: 'productsdb'
+          database: 'ecommerce'
       },
       pool: { min: 0, max: 7}
     },
     sqlite: {
       client: 'sqlite3',
       connection: {
-          filename: './db/sqlite'
+          filename: './db/sqlite/ecommerce.sqlite'
       },
       useNullAsDefault: true
     }

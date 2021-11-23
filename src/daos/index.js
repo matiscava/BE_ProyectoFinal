@@ -1,9 +1,11 @@
+const ProductDaoMySQL = require('./products/ProductDaoMySQL');
 const ProductDaoMongo = require('./products/ProductDaoMongo');
 const ProductDaoMemory = require('./products/ProductDaoMemory');
 const ProductDaoSqlite = require('./products/ProductDaoSqlite.js');
 const ProductDaoFirestore = require('./products/ProductDaoFirestore');
 const ProductDaoFile = require('./products/ProductDaoFile');
 
+const CartDaoMySQL = require('./carts/CartDaoMySQL');
 const CartDaoMongo = require('./carts/CartDaoMongo');
 const CartDaoMemory = require('./carts/CartDaoMemory');
 const CartDaoSqlite = require('./carts/CartDaoSqlite.js');
@@ -41,7 +43,13 @@ if (process.env.storage === 'sqlite') {
   console.log('Se conecto al sqlite');
 
 }
+// si setamos firestore vamos a exportar los daos de firestore
+if (process.env.storage === 'mysql') {
+  daos['productDao'] = ProductDaoMySQL;
+  daos['cartDao'] = CartDaoMySQL;
+  console.log('Se conecto al MySQL');
 
+}
 // si setamos archivo vamos a exportar los daos de archivo
 if (process.env.storage === 'file') {
   daos['productDao'] = ProductDaoFile;

@@ -93,7 +93,7 @@ carritoRouter.delete('/:id', async (req,res) => {
     if (carritoElegido===undefined){
         res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
     }else{
-        await carritos.vaciarCarrito(carritoID);
+        await cartsDao.vaciarCarrito(carritoID);
         res.send({message: `Se ha eliminado el carrito ID ${carritoID}`})
     }
 })
