@@ -36,7 +36,7 @@ productosRouter.delete('/:id', async (req,res)=>{
     if(producto===null){
         res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
     } else if(admin){
-        await productDao.deleteById(findID);
+        await productsDao.deleteById(findID);
         const productsList = await productsDao.getAll()
     
         res.send({

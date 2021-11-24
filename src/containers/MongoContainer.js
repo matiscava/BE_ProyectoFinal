@@ -50,7 +50,6 @@ class MongoContainer {
   async getById(id) {
     try {
       const documents = await this.collection.find({ _id: id },{__v:0})
-      console.log({documents});
       if (documents.length === 0) {
         return null;
       } else {

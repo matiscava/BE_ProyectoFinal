@@ -31,7 +31,7 @@ carritoRouter.post('/:id/productos', async (req,res) => {
     const productoReq = req.body;
     const carritoElegido = await cartsDao.getCarrito(carritoID);
     const productsList = []
-    for await (prod of productoReq.products)  {
+    for await (prod of productoReq)  {
         const producto = await productsDao.getById(prod.id);
         let productoACargar ;
 
@@ -54,8 +54,7 @@ carritoRouter.post('/:id/productos', async (req,res) => {
     if (carritoElegido===undefined){
         res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
     }else{
-
-        await cartsDao.agregarXId(carritoID,productsList);
+        await cartsDao.agregarProductos(carritoID,productsList);
     }
         
     const carritoActualizado = await cartsDao.getCarrito(carritoID);
