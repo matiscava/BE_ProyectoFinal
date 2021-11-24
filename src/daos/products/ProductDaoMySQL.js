@@ -4,7 +4,7 @@ const knex = require('knex')(options.mysql);
 
 class ProductDaoMySQL extends MySQLContainer {
   constructor() {
-    super('products', table => { 
+    super('products', (table) => { 
         table.increments('id').unique().notNullable();
         table.string('title').notNullable();
         table.string('photo').notNullable();

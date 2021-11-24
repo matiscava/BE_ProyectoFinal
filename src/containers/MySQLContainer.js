@@ -3,9 +3,19 @@ const knex = require('knex')(options.mysql);
 
 class MySQLContainer {
   constructor(collection,table) {
-    this.collection = knex.schema.createTable(collection, table)
+    this.init(table);
+    this.collection = collection;
   }
-    
+  async init (table) {
+    try{
+      if (!this.conexion){
+        this.conexion = knex.schema.createTable(this.collection,table)
+      }
+    }catch (error) {
+      console.error(`error`, error);
+      throw new Error("Ocurrio un error al conectar:", error);
+    }
+  }
   async getAll() {
     try {
       const listado = []; 
