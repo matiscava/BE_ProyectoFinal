@@ -113,7 +113,7 @@ module.exports = class ObjetoFS {
             throw error;
         }
     }
-    async agregarProducto(carritoId,producto){
+    async agregarProductos(carritoId,producto){
         try {
         const data = await fs.promises.readFile(`./${this.archivo}` );
         const carrito = JSON.parse(data);

@@ -95,7 +95,6 @@ class FirestoreContainer {
     async update(id,element) {
         try{
             const fecha = new Date().toLocaleString();
-            // console.log({...element,timestamp:fecha});
             const document = this.query.doc(id).update({...element,timestamp:fecha});
             return document;
         } catch (error) {
