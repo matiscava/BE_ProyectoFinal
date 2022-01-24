@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const options = require('../../config');
+const options = require('../config');
 const serviceAccount = require('../../db/firebase/proyectofinalbe-b686f-firebase-adminsdk-mnu25-7fa3d70aa9.json');
 
 class FirestoreContainer {

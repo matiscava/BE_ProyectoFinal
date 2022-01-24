@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const options = require('../../config');
+const options = require('../config');
 
 class MongoContainer {
   constructor(collection, schema) {

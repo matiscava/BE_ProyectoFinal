@@ -1,5 +1,5 @@
 const SqliteContainer = require("../../containers/SqliteContainer");
-const options = require('../../../config');
+const options = require('../../config');
 const knex = require('knex')(options.sqlite);
 
 class CartDaoSqlite extends SqliteContainer {

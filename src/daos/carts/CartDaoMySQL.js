@@ -1,5 +1,5 @@
 const MySQLContainer = require("../../containers/MySQLContainer");
-const options = require('../../../config');
+const options = require('../../config');
 const knex = require('knex')(options.mysql);
 
 class CartDaoMySQL extends MySQLContainer {

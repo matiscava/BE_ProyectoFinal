@@ -1,14 +1,27 @@
+const config = {
+  PERS: process.env.PERS,
+  FILE_PATH: process.env.FILE_PATH,
+  DB_USER: process.env.DB_USER,
+  DB_PASSWORD: process.env.DB_PASSWORD,
+  DB_DATABASE: process.env.DB_HOST,
+  DB_HOST: process.env.DB_HOST,
+  DB_SQLITE_PATH: process.env.DB_SQLITE_PATH
+}
+
 const options = {
+    ...config,
     mongodb: {
       host: 'mongodb://localhost/ecommerce',
+      cnxStr: `mongodb+srv://${config.DB_USER}:${config.DB_PASSWORD}@${config.DB_HOST}/${config.DB_DATABASE}?retryWrotes=true&w=majority`,
       options: {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        useCreateOmdex: true,
         serverSelectionTimeoutMS: 5000
       }
     },
     file: {
-      path: './db/fs'
+      path: `./${config.FILE_PATH}`
     },
     firestore: {
       "type": "service_account",
@@ -36,7 +49,7 @@ const options = {
     sqlite: {
       client: 'sqlite3',
       connection: {
-          filename: './db/sqlite/ecommerce.sqlite'
+          filename: `./${config.FILE_PATH}`
       },
       useNullAsDefault: true
     }

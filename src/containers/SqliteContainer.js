@@ -1,4 +1,4 @@
-const options = require('../../config');
+const options = require('../config');
 const knex = require('knex')(options.sqlite);
 
 class SqliteContainer {
