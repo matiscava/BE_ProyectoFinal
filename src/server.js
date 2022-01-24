@@ -34,8 +34,8 @@ app.use((req, res) => {
     )
 })
 
-process.env.PORT = 8080;
-app.listen(process.env.PORT, ()=>{
-    console.log(`Servidor funcionando en el puerto: ${process.env.PORT}`);
+PORT =  process.env.PORT || 8080;
+app.listen(PORT, ()=>{
+    console.log(`Servidor funcionando en el puerto: ${PORT}`);
 });
 
