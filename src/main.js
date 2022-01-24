@@ -1,5 +1,5 @@
-import env from './env.js'
-import app from './server.js'
+const env = require('./env')
+const app = require('./server')
 
 const PORT = process.env.PORT || 8080
 

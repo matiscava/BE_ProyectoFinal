@@ -14,7 +14,7 @@ const CartDaoFile = require('./carts/CartDaoFile');
 
 const daos = {};
 // si setamos mongo vamos a exportar los daos de mongo
-if (process.env.storage === 'mongodb') {
+if (process.env.PERS === 'mongodb') {
   daos['productDao'] = ProductDaoMongo;
   daos['cartDao'] = CartDaoMongo;
   console.log('Se conecto a mongo');
@@ -22,7 +22,7 @@ if (process.env.storage === 'mongodb') {
 }
 
 // si setamos memoria vamos a exportar los daos de memoria
-if (process.env.storage === 'memory') {
+if (process.env.PERS === 'memory') {
   daos['productDao'] = ProductDaoMemory;
   daos['cartDao'] = CartDaoMemory;
   console.log('Se conecto a la memoria');
@@ -30,28 +30,28 @@ if (process.env.storage === 'memory') {
 }
 
 // si setamos firestore vamos a exportar los daos de firestore
-if (process.env.storage === 'firestore') {
+if (process.env.PERS === 'firestore') {
   daos['productDao'] = ProductDaoFirestore;
   daos['cartDao'] = CartDaoFirestore;
   console.log('Se conecto al firestore');
 
 }
 // si setamos firestore vamos a exportar los daos de firestore
-if (process.env.storage === 'sqlite') {
+if (process.env.PERS === 'sqlite') {
   daos['productDao'] = ProductDaoSqlite;
   daos['cartDao'] = CartDaoSqlite;
   console.log('Se conecto al sqlite');
 
 }
 // si setamos firestore vamos a exportar los daos de firestore
-if (process.env.storage === 'mysql') {
+if (process.env.PERS === 'mysql') {
   daos['productDao'] = ProductDaoMySQL;
   daos['cartDao'] = CartDaoMySQL;
   console.log('Se conecto al MySQL');
 
 }
 // si setamos archivo vamos a exportar los daos de archivo
-if (process.env.storage === 'file') {
+if (process.env.PERS === 'file') {
   daos['productDao'] = ProductDaoFile;
   daos['cartDao'] = CartDaoFile;
   console.log('Se conecto al file');

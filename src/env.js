@@ -1,6 +1,6 @@
-import dotenv from 'dotenv'
+const dotenv = require('dotenv')
 
-export default dotenv.config({ 
+exports.module = dotenv.config({ 
   path: './.env',
   silent: true
 })
