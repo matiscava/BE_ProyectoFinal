@@ -12,9 +12,11 @@ const CartDaoSqlite = require('./carts/CartDaoSqlite.js');
 const CartDaoFirestore = require('./carts/CartDaoFirestore');
 const CartDaoFile = require('./carts/CartDaoFile');
 
+const config = require('../config');
+
 const daos = {};
 // si setamos mongo vamos a exportar los daos de mongo
-if (process.env.PERS === 'mongodb') {
+if (config.PERS === 'mongodb') {
   daos['productDao'] = ProductDaoMongo;
   daos['cartDao'] = CartDaoMongo;
   console.log('Se conecto a mongo');
@@ -22,7 +24,7 @@ if (process.env.PERS === 'mongodb') {
 }
 
 // si setamos memoria vamos a exportar los daos de memoria
-if (process.env.PERS === 'memory') {
+if (config.PERS === 'memory') {
   daos['productDao'] = ProductDaoMemory;
   daos['cartDao'] = CartDaoMemory;
   console.log('Se conecto a la memoria');
@@ -30,28 +32,28 @@ if (process.env.PERS === 'memory') {
 }
 
 // si setamos firestore vamos a exportar los daos de firestore
-if (process.env.PERS === 'firestore') {
+if (config.PERS === 'firestore') {
   daos['productDao'] = ProductDaoFirestore;
   daos['cartDao'] = CartDaoFirestore;
   console.log('Se conecto al firestore');
 
 }
 // si setamos firestore vamos a exportar los daos de firestore
-if (process.env.PERS === 'sqlite') {
+if (config.PERS === 'sqlite') {
   daos['productDao'] = ProductDaoSqlite;
   daos['cartDao'] = CartDaoSqlite;
   console.log('Se conecto al sqlite');
 
 }
 // si setamos firestore vamos a exportar los daos de firestore
-if (process.env.PERS === 'mysql') {
+if (config.PERS === 'mysql') {
   daos['productDao'] = ProductDaoMySQL;
   daos['cartDao'] = CartDaoMySQL;
   console.log('Se conecto al MySQL');
 
 }
 // si setamos archivo vamos a exportar los daos de archivo
-if (process.env.PERS === 'file') {
+if (config.PERS === 'file') {
   daos['productDao'] = ProductDaoFile;
   daos['cartDao'] = CartDaoFile;
   console.log('Se conecto al file');

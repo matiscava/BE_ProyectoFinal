@@ -1,6 +1,6 @@
 const dotenv = require('dotenv')
 
-exports.module = dotenv.config({ 
-  path: './.env',
+module.exports = dotenv.config({ 
+  path: './data.env',
   silent: true
 })
