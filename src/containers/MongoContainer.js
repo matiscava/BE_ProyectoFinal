@@ -8,8 +8,14 @@ class MongoContainer {
   }
   
   async init() {
-    if (!this.conexion) {
-      this.conexion = await mongoose.connect(options.mongodb.host, options.mongodb.options);
+    try{
+      if (!this.conexion) {
+        this.conexion = await mongoose.connect(options.mongodb.host, options.mongodb.options);
+      }
+    }
+    catch (err)
+    {
+      console.error('Error:',err);
     }
   }
   
