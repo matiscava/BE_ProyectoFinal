@@ -19,45 +19,35 @@ const daos = {};
 if (config.PERS === 'mongodb') {
   daos['productDao'] = ProductDaoMongo;
   daos['cartDao'] = CartDaoMongo;
-  console.log('Se conecto a mongo');
-
 }
 
 // si setamos memoria vamos a exportar los daos de memoria
 if (config.PERS === 'memory') {
   daos['productDao'] = ProductDaoMemory;
   daos['cartDao'] = CartDaoMemory;
-  console.log('Se conecto a la memoria');
-
 }
 
 // si setamos firestore vamos a exportar los daos de firestore
 if (config.PERS === 'firestore') {
   daos['productDao'] = ProductDaoFirestore;
   daos['cartDao'] = CartDaoFirestore;
-  console.log('Se conecto al firestore');
-
 }
 // si setamos firestore vamos a exportar los daos de firestore
 if (config.PERS === 'sqlite') {
   daos['productDao'] = ProductDaoSqlite;
   daos['cartDao'] = CartDaoSqlite;
-  console.log('Se conecto al sqlite');
-
 }
 // si setamos firestore vamos a exportar los daos de firestore
 if (config.PERS === 'mysql') {
   daos['productDao'] = ProductDaoMySQL;
   daos['cartDao'] = CartDaoMySQL;
-  console.log('Se conecto al MySQL');
-
 }
 // si setamos archivo vamos a exportar los daos de archivo
-if (config.PERS === 'file') {
+if (config.PERS === 'json' || !config.PERS	) {
   daos['productDao'] = ProductDaoFile;
   daos['cartDao'] = CartDaoFile;
-  console.log('Se conecto al file');
-
 }
+
+console.log(`Se conecto a ${config.PERS} en modo ${config.MODE}`);
 
 module.exports = daos;

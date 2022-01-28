@@ -5,13 +5,15 @@ const config = {
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_DATABASE: process.env.DB_HOST,
   DB_HOST: process.env.DB_HOST,
-  DB_SQLITE_PATH: process.env.DB_SQLITE_PATH
+  DB_SQLITE_PATH: process.env.DB_SQLITE_PATH,
+  MODE: process.env.MODE
+
 }
 
 const options = {
     ...config,
     mongodb: {
-      host: 'mongodb://localhost/ecommerce',
+      // host: 'mongodb://localhost/ecommerce',
       cnxStr: `mongodb+srv://${config.DB_USER}:${config.DB_PASSWORD}@${config.DB_HOST}/${config.DB_DATABASE}?retryWrites=true&w=majority`,
       options: {
         useNewUrlParser: true,
