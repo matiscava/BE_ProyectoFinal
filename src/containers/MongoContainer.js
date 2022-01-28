@@ -10,7 +10,7 @@ class MongoContainer {
   async init() {
     try{
       if (!this.conexion) {
-        this.conexion = await mongoose.connect(options.mongodb.host, options.mongodb.options);
+        this.conexion = await mongoose.connect(options.mongodb.cnxStr, options.mongodb.options);
       }
     }
     catch (err)
