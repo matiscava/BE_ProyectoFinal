@@ -4,10 +4,10 @@ const carritoRouter = express.Router();
 
 
 const { cartDao } = require('../daos');
-const cartsDao = new cartDao();
+// const cartsDao = new cartDao();
 
 const { productDao } = require('../daos');
-const productsDao = new productDao();
+// const productDao = new productDao();
 
 carritoRouter.get('/', async (req,res)=>{
     const data = await cartsDao.getAll();
@@ -32,7 +32,7 @@ carritoRouter.post('/:id/productos', async (req,res) => {
     const carritoElegido = await cartsDao.getCarrito(carritoID);
     const productsList = []
     for await (prod of productoReq)  {
-        const producto = await productsDao.getById(prod.id);
+        const producto = await productDao.getById(prod.id);
         let productoACargar ;
 
         if(producto===null){
@@ -102,7 +102,7 @@ carritoRouter.delete('/:id', async (req,res) => {
 carritoRouter.delete('/:id/productos/:id_prod', async (req,res) => {
     const carritoID = req.params.id;
     const productoID = req.params.id_prod;
-    const producto = await productsDao.getById(productoID);
+    const producto = await productDao.getById(productoID);
     const carritoElegido = await cartsDao.getCarrito(carritoID);
     if(producto===null){
         res.send({error: -3, descripcion: `el producto ID ${productoID} no existe ingrese otro ID`});

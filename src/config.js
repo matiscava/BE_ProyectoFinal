@@ -5,7 +5,8 @@ const config = {
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_DATABASE: process.env.DB_HOST,
   DB_HOST: process.env.DB_HOST,
-  DB_SQLITE_PATH: process.env.DB_SQLITE_PATH
+  DB_SQLITE_PATH: process.env.DB_SQLITE_PATH,
+  MODO: process.env.MODO
 }
 
 const options = {
