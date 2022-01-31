@@ -1,20 +1,30 @@
 
 const express = require('express');
 const carritoRouter = express.Router();
-const path = require('path')
-
+const path = require('path');
 
 const { cartDao: cartsDao , productDao: productsDao , userDao: usersDao } = require('../daos');
 
-carritoRouter.get('/', async (req,res)=>{
-    const data = await cartsDao.getAll();
+// carritoRouter.get('/', async (req,res)=>{
+//     const data = await cartsDao.getAll();
+//     const idMongo = req.session && req.session.idMongo;
+//     const usuario = await usersDao.getById(idMongo);
+//     const productsList = await productsDao.getAll();
+
+//     res.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario,productsList: productsList})
+
+// })
+//MUESTRA LA LISTA DE PRODUCTOS
+
+carritoRouter.get('/', async (req,res)=>{   
+    const data = await productsDao.getAll();
     const idMongo = req.session && req.session.idMongo;
+    const carritoID = req.session && req.session.carritoID;
     const usuario = await usersDao.getById(idMongo);
-    const productsList = await productsDao.getAll();
-
-    res.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario,productsList: productsList})
-
-})
+    const carrito = await cartsDao.getCarrito(carritoID);
+    // res.send(data)
+    res.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario, carrito: carrito})
+});
 
 //CREA UN CARRITO NUEVO
 
@@ -22,11 +32,14 @@ carritoRouter.post('/', async (req,res)=>{
     const carritoID = await cartsDao.newCarrito();
     const idMongo = req.session && req.session.idMongo;
     const usuario = await usersDao.getById(idMongo);
+    console.log(idMongo);
     if (usuario) {
         console.log({message: `Carrito creado con el ID ${carritoID}`})
-        res.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario, carritoID: carritoID})
+        req.session.carritoID = carritoID;
+        res.redirect(`carrito/${carritoID}/productos`)
+        // res.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario, carritoID: carritoID})
     }else{
-        res.redirect('/login')
+        res.redirect('api/users/login')
     }
 })
 
