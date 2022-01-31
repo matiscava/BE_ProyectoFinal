@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/estilos.css">
+  <title>Formulario de Ingreso</title>
+</head>
+
+<body>
+  <div class="formContainer">
+    <h1 class="formTitle">Signup de Usuario</h1>
+
+    <form action="/signup" method="post" autocomplete="off">
+        <div >
+            <label class="formLabel" for="username">Ingrese su username: <input id="username" type="text" name="username" onchange="habilitarBtn()" required></label>
+            <label class="formLabel" for="email">Ingrese su email: <input id="email" type="email" name="email" onchange="habilitarBtn()" required></label>
+            <label class="formLabel" for="password">Ingrese su password: <input id="password" type="password" name="password" onchange="habilitarBtn()" required></label>
+            <label class="formLabel" for="rePassword">Repita su password: <input id="rePassword" type="password" name="rePassword" onkeyup="habilitarBtn()" required></label>
+        </div>
+        <button class="formBtn" id="btnFormSignup" disabled>Enviar</button>
+    </form>
+    <hr>
+    <button class="btnLink" onclick="location.href='/login'">
+        ir al Login
+    </button>
+
+  </div>
+    <!-- Inicio del script -->
+    <script>
+        const btn = document.getElementById('btnFormSignup');
+        
+        function habilitarBtn() {
+            const name = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const rePassword = document.getElementById('rePassword').value;
+            let passChecked = false;
+            if ( password.length > 1 && password === rePassword ) passChecked = true
+            else passChecked = false;
+    
+            if ( name && email && passChecked )
+            {
+                btn.disabled = false
+            }
+            else
+            {
+                btn.disabled = true
+            }
+        }
+    
+    </script>
+</body>
+</html>

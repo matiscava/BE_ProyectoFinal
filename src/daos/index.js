@@ -12,6 +12,8 @@ const CartDaoSqlite = require('./carts/CartDaoSqlite.js');
 const CartDaoFirestore = require('./carts/CartDaoFirestore');
 const CartDaoFile = require('./carts/CartDaoFile');
 
+const UserDaoMongo = require('./users/userDaoMongo')
+
 const config = require('../config');
 
 const daos = {};
@@ -19,6 +21,8 @@ const daos = {};
 if (config.PERS === 'mongodb') {
   daos['productDao'] = new ProductDaoMongo;
   daos['cartDao'] = new CartDaoMongo;
+  daos['userDao'] = new UserDaoMongo;
+
 }
 
 // si setamos memoria vamos a exportar los daos de memoria

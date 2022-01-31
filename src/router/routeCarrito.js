@@ -1,24 +1,33 @@
 
 const express = require('express');
 const carritoRouter = express.Router();
+const path = require('path')
 
 
-const { cartDao: cartsDao } = require('../daos');
-// const cartsDao = new cartDao();
-
-const { productDao: productsDao } = require('../daos');
-// const productsDao = new productDao();
+const { cartDao: cartsDao , productDao: productsDao , userDao: usersDao } = require('../daos');
 
 carritoRouter.get('/', async (req,res)=>{
     const data = await cartsDao.getAll();
-    res.send(data )
+    const idMongo = req.session && req.session.idMongo;
+    const usuario = await usersDao.getById(idMongo);
+    const productsList = await productsDao.getAll();
+
+    res.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario,productsList: productsList})
+
 })
 
 //CREA UN CARRITO NUEVO
 
 carritoRouter.post('/', async (req,res)=>{
     const carritoID = await cartsDao.newCarrito();
-    res.send({message: `Carrito creado con el ID ${carritoID}`})
+    const idMongo = req.session && req.session.idMongo;
+    const usuario = await usersDao.getById(idMongo);
+    if (usuario) {
+        console.log({message: `Carrito creado con el ID ${carritoID}`})
+        res.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario, carritoID: carritoID})
+    }else{
+        res.redirect('/login')
+    }
 })
 
 

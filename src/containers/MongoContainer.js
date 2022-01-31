@@ -27,7 +27,7 @@ class MongoContainer {
       console.error('Error:', error);
     }
   }
-  async save(producto) {
+  async createProduct(producto) {
     try {
         const productsList = await this.getAll();
         const fecha = new Date().toLocaleString();
@@ -154,7 +154,23 @@ class MongoContainer {
         console.error('Error: ', error);
         throw error;
     }
-}
+  }
+  async createUser (user) {
+    try{
+      const document = await new this.collection(user);
+      const response = await document.save()
+      console.log('Cliente creado', response);
+      return document._id;
+    }catch(err){
+      console.error('Error: ', error);
+    }
+  }
+  async findUser (userName) {
+    try{
+      const user = await this.collection.findOne({username: userName}, {__v: 0});
+      return user;
+    }catch(err){console.error(`Error: ${err}`)}
+  }
 }
 
 module.exports = MongoContainer;
