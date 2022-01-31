@@ -17,8 +17,8 @@ const config = require('../config');
 const daos = {};
 // si setamos mongo vamos a exportar los daos de mongo
 if (config.PERS === 'mongodb') {
-  daos['productDao'] = ProductDaoMongo;
-  daos['cartDao'] = CartDaoMongo;
+  daos['productDao'] = new ProductDaoMongo;
+  daos['cartDao'] = new CartDaoMongo;
 }
 
 // si setamos memoria vamos a exportar los daos de memoria

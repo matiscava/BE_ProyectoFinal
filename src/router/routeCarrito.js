@@ -3,11 +3,11 @@ const express = require('express');
 const carritoRouter = express.Router();
 
 
-const { cartDao } = require('../daos');
-const cartsDao = new cartDao();
+const { cartDao: cartsDao } = require('../daos');
+// const cartsDao = new cartDao();
 
-const { productDao } = require('../daos');
-const productsDao = new productDao();
+const { productDao: productsDao } = require('../daos');
+// const productsDao = new productDao();
 
 carritoRouter.get('/', async (req,res)=>{
     const data = await cartsDao.getAll();

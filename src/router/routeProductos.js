@@ -1,8 +1,8 @@
 const express = require('express');
 const productosRouter = express.Router();
 
-const { productDao } = require('../daos');
-const productsDao = new productDao();
+const { productDao: productsDao } = require('../daos');
+// const productsDao = new productDao();
 
 const admin = true;
 

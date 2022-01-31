@@ -3,7 +3,7 @@ const config = {
   FILE_PATH: process.env.FILE_PATH,
   DB_USER: process.env.DB_USER,
   DB_PASSWORD: process.env.DB_PASSWORD,
-  DB_DATABASE: process.env.DB_HOST,
+  DB_DATABASE: process.env.DB_DATABASE,
   DB_HOST: process.env.DB_HOST,
   DB_SQLITE_PATH: process.env.DB_SQLITE_PATH,
   MODE: process.env.MODE
@@ -18,7 +18,7 @@ const options = {
       options: {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateOmdex: true,
+        // useCreateOmdex: true,
         serverSelectionTimeoutMS: 5000
       }
     },
