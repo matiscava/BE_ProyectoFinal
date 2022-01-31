@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/estilos.css">
+  <title>Home</title>
+</head>
+<body>
+  <div>
+    <% if (!usuario){%>
+      <button class="btnHome" onclick="location.href='/api/productos'">
+        Ir a productos
+      </button>
+      <button class="btnHome" onclick="location.href='/api/users/login'">
+        crear un Carrito
+      </button>
+    <%} else {%>
+      <button class="btnHome" onclick="location.href='/api/productos'">
+        Ir a productos
+      </button>
+      <button class="btnHome" onclick="location.href='/api/carrito'">
+        Ver carritos creados
+    </button>
+      <% if (!carritoID){%>
+        <form action="/api/carrito" method="post" autocomplete="off">
+            <button class="formBtn" id="btnNewCarrito">Crear carrito nuevo</button>            
+        </form> 
+      <%}else{%>
+        <button class="btnHome" onclick="location.href='/api/carrito/<%=carritoID%>/productos'">
+          Ir al carrito <%=carritoID%>
+       </button>
+      <%}%>
+
+    <%}%>
+
+  </div>
+  
+</body>
+</html>

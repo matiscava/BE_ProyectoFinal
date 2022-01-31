@@ -4,6 +4,8 @@ const path = require('path');
 const bCrypt = require('bcrypt');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const nodemailer = require("nodemailer");
+const smtpTransport = require('nodemailer-smtp-transport');
 
 const { productDao: productsDao , userDao , cartDao: cartsDao} = require('../daos');
 
@@ -19,6 +21,28 @@ function createHash(password) {
 function isValidPassword( user , password ) {
   return bCrypt.compareSync( password , user.password )
 }
+const mailOptions = (username,photo) => ({
+  from: 'jorgecoronabackend@gmail.com', // sender address
+  to: ['jorgecoronabackend@gmail.com'], // list of receivers
+  subject: "[ALERT] New User created", // Subject line
+  // text: "Hello world?", // plain text body,
+  attachments: 
+  [
+    {path: photo}
+  ],
+  html: `<h1 style="color: blue;">Se ha creado un nuevo usuario.</h1><p>UserName: ${username}</p>` // html body
+})
+/* NODEMAILER */
+
+const transporter = nodemailer.createTransport( {
+  service: 'gmail',
+  port: 587,
+  auth: {
+    user: 'jorgecoronabackend@gmail.com',
+    pass: 'jorgecorona55'
+  }
+} )   
+
 /* PASSPORT */
 
 passport.use('login',  new LocalStrategy(
@@ -69,7 +93,13 @@ passport.use('signup', new LocalStrategy(
       const idUser = await userDao.createUser(newUser)
       console.log('User register succesful iD ',idUser);
       req.session.idMongo = idUser;
-
+      transporter.sendMail(mailOptions(req.body.username , photo), ( err , info ) => {
+        if(err) {
+          console.error(err);
+          return err
+        }
+        console.log(info);
+      })
       return done( null , idUser)
   }
 ) )
@@ -124,7 +154,7 @@ usersRouter.get('/logout', async ( req , res ) => {
   if (usuario) {
       req.session.destroy(error => {
           if (!error) {
-              res.render(path.join(process.cwd(), '/views/pages/logout.ejs'), { nombre: usuario})
+              res.render(path.join(process.cwd(), '/views/pages/logout.ejs'), { nombre: usuario.username})
           } else {
               res.redirect('/')
           }
