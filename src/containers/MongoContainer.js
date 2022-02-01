@@ -168,10 +168,30 @@ class MongoContainer {
       console.error('Error: ', error);
     }
   }
-  async findUser (userName) {
+  async findUser (email) {
     try{
-      const user = await this.collection.findOne({username: userName}, {__v: 0});
+      const user = await this.collection.findOne({email: email}, {__v: 0});
       return user;
+    }catch(err){console.error(`Error: ${err}`)}
+  }
+
+  async createTicket (ticketCompra) {
+    try{
+      const newTicket = {
+        username: ticketCompra.username,
+        name:ticketCompra.name,
+        lastname:ticketCompra.lastname,
+        email:ticketCompra.email,
+        photo:ticketCompra.photo,
+        userId:ticketCompra._id,
+        cart:ticketCompra.cart,
+        phone:ticketCompra.phone
+      }
+      console.log(newTicket);
+      const document = await new this.collection(newTicket);
+      const response = await document.save()
+      console.log('Ticket creado', response);
+      return document._id;
     }catch(err){console.error(`Error: ${err}`)}
   }
 }

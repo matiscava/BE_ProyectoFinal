@@ -42,22 +42,56 @@
             </h1>
         </div>      
     <%}%>
-    <div class="cartProducts">
-      <% productsList.forEach( (product) => { %>
-        <div class="productCartContainer">
-          <div class="productCartTextos">
-            <p><%= product.title %></p>
-            <p>Valor: $<%= product.price %></p>
-            <p>Stock: <%= product.stock %></p>
-            <form action="/api/carrito/<%= cartID %>/productos" method="post">
-              <input type="text" name="_id" id="_id" value="<%=product._id%>" style="display: none;">
-              <label for="quantity" class="cartLabel">Cantidad: <input type="number" name="quantity" id="quantity" min="0" max="<%= product.stock %>" ></label>
-              <button>Agregar al carrito</button>
-            </form>
+    <div class="cartContainer">
+      <div class="cartProducts">
+        <% productsList.forEach( (product) => { %>
+          <div class="productCartContainer">
+            <div class="cartProductImgContainer">
+              <img src="<%= product.photo %>" alt='imagen de producto <%= product.code %>' class="cartProductImage">
+            </div>
+            <div class="productCartTextos">
+              <div class="productCartMainText">
+                <p class="productCartTitle"><%= product.title %></p>
+                <p class="productCartPrice">Valor: $<%= product.price %></p>
+                <p class="productCartStock">Stock: <%= product.stock %></p>
+              </div>
+              <form action="/api/carrito/<%= cartID %>/productos" method="post" class="productCartForm">
+                <input type="text" name="_id" id="_id" value="<%=product._id%>" style="display: none;">
+                <label for="quantity" class="cartLabel">Cantidad: <input class="inputQuantity" type="number" name="quantity" id="quantity" min="0" max="<%= product.stock %>" ></label>
+                <button>Agregar al carrito</button>
+              </form>
+            </div>
           </div>
-        </div>
-      <% } )%>
+        <% } )%>
+      </div>
+      <div class="cartItems">
+        <p class="cartID">
+          Carrito ID N° <%= cartID %>
+        </p>
+        <div class="cartItemsContainer">
+          <% cart.products.forEach( (product) => { %>
+            <div class="cartItemContainer">
+              <div class="cartItemImgContainer">
+                <img src="<%= product.photo %>" alt='imagen de producto <%= product.code %>' class="productoImagen">
+              </div>
+              <div class="cartItemsTexts">
+                <p class="cartItemTitle"><%= product.title %></p>
+                <p class="cartItemQunatity">Cantidad: <%= product.quantity %></p>
+                <p class="cartItemQunatity">Valor por unidad: $<%= product.price %></p>
+                <p class="cartItemQunatity">Subtotal: $<%= product.quantity * product.price %></p>
+              </div>
+            </div>
+          <% } )%>
+          <p class="cartValorTotal">Total: $<%= precioFinal %></p>
+        <% if (!usuario){%>
 
+          <button class="btnBuy" onclick="location.href='/api/users/login'"> Realizar compra </button>
+          <% } else { %>
+            <button class="btnBuy" onclick="location.href='/api/carrito/<%= cartID %>/productos/compra'"> Realizar compra </button>
+          <% }%>
+        
+        </div>
+      </div>
     </div>
   
 </body>

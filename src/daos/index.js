@@ -14,6 +14,9 @@ const CartDaoFile = require('./carts/CartDaoFile');
 
 const UserDaoMongo = require('./users/userDaoMongo')
 
+const TicketsDaoMongo = require('./tickets/ticketsDaoMongo')
+
+
 const config = require('../config');
 
 const daos = {};
@@ -22,7 +25,7 @@ if (config.PERS === 'mongodb') {
   daos['productDao'] = new ProductDaoMongo;
   daos['cartDao'] = new CartDaoMongo;
   daos['userDao'] = new UserDaoMongo;
-
+  daos['ticketDao'] = new TicketsDaoMongo;
 }
 
 // si setamos memoria vamos a exportar los daos de memoria
