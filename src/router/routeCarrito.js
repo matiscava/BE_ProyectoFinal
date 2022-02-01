@@ -3,7 +3,7 @@ const express = require('express');
 const carritoRouter = express.Router();
 const path = require('path');
 
-const { cartDao: cartsDao , productDao: productsDao , userDao: usersDao } = require('../daos');
+const { cartDao: cartsDao , productDao: productsDao , userDao: usersDao, productDao } = require('../daos');
 
 // carritoRouter.get('/', async (req,res)=>{
 //     const data = await cartsDao.getAll();
@@ -21,9 +21,10 @@ carritoRouter.get('/', async (req,res)=>{
     const idMongo = req.session && req.session.idMongo;
     const carritoID = req.session && req.session.carritoID;
     const usuario = await usersDao.getById(idMongo);
-    const carrito = await cartsDao.getCarrito(carritoID);
+    const listaCarritos = await cartsDao.getAll();
+    const carrito = await cartsDao.getCarrito(carritoID)
     // res.send(data)
-    res.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario, carrito: carrito})
+    res.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario, carrito: carrito, listaCarritos})
 });
 
 //CREA UN CARRITO NUEVO
@@ -32,7 +33,6 @@ carritoRouter.post('/', async (req,res)=>{
     const carritoID = await cartsDao.newCarrito();
     const idMongo = req.session && req.session.idMongo;
     const usuario = await usersDao.getById(idMongo);
-    console.log(idMongo);
     if (usuario) {
         console.log({message: `Carrito creado con el ID ${carritoID}`})
         req.session.carritoID = carritoID;
@@ -49,29 +49,47 @@ carritoRouter.post('/', async (req,res)=>{
 carritoRouter.post('/:id/productos', async (req,res) => {
     const carritoID = req.params.id;
     const error = []
-
     const productoReq = req.body;
-    const carritoElegido = await cartsDao.getCarrito(carritoID);
+    const carritoElegido = await cartsDao.getById(carritoID);
+    const producto = (await productDao.getById(productoReq._id)).toObject()
     const productsList = []
-    for await (prod of productoReq)  {
-        const producto = await productsDao.getById(prod.id);
-        let productoACargar ;
-
-        if(producto===null){
-            const filtroIndex = await productoReq.findIndex((producto) => producto.id===prod.id);
-            error.push({error: -3, descripcion: `el objeto ID ${prod.id} no existe ingrese otro ID`});
-            await productoReq.products.splice(1,filtroIndex);
-        }
-
-        const cantidad = parseInt(prod.quantity);
-        if( isNaN(cantidad) ||cantidad===""||cantidad===undefined){
-            productoACargar = {...producto,quantity:1}
-        }else{
-            productoACargar = {...producto,quantity:cantidad}
-        }
-        productsList.push(productoACargar)
+    productsList.push(...carritoElegido.products)
+    const prodRepetido = await productsList.find(prod => prod.id === producto.id )
+    const filtroIndex = await productsList.findIndex(prod => prod.code===producto.code);
+    // console.log(prodRepetido.quantity += parseInt(productoReq.quantity));
+    if(prodRepetido && filtroIndex >= 0){
+        productsList[filtroIndex].quantity += parseInt(productoReq.quantity);
+    }else{
+        productsList.push(producto)
     }
 
+    // if(prodRepetido){
+    //     await productsList[filtroIndex].quantity += producto.quantity;
+    // }
+    
+    // await productsList.splice(1,filtroIndex);
+    
+
+    // for  (prod of productoReq) {
+    //     const producto = await productsDao.getById(prod.id);
+    //     let productoACargar ;
+
+    //     if(producto===null){
+    //         error.push({error: -3, descripcion: `el objeto ID ${prod.id} no existe ingrese otro ID`});
+        //     error.push({error: -3, descripcion: `el objeto ID ${prod.id} no existe ingrese otro ID`});
+        // }
+    //         await productoReq.products.splice(1,filtroIndex);
+    //     }
+
+    //     const cantidad = parseInt(prod.quantity);
+    //     if( isNaN(cantidad) ||cantidad===""||cantidad===undefined){
+    //         productoACargar = {...producto,quantity:1}
+    //     }else{
+    //         productoACargar = {...producto,quantity:cantidad}
+    //     }
+    //     productsList.push(productoACargar)
+    // }
+    let productoACargar = {...producto,quantity:parseInt(productoReq.quantity)}
     
     if (carritoElegido===undefined){
         res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
@@ -99,10 +117,16 @@ carritoRouter.post('/:id/productos', async (req,res) => {
 carritoRouter.get('/:id/productos', async (req,res) => {
     const carritoID = req.params.id;
     const carritoElegido = await cartsDao.getCarrito(carritoID);
+    const productList = await productsDao.getAll();
+    const idMongo = req.session && req.session.idMongo;
+    const usuario = await usersDao.getById(idMongo);
+
     if (carritoElegido===undefined){
         res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
     }else{
-        res.send(carritoElegido)
+        // res.send(carritoElegido)
+        res.render(path.join(process.cwd(), '/views/pages/cartView.ejs'), {usuario, cart: carritoElegido, cartID: carritoID, productsList: productList})
+
     }
 })
 

@@ -113,11 +113,13 @@ class MongoContainer {
   }
   async agregarProductos(carritoId,productos){
     try {
+      const prod = productos;
+      // console.log('produto',prod);
       const fecha = new Date().toLocaleString();
       const documents = await this.collection.updateOne({ _id: carritoId },{
-        $set: {products:productos},$set:{timestamp: fecha}
+        $set:{products:prod,timestamp: fecha}
       })
-    
+      // console.log('document', await this.getCarrito(carritoId));
     } catch (error) {
       console.error('Error: ', error);
       throw error;

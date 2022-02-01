@@ -21,7 +21,7 @@
                         Registrarse
                     </button>
                     <button class="btnHome" onclick="location.href='/api/productos'">
-                        Ir al productos
+                        Ir a productos
                     </button>
                 </div>
             </div>
@@ -33,34 +33,33 @@
                             Desloguear
                         </button>
                         <button class="btnHome" onclick="location.href='/api/productos'">
-                          Ir al productos
+                          Ir a productos
                       </button>
                 </h1>
             </div>      
         <%}%>
-            <form action="/api/carrito" method="post" autocomplete="off">
-              <% if (!usuario){%>
-                <button class="formBtn" id="btnCarritoUnload" onclick="location.href='/api/users/login'">Crear carrito</button>
-              <%} else {%>
-                <button class="formBtn" id="btnNewCarrito">Crear carrito</button>            
-              <%}%> 
-              
-            </form>
+        <form action="/api/carrito" method="post" autocomplete="off">
+            <% if (!usuario){%>
+            <button class="formBtn" id="btnCarritoUnload" onclick="location.href='/api/users/login'">Crear carrito</button>
+            <%} else {%>
+            <button class="formBtn" id="btnNewCarrito">Crear carrito</button>            
+            <%}%> 
+        </form>
+
+        <div class="cartListContainer">
+            <% listaCarritos.forEach( (cart) => { %>
+                <div class="cart" id="cart-<%=cart._id%>">
+                    <div class="cartTextos">
+                        <p class="cartId">Carrito id: <i><%= cart._id %></i></p>
+                        <p class="cartLength">productos cargados: <i><%= cart.products.length %></i></p>
+                    </div>
+                    <button class="cartBtn" onclick="location.href='/api/carrito/<%=cart._id%>/productos'">Seleccionar Carrito</button>
+                </div>
+            <% } ) %>
+        </div>
             
 
     </div>
-
-    <script>
-        const btn = document.getElementById('btnCarritoUnload');
-        // const btnDelete = document.getElementById('btnDeleteProduct');
-        
-
-        
-        function deleteItem(id){
-            console.log('id producto:',id);
-        }
-    </script>
-
 </body>
 
 </html>
