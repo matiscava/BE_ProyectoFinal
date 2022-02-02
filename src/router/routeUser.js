@@ -166,7 +166,6 @@ usersRouter.get('/logout', async ( req , res ) => {
   }
 })
 
-
 //signup
 
 usersRouter.get( '/signup' , async ( req , res ) => {
@@ -184,5 +183,17 @@ usersRouter.post( '/signup' , passport.authenticate( 'signup' , {failureRedirect
 usersRouter.get( '/failsignup' , (req , res) => {
   res.render(path.join(process.cwd(), '/views/pages/failsignup.ejs'))
 } )
+//info
+usersRouter.get( '/info' , async ( req , res ) => {
+  const idMongo = req.session && req.session.idMongo;
+  const usuario = await userDao.getById(idMongo);
+
+  if (!usuario) {
+    res.redirect('/api/users/login')
+  }else{
+    res.render(path.join(process.cwd(), '/views/pages/info.ejs'),{usuario})
+  }
+
+})
 
 module.exports = usersRouter;

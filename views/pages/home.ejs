@@ -44,7 +44,10 @@
         </button>
         <button class="btnHome" onclick="location.href='/api/carrito'">
           Ver carritos creados
-      </button>
+        </button>
+        <button class="btnHome" onclick="location.href='/api/users/info'">
+          Información del usuario
+        </button>
       </div>
       <% if (!carritoID){%>
         <form action="/api/carrito" method="post" autocomplete="off">
