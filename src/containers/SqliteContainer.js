@@ -1,5 +1,6 @@
 const options = require('../config');
 const knex = require('knex')(options.sqlite);
+const logger = require('./../logger')
 
 class SqliteContainer {
   constructor(collection,table) {
@@ -13,7 +14,7 @@ class SqliteContainer {
         this.conexion = knex.schema.createTable(this.collection,table)
       }
     }catch (error) {
-      console.error(`error`, error);
+      logger.error(`error`, error);
       throw new Error("Ocurrio un error al conectar:", error);
     }
   }
@@ -28,7 +29,7 @@ class SqliteContainer {
         })
       return listado;
     } catch (error) {
-      console.error('Error:', error);
+      logger.error('Error:', error);
     }
   }
   async getById(id) {
@@ -42,7 +43,7 @@ class SqliteContainer {
             })
         return item[0];
     } catch (error) {
-      console.error('Error:', error);
+      logger.error('Error:', error);
     }
   }
   async save(producto) {
@@ -63,7 +64,7 @@ class SqliteContainer {
       }
 
      await knex(this.collection).insert(agregarData)
-      .then(()=> console.log('Product Inserted'));
+      .then(()=> logger.info('Product Inserted'));
       const document = []
       await knex.from(this.collection).select('*').where('code',nextID)
       .then((rows) => {
@@ -71,35 +72,35 @@ class SqliteContainer {
               document.push(row);
           });
         })
-      console.log('create new product: ', {document});
+      logger.info('create new product: ', {document});
       return document; 
     } catch (error) {
-      console.error(error); throw error;
+      logger.error(error); throw error;
     }
   }
   async deleteById(id) {
     try {
       await knex(this.collection).where('id',id).del()
-        .then(()=> console.log('Data deleted'));
+        .then(()=> logger.info('Data deleted'));
     }catch (error) {
-      console.error('Error:', error);
+      logger.error('Error:', error);
     };
   }
 
   async deleteAll() {
     try {
         await knex(this.collection).del()
-            .then(()=> console.log('Data deleted'));
+            .then(()=> logger.info('Data deleted'));
     } catch (error) {
-      console.error('Error:', error);
+      logger.error('Error:', error);
     };
   }
   async update(id, element) {
     const fecha = new Date().toLocaleString();
     const productUpdate = {timestamp: fecha,...element};
     await knex.from(this.collection).where('id',id).update(productUpdate)
-            .then(()=> console.log('Product updated'))
-            .catch((error)=> {  console.log('Error: ',error); throw error});
+            .then(()=> logger.info('Product updated'))
+            .catch((error)=> {  logger.info('Error: ',error); throw error});
     const elementUpdated = await this.getById(id);
     return elementUpdated;
   }
@@ -109,13 +110,13 @@ class SqliteContainer {
       const fecha = new Date().toLocaleString();
       let carritoNuevo={timestamp: fecha,products: '[]' };
       await knex(this.collection).insert(carritoNuevo)
-        .then(()=> console.log('Cart created'))
+        .then(()=> logger.info('Cart created'))
       const document = await knex(this.collection).select('*').orderBy('id','desc').limit(1)
       const {element} = document;
-      console.log('carrito creado',document[0]);
+      logger.info('carrito creado',document[0]);
       return document[0].id; 
     } catch (error) {
-        console.error('Error: ', error);
+        logger.error('Error: ', error);
         throw error;
     }
   }
@@ -134,7 +135,7 @@ class SqliteContainer {
 
         return carritoElegido;
     } catch (error) {
-        console.error('Error: ', error);
+        logger.error('Error: ', error);
         throw error;
     }
   }
@@ -149,8 +150,8 @@ class SqliteContainer {
       if ( productsOriginal.length === 0 ){
         
         await knex.from(this.collection).where('id',carritoId).update({timestamp:fecha,products: JSON.stringify(productos)})
-        .then(()=> console.log('Cart updated'))
-        .catch((error)=> {  console.log('Error: ',error); throw error});
+        .then(()=> logger.info('Cart updated'))
+        .catch((error)=> {  logger.info('Error: ',error); throw error});
       }else{
         productos.forEach( (produ) => {
           const productoRepetido = productsOriginal.find((producto) => producto.id === produ.id);
@@ -158,18 +159,18 @@ class SqliteContainer {
             produ.quantity+=productoRepetido.quantity;
             produ.timestamp=fecha;
           }else{
-            console.log('El producto no figura en el carrito');
+            logger.info('El producto no figura en el carrito');
           }
         });
         await knex.from(this.collection).where('id',carritoId).update({timestamp:fecha,products: JSON.stringify(productos)})
-        .then(()=> console.log('Cart updated'))
-        .catch((error)=> {  console.log('Error: ',error); throw error});
+        .then(()=> logger.info('Cart updated'))
+        .catch((error)=> {  logger.info('Error: ',error); throw error});
 
       }
       carritoModificado = await this.getById(carritoId);
       JSON.parse(carritoModificado.products,null,2)
     } catch (error) {
-      console.error('Error: ', error);
+      logger.error('Error: ', error);
       throw error;
     }
   }
@@ -179,7 +180,7 @@ class SqliteContainer {
       const fecha = new Date().toLocaleString();
       await knex.from(this.collection).where('id',carritoId).update({timestamp:fecha,products: '[]'});
     } catch (error) {
-        console.error('Error: ', error);
+        logger.error('Error: ', error);
         throw error;
     }
   }
@@ -205,7 +206,7 @@ class SqliteContainer {
           return false;
         };  
     } catch (error) {
-        console.error('Error: ', error);
+        logger.error('Error: ', error);
         throw error;
     }
 }

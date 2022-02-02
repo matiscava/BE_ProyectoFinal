@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const options = require('../config');
+const logger = require('./../logger');
+
 
 class MongoContainer {
   constructor(collection, schema) {
@@ -15,7 +17,7 @@ class MongoContainer {
     }
     catch (err)
     {
-      console.error('Error:',err);
+      logger.error('Error:',err);
     }
   }
   
@@ -24,7 +26,7 @@ class MongoContainer {
       const documents = await this.collection.find({},{__v:0})
       return documents;
     } catch (error) {
-      console.error('Error:', error);
+      logger.error('Error:', error);
     }
   }
   async createProduct(producto) {
@@ -47,10 +49,10 @@ class MongoContainer {
       const document = await new this.collection(agregarData);
       const response = await document.save()
 
-      console.log('create new product: ', {response});
+      logger.info('create new product: ', {response});
       return document._id; 
     } catch (error) {
-      console.error(error); throw error;
+      logger.error(error); throw error;
     }
   }
   async getById(id) {
@@ -62,24 +64,24 @@ class MongoContainer {
         return documents[0];
       }
     } catch (error) {
-      console.error('Error:', error);
+      logger.error('Error:', error);
     }
   }
   async deleteById(id) {
     try {
       const response = await this.collection.deleteOne({ _id: id });
-      console.log('deleteById: ', {response});
+      logger.warn('deleteById: ', {response});
     }catch (error) {
-      console.error('Error:', error);
+      logger.error('Error:', error);
     };
   }
 
   async deleteAll() {
     try {
       await this.collection.deleteMany({});
-      console.log('deleteAll: ');
+      logger.warn('deleteAll: ');
     } catch (error) {
-      console.error('Error:', error);
+      logger.error('Error:', error);
     };
   }
   async update(id, element) {
@@ -89,7 +91,7 @@ class MongoContainer {
       $set: {element,timestamp:fecha}
     })
     if (n == 0 || nModified == 0) {
-      console.error(`Elemento con el id: '${id}' no fue encontrado`);
+      logger.error(`Elemento con el id: '${id}' no fue encontrado`);
       return null;
     }
 
@@ -104,24 +106,24 @@ class MongoContainer {
         let carritoNuevo={timestamp: fecha, products:[] };
         const document = await new this.collection(carritoNuevo);
         const response = await document.save()
-        console.log('create new cart: ', {response});
+        logger.info('create new cart: ', {response});
         return document._id; 
     } catch (error) {
-        console.error('Error: ', error);
+        logger.error('Error: ', error);
         throw error;
     }
   }
   async agregarProductos(carritoId,productos){
     try {
       const prod = productos;
-      // console.log('produto',prod);
+      // logger.info('produto',prod);
       const fecha = new Date().toLocaleString();
       const documents = await this.collection.updateOne({ _id: carritoId },{
         $set:{products:prod,timestamp: fecha}
       })
-      // console.log('document', await this.getCarrito(carritoId));
+      // logger.info('document', await this.getCarrito(carritoId));
     } catch (error) {
-      console.error('Error: ', error);
+      logger.error('Error: ', error);
       throw error;
     }
   }
@@ -131,7 +133,7 @@ class MongoContainer {
       const documents = await this.collection.find({ _id: carritoId },{__v:0})
         return documents;
     } catch (error) {
-        console.error('Error: ', error);
+        logger.error('Error: ', error);
         throw error;
     }
   }
@@ -143,7 +145,7 @@ class MongoContainer {
       this.collection.updateOne({ _id: carritoId },{$set: {timestamp:fecha}});
     
     } catch (error) {
-        console.error('Error: ', error);
+        logger.error('Error: ', error);
         throw error;
     }
   }
@@ -153,26 +155,25 @@ class MongoContainer {
       this.collection.updateOne({ _id: carritoId },{$set: {timestamp:fecha}});
       return true
     } catch (error) {
-        console.error('Error: ', error);
+        logger.error('Error: ', error);
         throw error;
     }
   }
   async createUser (user) {
     try{
-      console.log('Prueba',user);
       const document = await new this.collection(user);
       const response = await document.save()
-      console.log('Cliente creado', response);
+      logger.info('Cliente creado', response);
       return document._id;
     }catch(err){
-      console.error('Error: ', error);
+      logger.error('Error: ', error);
     }
   }
   async findUser (email) {
     try{
       const user = await this.collection.findOne({email: email}, {__v: 0});
       return user;
-    }catch(err){console.error(`Error: ${err}`)}
+    }catch(err){logger.error(`Error: ${err}`)}
   }
 
   async createTicket (ticketCompra) {
@@ -187,12 +188,12 @@ class MongoContainer {
         cart:ticketCompra.cart,
         phone:ticketCompra.phone
       }
-      console.log(newTicket);
+      logger.info(newTicket);
       const document = await new this.collection(newTicket);
       const response = await document.save()
-      console.log('Ticket creado', response);
+      logger.info('Ticket creado', response);
       return document._id;
-    }catch(err){console.error(`Error: ${err}`)}
+    }catch(err){logger.error(`Error: ${err}`)}
   }
 }
 

@@ -6,8 +6,10 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const nodemailer = require("nodemailer");
 const smtpTransport = require('nodemailer-smtp-transport');
+const logger = require('./../logger')
 
-const { productDao: productsDao , userDao , cartDao: cartsDao} = require('../daos');
+
+const { userDao } = require('../daos');
 
 
 /* FUNCIONES */
@@ -49,12 +51,12 @@ passport.use('login',  new LocalStrategy(
   async (username , password , done ) => {
       const user = await userDao.findUser(username);
       if (!user) {
-          console.log('User Not Found with username ',username);
+          logger.info('User Not Found with username ',username);
           return done ( null , false )
       } 
       
       if ( !isValidPassword( user , password ) ) {
-          console.log( 'Invalid Password' );
+          logger.info( 'Invalid Password' );
           return done ( null , false )
       }
       
@@ -71,10 +73,10 @@ passport.use('signup', new LocalStrategy(
       const user = await userDao.findUser(username);
       let photo = '';
       if (user) {
-          console.log('User already exists');
+          logger.info('User already exists');
           return done( null , false )
       } 
-      console.log('prueba passport',req.body);
+      logger.info('prueba passport',req.body);
       if( req.body.photo === '') {
         photo = 'https://static.diariosur.es/www/pre2017/multimedia/RC/201501/12/media/cortadas/avatar--320x378.jpg'
       }else{
@@ -91,27 +93,27 @@ passport.use('signup', new LocalStrategy(
       }
 
       const idUser = await userDao.createUser(newUser)
-      console.log('User register succesful iD ',idUser);
+      logger.info('User register succesful iD ',idUser);
       req.session.idMongo = idUser;
       transporter.sendMail(mailOptions(req.body.username , photo), ( err , info ) => {
         if(err) {
-          console.error(err);
+          logger.error(err);
           return err
         }
-        console.log(info);
+        logger.info(info);
       })
       return done( null , idUser)
   }
 ) )
 
 passport.serializeUser( ( user , done) => {
-  done( null , user._id);
+  done( null , user.id);
 } )
 passport.deserializeUser( async ( id , done ) => {
 
       const user = await userDao.getById(id)
 
-      return done( null , user._id)
+      return done( null , user.id)
 
 } )
 //Login
@@ -137,7 +139,7 @@ usersRouter.post( '/login' , passport.authenticate('login', {failureRedirect : '
   const { username , password } = req.body;
   const user = await userDao.findUser(username);
 
-  req.session.idMongo = user._id;
+  req.session.idMongo = user.id;
 
   res.redirect('/');
 

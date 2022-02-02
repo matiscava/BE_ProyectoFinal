@@ -1,4 +1,6 @@
 const fs = require('fs');
+const logger = require('./../logger');
+
 module.exports = class ObjetoFS {
     constructor ( array ) {
         this.array = array;
@@ -7,7 +9,7 @@ module.exports = class ObjetoFS {
         try{ 
             return await this.array;
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -20,7 +22,7 @@ module.exports = class ObjetoFS {
             return objetoFiltrado[0];
             }        
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -43,7 +45,7 @@ module.exports = class ObjetoFS {
             this.array.push(agregarData);
             return agregarData;
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -52,7 +54,7 @@ module.exports = class ObjetoFS {
             const elementoIndex = lista.findIndex((obj)=> obj.id === parseInt(idNum))
             this.array.splice(elementoIndex,1)
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -62,7 +64,7 @@ module.exports = class ObjetoFS {
             const elementoGuardado = data.find((obj)=> obj.id === parseInt(id))
             const elementoIndex = data.findIndex((obj)=> obj.id === parseInt(id))
             if (!elementoGuardado){
-                console.error(`El elemento con el id: ${id}, no existe`);
+                logger.error(`El elemento con el id: ${id}, no existe`);
                 return null;
             }
             const elementoSubido= {
@@ -73,7 +75,7 @@ module.exports = class ObjetoFS {
 
             return elementoSubido;
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -97,7 +99,7 @@ module.exports = class ObjetoFS {
             
             return nextID;
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -114,7 +116,7 @@ module.exports = class ObjetoFS {
         this.array.splice(carritoElegidoIndex,1,carritoElegido);
         
     } catch (error) {
-        console.error('Error: ', error);
+        logger.error('Error: ', error);
         throw error;
     }
     }
@@ -142,7 +144,7 @@ module.exports = class ObjetoFS {
     
             this.array.splice(carritoElegidoIndex,1,carritoElegido);
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -150,10 +152,10 @@ module.exports = class ObjetoFS {
         try{
             const carrito = this.array;
             const carritoElegido = await carrito.find( (carro) => carro.id === parseInt(carritoId) );
-            console.log(carritoElegido);
+            logger.info(carritoElegido);
             return carritoElegido;
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -164,7 +166,7 @@ module.exports = class ObjetoFS {
             const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === parseInt(carritoId));
             this.array.splice(carritoElegidoIndex,1);
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -189,7 +191,7 @@ module.exports = class ObjetoFS {
                 return false;
             }
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }

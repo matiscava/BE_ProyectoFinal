@@ -1,7 +1,7 @@
 
-const FileContainer = require("../../containers/FileContainer");
+const ObjetoFS = require("../../containers/FileContainer");
 
-class ProductDaoFile extends FileContainer {
+class ProductDaoFile extends ObjetoFS {
  constructor () {
      super('/db/fs/productos.json')
  }

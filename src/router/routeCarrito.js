@@ -5,6 +5,9 @@ const path = require('path');
 const nodemailer = require("nodemailer");
 const smtpTransport = require('nodemailer-smtp-transport');
 const twilio = require('twilio')
+const logger = require('./../logger')
+
+
 
 const { cartDao: cartsDao , productDao , userDao: usersDao , ticketDao} = require('../daos');
 
@@ -29,11 +32,11 @@ const client = twilio(accountSid , authToken)
 const sendMessage = async (options) => {
   try{
     const message = await client.messages.create(options)
-    console.log(message);
+    logger.info(message);
   }
   catch (err)
   {
-    console.error(err);
+    logger.error(err);
   } 
 }
 
@@ -69,7 +72,7 @@ carritoRouter.post('/', async (req,res)=>{
     const idMongo = req.session && req.session.idMongo;
     const usuario = await usersDao.getById(idMongo);
     if (usuario) {
-        console.log({message: `Carrito creado con el ID ${carritoID}`})
+        logger.info({message: `Carrito creado con el ID ${carritoID}`})
         req.session.carritoID = carritoID;
         res.redirect(`carrito/${carritoID}/productos`)
     }else{
@@ -112,13 +115,13 @@ carritoRouter.post('/:id/productos', async (req,res) => {
         
     const carritoActualizado = await cartsDao.getCarrito(carritoID);
     if(error.length!==0){
-        console.log({
+        logger.info({
             message: 'Se ha modificado el carrito',
             data: carritoActualizado,
             error: error
         })
     }else{
-        console.log({
+        logger.info({
             message: 'Se ha modificado el carrito',
             data: carritoActualizado
         })
@@ -197,7 +200,7 @@ carritoRouter.get( '/:id/productos/compra', async ( req , res ) => {
     
     let ticketCompra = {...usuario,...cartList};
     let htmlItems = '';
-    // console.log(typeof ticketCompra.cart.products)
+    // logger.info(typeof ticketCompra.cart.products)
     const ticketId = await ticketDao.createTicket(ticketCompra)
 
     for (const product of ticketCompra.cart.products) {
@@ -223,10 +226,10 @@ carritoRouter.get( '/:id/productos/compra', async ( req , res ) => {
     sendMessage(cuerpoWhatsapp)
     transporter.sendMail(mailOptions(usuario.photo , usuario.email , html), ( err , info ) => {
         if(err) {
-          console.error(err);
+          logger.error(err);
           return err
         }
-        console.log(info);
+        logger.info(info);
       })
     await cartsDao.deleteById(carritoID)
     

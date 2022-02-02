@@ -1,6 +1,7 @@
 const admin = require('firebase-admin');
 const options = require('../config');
 const serviceAccount = require('../../db/firebase/proyectofinalbe-b686f-firebase-adminsdk-mnu25-7fa3d70aa9.json');
+const logger = require('./../logger');
 
 class FirestoreContainer {
     constructor(collection) {
@@ -17,7 +18,7 @@ class FirestoreContainer {
                 });
             };
         } catch (error) {
-            console.error(`error`, error);
+            logger.error(`error`, error);
             throw new Error("Ocurrio un error al conectar:", error);
         }
 
@@ -32,7 +33,7 @@ class FirestoreContainer {
             })
             return response;
         } catch (error) {
-            console.error('Error:', error);
+            logger.error('Error:', error);
             throw error;
         }
     }
@@ -54,9 +55,9 @@ class FirestoreContainer {
             }
             const response = await this.query.add(agregarData);
     
-            console.log('create new product: ', response.id);
+            logger.info('create new product: ', response.id);
         }catch (error) {
-            console.error('Error:', error);
+            logger.error('Error:', error);
             throw error;
         }
     }
@@ -64,31 +65,31 @@ class FirestoreContainer {
         try{
             const document = await this.query.doc(id).get();
             if(document.empty) {
-                console.log('No matching documents');
+                logger.info('No matching documents');
                 return null;
             } else {
                 return {...document.data(),id:document.id};
             }
         }catch (error) {
-            console.error('Error:', error);
+            logger.error('Error:', error);
             throw error;
         }
     }
     async deleteById(id) {
         try{
             const response = await this.query.doc(id).delete();
-            console.log('deleteById: ', {response});
+            logger.info('deleteById: ', {response});
         } catch (error) {
-            console.error('Error:', error);
+            logger.error('Error:', error);
             throw error;
         }
     }
     async deleteAll() {
         try{
             const response = await this.query.delete();
-            console.log('deleteById: ', {response});
+            logger.info('deleteById: ', {response});
         } catch (error) {
-            console.error('Error:', error);
+            logger.error('Error:', error);
             throw error;
         }
     }
@@ -98,7 +99,7 @@ class FirestoreContainer {
             const document = this.query.doc(id).update({...element,timestamp:fecha});
             return document;
         } catch (error) {
-            console.error('Error:', error);
+            logger.error('Error:', error);
             throw error;
         }
     }
@@ -108,10 +109,10 @@ class FirestoreContainer {
             const fecha = new Date().toLocaleString();
             let carritoNuevo={timestamp: fecha, products:[] };
             const response = await this.query.add(carritoNuevo);
-            console.log( 'New Cart Created id: ', response.id);
+            logger.info( 'New Cart Created id: ', response.id);
             return response.id;
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -119,13 +120,13 @@ class FirestoreContainer {
         try{
             const document = await this.query.doc(carritoId).get();
             if(document.empty) {
-                console.log('No matching documents');
+                logger.info('No matching documents');
                 return null;
             } else {
                 return {...document.data(),id:document.id};
             }
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
       }
@@ -144,13 +145,13 @@ class FirestoreContainer {
                         prod.quantity+=productoRepetido.quantity;
                         prod.timestamp=fecha;
                     }else{
-                        console.log('producto no existe');
+                        logger.info('producto no existe');
                     }
                 });
                 carritoModificado = await this.query.doc(carritoId).update({timestamp:fecha,products: products})
             }
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
           }
     }
@@ -159,7 +160,7 @@ class FirestoreContainer {
             const fecha = new Date().toLocaleString();
             await this.query.doc(carritoId).update({timestamp:fecha,products: []});
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -174,7 +175,7 @@ class FirestoreContainer {
             await this.query.doc(carritoId).update({timestamp:fecha,products: productsOriginal});
 
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }

@@ -13,10 +13,12 @@ const CartDaoFirestore = require('./carts/CartDaoFirestore');
 const CartDaoFile = require('./carts/CartDaoFile');
 
 const UserDaoMongo = require('./users/userDaoMongo')
+const UserDaoFile = require('./users/userDaoFile')
+
 
 const TicketsDaoMongo = require('./tickets/ticketsDaoMongo')
 
-
+const logger = require('./../logger')
 const config = require('../config');
 
 const daos = {};
@@ -51,10 +53,12 @@ if (config.PERS === 'mysql') {
 }
 // si setamos archivo vamos a exportar los daos de archivo
 if (config.PERS === 'json' || !config.PERS	) {
-  daos['productDao'] = ProductDaoFile;
-  daos['cartDao'] = CartDaoFile;
+  daos['productDao'] = new ProductDaoFile;
+  daos['cartDao'] = new CartDaoFile;
+  daos['userDao'] = new UserDaoFile;
+
 }
 
-console.log(`Se conecto a ${config.PERS} en modo ${config.MODE}`);
+logger.info(`Se conecto a ${config.PERS} en modo ${config.MODE}`);
 
 module.exports = daos;

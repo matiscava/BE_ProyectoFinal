@@ -1,15 +1,17 @@
 const fs = require('fs');
+const logger = require('./../logger');
+
 module.exports = class ObjetoFS {
     constructor ( archivo ) {
         this.archivo = archivo;
     }
-    async getAll(){ 
+    async getAll () {
         try{
             const data = await fs.promises.readFile(`./${this.archivo}` );
             const objeto = JSON.parse(data);
             return objeto;
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -23,7 +25,7 @@ module.exports = class ObjetoFS {
             return objetoFiltrado[0];
             }        
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -48,7 +50,7 @@ module.exports = class ObjetoFS {
             fs.writeFileSync(`./${this.archivo}` , dataToJSON);
             return agregarData;
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -59,7 +61,7 @@ module.exports = class ObjetoFS {
             const dataToJSON = JSON.stringify(objetoFiltrado,null,2);
             fs.writeFileSync(`./${this.archivo}` , dataToJSON);
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -70,7 +72,7 @@ module.exports = class ObjetoFS {
             const elementoGuardado = lista.find((obj)=> obj.id === parseInt(id))
             const elementoIndex = lista.findIndex((obj)=> obj.id === parseInt(id))
             if (!elementoGuardado){
-                console.error(`El elemento con el id: ${id}, no existe`);
+                logger.error(`El elemento con el id: ${id}, no existe`);
                 return null;
             }
             const elementoSubido= {
@@ -83,7 +85,7 @@ module.exports = class ObjetoFS {
 
             return elementoSubido;
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -109,7 +111,7 @@ module.exports = class ObjetoFS {
             fs.writeFileSync(`./${this.archivo}` , dataToJSON);
             return nextID;
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -127,7 +129,7 @@ module.exports = class ObjetoFS {
         const dataToJSON = JSON.stringify(carrito,null,2);
         fs.writeFileSync(`./${this.archivo}` , dataToJSON);
     } catch (error) {
-        console.error('Error: ', error);
+        logger.error('Error: ', error);
         throw error;
     }
     }
@@ -158,7 +160,7 @@ module.exports = class ObjetoFS {
             const dataToJSON = JSON.stringify(carrito,null,2);
             fs.writeFileSync(`./${this.archivo}` , dataToJSON);
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -170,7 +172,7 @@ module.exports = class ObjetoFS {
 
             return carritoElegido;
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -183,7 +185,7 @@ module.exports = class ObjetoFS {
             const dataToJSON = JSON.stringify(carritoFiltrado,null,2);
             fs.writeFileSync(`./${this.archivo}` , dataToJSON);
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
@@ -210,8 +212,64 @@ module.exports = class ObjetoFS {
                 return false;
             }
         } catch (error) {
-            console.error('Error: ', error);
+            logger.error('Error: ', error);
             throw error;
         }
     }
+    async createUser (user) {
+        try{
+            const usuarios = await this.getAll();
+            const fecha = new Date().toLocaleString();
+            let nextID = 1;
+            let agregarData;
+            if(usuarios.length===0){
+                agregarData= {...user, id: nextID}
+            }else{
+                for (let i=0;i<usuarios.length ;i++) {
+                    while( objeto[i].id >= nextID ){
+                        nextID++;
+                    }
+                }
+                agregarData= {...user, id: nextID}
+            }
+            usuarios.push(agregarData)
+            const dataToJSON = JSON.stringify(usuarios,null,2);
+            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            return agregarData;
+        }catch(err){
+          logger.error('Error: ', err);
+          throw err
+        }
+      }
+      async findUser (email) {
+        try{
+            const objeto = await this.getAll()
+            const objetoFiltrado = objeto.filter(obj => obj.email === email);
+            if (objetoFiltrado[0]===undefined) {
+                return null;
+            }else{
+            return objetoFiltrado[0];
+            }       
+        }catch(err){logger.error(`Error: ${err}`)}
+      }
+    
+      async createTicket (ticketCompra) {
+        try{
+          const newTicket = {
+            username: ticketCompra.username,
+            name:ticketCompra.name,
+            lastname:ticketCompra.lastname,
+            email:ticketCompra.email,
+            photo:ticketCompra.photo,
+            userId:ticketCompra._id,
+            cart:ticketCompra.cart,
+            phone:ticketCompra.phone
+          }
+          logger.info(newTicket);
+          const document = await new this.collection(newTicket);
+          const response = await document.save()
+          logger.info('Ticket creado', response);
+          return document._id;
+        }catch(err){logger.error(`Error: ${err}`)}
+      }
 }
