@@ -6,7 +6,12 @@ const { createHash , isValidPassword } = require('../utils/bCryptSettings')
 const PersistenceFactory = require('../daos');
 const getPersistence = require('../utils/getPresistence');
 
-const factory = PersistenceFactory.getPersistenceMethod(getPersistence())
+let recoveredFactory = null;
+(async () => {
+  recoveredFactory = await PersistenceFactory.getPersistenceMethod(getPersistence())
+}
+) 
+const factory = recoveredFactory;
 
 console.log( 'prueba', factory );
 

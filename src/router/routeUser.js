@@ -8,7 +8,7 @@ const LocalStrategy = require('passport-local').Strategy;
 
 const usersRouter = express.Router();
 
-const { userDao } = require('../daos');
+// const { userDao } = require('../daos');
 
 const userController = require('../controllers/user');
 // const { createHash , isValidPassword } = require('../utils/bCryptSettings') 

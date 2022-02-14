@@ -166,7 +166,7 @@ class MongoContainer {
   }
   async createUser (user) {
     try{
-      const document = await new this.collection(user);
+      const document = await this.collection(user);
       const response = await document.save()
       logger.info('Cliente creado', response);
       return document._id;

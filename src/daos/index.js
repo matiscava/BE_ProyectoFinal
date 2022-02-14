@@ -24,14 +24,14 @@ const daos = {};
 
 class PersistenceFactory {
 
-  static async getPersistenceMethod(pers) {
+  static getPersistenceMethod(pers) {
 
     switch (pers) {
       case 'json':
-        const { default: ProductDaoFile} = await import('./products/ProductDaoFile');
-        const { default: CartDaoFile} = await import('./carts/CartDaoFile');
-        const { default: UserDaoFile} = await import('./users/UserDaoFile');
-        const { default: TicketsDaoFile} = await import('./tickets/TicketDaoFile');
+        const ProductDaoFile = require('./products/ProductDaoFile');
+        const CartDaoFile = require('./carts/CartDaoFile');
+        const UserDaoFile = require('./users/UserDaoFile');
+        const TicketsDaoFile = require('./tickets/TicketDaoFile');
 
         return {
           productDao : new ProductDaoFile(),
@@ -40,10 +40,10 @@ class PersistenceFactory {
           ticketDao : new TicketsDaoFile()
         }
       case 'firestore' :
-        const { default: ProductDaoFirestore } = await import('./products/ProductDaoFirestore');
-        const { default: CartDaoFirestore } = await import('./carts/CartDaoFirestore');
-        const { default: UserDaoFirestore } = await import('./users/UserDaoFirestore');
-        const { default: TicketsDaoFirestore } = await import('./tickets/ticketDaoFirestore');
+        const ProductDaoFirestore = require('./products/ProductDaoFirestore');
+        const CartDaoFirestore = require('./carts/CartDaoFirestore');
+        const UserDaoFirestore = require('./users/UserDaoFirestore');
+        const TicketsDaoFirestore = require('./tickets/ticketDaoFirestore');
 
         return {
           productDao : new ProductDaoFirestore(),
@@ -52,10 +52,10 @@ class PersistenceFactory {
           ticketDao : new TicketsDaoFirestore()
         }
         case 'mongodb':
-          const { default: ProductDaoMongo } = await import('./products/ProductDaoMongo');
-          const { default: CartDaoMongo } = await import('./carts/CartDaoMongo');
-          const { default: UserDaoMongo } = await import('./users/UserDaoMongo');
-          const { default: TicketsDaoMongo } = await import('./tickets/TicketDaoMongo');
+          const ProductDaoMongo = require('./products/ProductDaoMongo');
+          const CartDaoMongo = require('./carts/CartDaoMongo');
+          const UserDaoMongo = require('./users/UserDaoMongo');
+          const TicketsDaoMongo = require('./tickets/TicketDaoMongo');
   
           return {
             productDao : new ProductDaoMongo(),
@@ -64,10 +64,10 @@ class PersistenceFactory {
             ticketDao : new TicketsDaoMongo()
           }
         case 'mysql':
-          const { default: ProductDaoMySQL} = await import('./products/ProductDaoMySQL');
-          const { default: CartDaoMySQL} = await import('./carts/CartDaoMySQL');
-          const { default: UserDaoMySQL} = await import('./users/UserDaoMySQL');
-          const { default: TicketsDaoMySQL} = await import('./tickets/TicketDaoMySQL');
+          const ProductDaoMySQL = require('./products/ProductDaoMySQL');
+          const CartDaoMySQL = require('./carts/CartDaoMySQL');
+          const UserDaoMySQL = require('./users/UserDaoMySQL');
+          const TicketsDaoMySQL = require('./tickets/TicketDaoMySQL');
   
           return {
             productDao : new ProductDaoMySQL(),
@@ -76,10 +76,10 @@ class PersistenceFactory {
             ticketDao : new TicketsDaoMySQL()
           }
         case 'sqlite':
-          const { default: ProductDaoSqlite } = await import('./products/ProductDaoSqlite');
-          const { default: CartDaoSqlite } = await import('./carts/CartDaoSqlite');
-          const { default: UserDaoSqlite } = await import('./users/UserDaoSqlite');
-          const { default: TicketsDaoSqlite } = await import('./tickets/TicketDaoSqlite');
+          const ProductDaoSqlite = require('./products/ProductDaoSqlite');
+          const CartDaoSqlite = require('./carts/CartDaoSqlite');
+          const UserDaoSqlite = require('./users/UserDaoSqlite');
+          const TicketsDaoSqlite = require('./tickets/TicketDaoSqlite');
   
           return {
             productDao : new ProductDaoSqlite(),
@@ -88,10 +88,10 @@ class PersistenceFactory {
             ticketDao : new TicketsDaoSqlite()
           }
         default: 
-          const {default: ProductDaoMemory} = await import('./products/ProductDaoMemory');
-          const {default: CartDaoMemory} = await import('./carts/CartDaoMemory');
-          const {default: UserDaoMemory} = await import('./users/UserDaoMemory');
-          const {default: TicketsDaoMemory} = await import('./tickets/TicketDaoMemory');
+          const ProductDaoMemory = require('./products/ProductDaoMemory');
+          const CartDaoMemory = require('./carts/CartDaoMemory');
+          const UserDaoMemory = require('./users/UserDaoMemory');
+          const TicketsDaoMemory = require('./tickets/TicketDaoMemory');
 
           return {
             productDao : new ProductDaoMemory(),
