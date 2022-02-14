@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const options = require('../config');
 const logger = require('./../logger');
-
+const { asPOJO , renameField , removeField } = require('../utils/objectsUtils');
 
 class MongoContainer {
   constructor(collection, schema) {
@@ -23,12 +23,29 @@ class MongoContainer {
   
   async getAll() {
     try {
-      const documents = await this.collection.find({},{__v:0})
+      let documents = await this.collection.find({},{__v:0}).lean();
+      documents = documents.map(asPOJO);
+      documents = documents.map( doc => renameField(doc, '_id' , 'id'))
       return documents;
     } catch (error) {
       logger.error('Error:', error);
     }
   }
+
+  async getById(id) {
+    try {
+      const documents = await this.collection.find({ '_id': id },{__v:0})
+      if (documents.length === 0) {
+        return null;
+      } else {
+        const result = renameField(asPOJO(docs[0]), '_id', 'id')  
+        return result;
+      }
+    } catch (error) {
+      logger.error('Error:', error);
+    }
+  }
+
   async createProduct(producto) {
     try {
         const productsList = await this.getAll();
@@ -53,18 +70,6 @@ class MongoContainer {
       return document._id; 
     } catch (error) {
       logger.error(error); throw error;
-    }
-  }
-  async getById(id) {
-    try {
-      const documents = await this.collection.find({ _id: id },{__v:0})
-      if (documents.length === 0) {
-        return null;
-      } else {
-        return documents[0];
-      }
-    } catch (error) {
-      logger.error('Error:', error);
     }
   }
   async deleteById(id) {

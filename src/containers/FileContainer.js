@@ -1,13 +1,14 @@
 const fs = require('fs');
 const logger = require('./../logger');
+const options = require('../config');
 
 module.exports = class ObjetoFS {
     constructor ( archivo ) {
-        this.archivo = archivo;
+        this.archivo = `${options.config.FILE_PATH}/${archivo}`;
     }
     async getAll () {
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
+            const data = await fs.promises.readFile(this.archivo, 'utf-8' );
             const objeto = JSON.parse(data);
             return objeto;
         } catch (error) {
@@ -22,7 +23,7 @@ module.exports = class ObjetoFS {
             if (objetoFiltrado[0]===undefined) {
                 return null;
             }else{
-            return objetoFiltrado[0];
+                return objetoFiltrado[0];
             }        
         } catch (error) {
             logger.error('Error: ', error);
@@ -117,21 +118,21 @@ module.exports = class ObjetoFS {
     }
     async agregarProductos(carritoId,producto){
         try {
-        const data = await fs.promises.readFile(`./${this.archivo}` );
-        const carrito = JSON.parse(data);
-        const carritoElegido = carrito.find( (carro) => carro.id === parseInt(carritoId) );
-        const fecha = new Date().toLocaleString();
-       
-        carritoElegido.timestamp = fecha;
-        const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === parseInt(carritoId));
-        carritoElegido.products.push(...producto);
-        carrito.splice(carritoElegidoIndex,1,carritoElegido);
-        const dataToJSON = JSON.stringify(carrito,null,2);
-        fs.writeFileSync(`./${this.archivo}` , dataToJSON);
-    } catch (error) {
-        logger.error('Error: ', error);
-        throw error;
-    }
+            const data = await fs.promises.readFile(`./${this.archivo}` );
+            const carrito = JSON.parse(data);
+            const carritoElegido = carrito.find( (carro) => carro.id === parseInt(carritoId) );
+            const fecha = new Date().toLocaleString();
+        
+            carritoElegido.timestamp = fecha;
+            const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === parseInt(carritoId));
+            carritoElegido.products.push(...producto);
+            carrito.splice(carritoElegidoIndex,1,carritoElegido);
+            const dataToJSON = JSON.stringify(carrito,null,2);
+            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+        } catch (error) {
+            logger.error('Error: ', error);
+            throw error;
+        }
     }
 
     async agregarXId(carritoId,arrayProductos){

@@ -7,13 +7,13 @@ const LocalStrategy = require('passport-local').Strategy;
 
 const app = express();
 
-const productosRoute = require('./router/routeProductos');
-const carritoRoute = require('./router/routeCarrito');
-const usuariosRoute = require('./router/routeUser');
+const indexRouter = require('./router/index');
 
-const { Router } = express;
+const userController = require('./controllers/user');
 
-const { cartDao: cartsDao , productDao: productsDao , userDao: usersDao } = require('./daos');
+// const { Router } = express;
+
+// const { getPersistenceMethod } = require('./daos');
 
 
 app.use(express.json());
@@ -36,20 +36,10 @@ app.use( passport.initialize() )
 app.use( passport.session() )
 
 
-app.get('/', async (req,res)=>{   
-    const idMongo = req.session && req.session.idMongo;
-    const carritoID = req.session && req.session.carritoID;
+app.get('/', userController.getHome );
 
+app.use( '/api' , indexRouter);
 
-    const usuario = await usersDao.getById(idMongo);
-    res.render(path.join(process.cwd(), '/views/pages/home.ejs'), {usuario: usuario, carritoID: carritoID})
-});
-
-app.use('/api/productos', productosRoute);
-
-app.use( '/api/carrito', carritoRoute);
-
-app.use( '/api/users' , usuariosRoute)
 
 app.use((req, res) => {
     res.status(404).json(

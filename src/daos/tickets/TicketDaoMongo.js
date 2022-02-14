@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose');
 
-const MongoContainer = require("./../../containers/MongoContainer");
+const MongoContainer = require("../../containers/MongoContainer");
 
 class TicketsDaoMongo extends MongoContainer {
   constructor() {
