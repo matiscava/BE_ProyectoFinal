@@ -34,10 +34,10 @@ class PersistenceFactory {
         const TicketsDaoFile = require('./tickets/TicketDaoFile');
 
         return {
-          productDao : new ProductDaoFile(),
-          cartDao : new CartDaoFile(),
-          userDao : new UserDaoFile(),
-          ticketDao : new TicketsDaoFile()
+          productDao : new ProductDaoFile,
+          cartDao : new CartDaoFile,
+          userDao : new UserDaoFile,
+          ticketDao : new TicketsDaoFile
         }
       case 'firestore' :
         const ProductDaoFirestore = require('./products/ProductDaoFirestore');
@@ -46,10 +46,10 @@ class PersistenceFactory {
         const TicketsDaoFirestore = require('./tickets/ticketDaoFirestore');
 
         return {
-          productDao : new ProductDaoFirestore(),
-          cartDao : new CartDaoFirestore(),
-          userDao : new UserDaoFirestore(),
-          ticketDao : new TicketsDaoFirestore()
+          productDao : new ProductDaoFirestore,
+          cartDao : new CartDaoFirestore,
+          userDao : new UserDaoFirestore,
+          ticketDao : new TicketsDaoFirestore
         }
         case 'mongodb':
           const ProductDaoMongo = require('./products/ProductDaoMongo');
@@ -58,10 +58,10 @@ class PersistenceFactory {
           const TicketsDaoMongo = require('./tickets/TicketDaoMongo');
   
           return {
-            productDao : new ProductDaoMongo(),
-            cartDao : new CartDaoMongo(),
-            userDao : new UserDaoMongo(),
-            ticketDao : new TicketsDaoMongo()
+            productDao : new ProductDaoMongo,
+            cartDao : new CartDaoMongo,
+            userDao : new UserDaoMongo,
+            ticketDao : new TicketsDaoMongo
           }
         case 'mysql':
           const ProductDaoMySQL = require('./products/ProductDaoMySQL');
@@ -70,10 +70,10 @@ class PersistenceFactory {
           const TicketsDaoMySQL = require('./tickets/TicketDaoMySQL');
   
           return {
-            productDao : new ProductDaoMySQL(),
-            cartDao : new CartDaoMySQL(),
-            userDao : new UserDaoMySQL(),
-            ticketDao : new TicketsDaoMySQL()
+            productDao : new ProductDaoMySQL,
+            cartDao : new CartDaoMySQL,
+            userDao : new UserDaoMySQL,
+            ticketDao : new TicketsDaoMySQL
           }
         case 'sqlite':
           const ProductDaoSqlite = require('./products/ProductDaoSqlite');
@@ -82,10 +82,10 @@ class PersistenceFactory {
           const TicketsDaoSqlite = require('./tickets/TicketDaoSqlite');
   
           return {
-            productDao : new ProductDaoSqlite(),
-            cartDao : new CartDaoSqlite(),
-            userDao : new UserDaoSqlite(),
-            ticketDao : new TicketsDaoSqlite()
+            productDao : new ProductDaoSqlite,
+            cartDao : new CartDaoSqlite,
+            userDao : new UserDaoSqlite,
+            ticketDao : new TicketsDaoSqlite
           }
         default: 
           const ProductDaoMemory = require('./products/ProductDaoMemory');
@@ -94,10 +94,10 @@ class PersistenceFactory {
           const TicketsDaoMemory = require('./tickets/TicketDaoMemory');
 
           return {
-            productDao : new ProductDaoMemory(),
-            cartDao : new CartDaoMemory(),
-            userDao : new UserDaoMemory(),
-            ticketDao : new TicketsDaoMemory()
+            productDao : new ProductDaoMemory,
+            cartDao : new CartDaoMemory,
+            userDao : new UserDaoMemory,
+            ticketDao : new TicketsDaoMemory
           }
     }
   }

@@ -7,13 +7,14 @@ const PersistenceFactory = require('../daos');
 const getPersistence = require('../utils/getPresistence');
 
 let recoveredFactory = null;
-(async () => {
-  recoveredFactory = await PersistenceFactory.getPersistenceMethod(getPersistence())
-}
-) 
-const factory = recoveredFactory;
+// (async () => {
+//   recoveredFactory = await PersistenceFactory.getPersistenceMethod(getPersistence())
+//   }) ()
 
-console.log( 'prueba', factory );
+ recoveredFactory = PersistenceFactory.getPersistenceMethod(getPersistence())
+
+const factory = recoveredFactory;
+const { userDao } = factory
 
 const loginUser = async ( req , res ) => {
   if (req.isAuthenticated()) {
