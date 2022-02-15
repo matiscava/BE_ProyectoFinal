@@ -1,13 +1,13 @@
-const twilio = require('twilio');
+import twilio from 'twilio';
 
-const logger = require('./../logger');
+import logger from './../logger/index.js';
 
 
 const accountSid = 'AC438284ec95bd807c728609de4ee77587';
 const authToken = '3a1e7dfeeaabb01b320149c357be907a';
 const client = twilio(accountSid , authToken)
 
-const sendMessage = async (options) => {
+export const sendMessage = async (options) => {
   try{
     const message = await client.messages.create(options)
     logger.info(message);
@@ -16,8 +16,4 @@ const sendMessage = async (options) => {
   {
     logger.error(err);
   } 
-}
-
-module.exports = {
-  sendMessage
 }

@@ -3,4 +3,4 @@ const getPersistence = () => {
   return process.argv[2]
 }
 
-module.exports = getPersistence;
+export default getPersistence

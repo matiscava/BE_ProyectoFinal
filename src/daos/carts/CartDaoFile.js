@@ -1,5 +1,5 @@
 
-const FileContainer = require("../../containers/FileContainer");
+import FileContainer from "../../containers/FileContainer";
 
 class CartDaoFile extends FileContainer {
  constructor () {
@@ -7,4 +7,4 @@ class CartDaoFile extends FileContainer {
  }
 };
 
-module.exports = CartDaoFile;
+export default CartDaoFile;

@@ -1,10 +1,10 @@
 
-const ObjetoFS = require("../../containers/FileContainer");
+import FileContainer from "../../containers/FileContainer";
 
-class ProductDaoFile extends ObjetoFS {
+class ProductDaoFile extends FileContainer {
  constructor () {
      super('/db/fs/productos.json')
  }
 };
 
-module.exports = ProductDaoFile;
+export default ProductDaoFile;

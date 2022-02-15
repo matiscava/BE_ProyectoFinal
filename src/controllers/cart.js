@@ -1,15 +1,15 @@
-const logger = require('../logger');
-const path = require('path')
+import logger from '../logger/index.js';
+import path from 'path'
 
-const { cartsDao , productDao , ticketDao } = require('../daos/index');
-const { cartTicketMailOptions , transporter } = require('../utils/nodemailerSettings');
-const { sendMessage } = require('../utils/twilioSettings')
+// import { cartsDao , productDao , ticketDao } from '../daos/index.js';
+import { cartTicketMailOptions , transporter } from '../utils/nodemailerSettings.js';
+import { sendMessage } from '../utils/twilioSettings.js'
 
-// const PersistenceFactory = require('../daos');
-// const getPersistence = require('../utils/getPresistence');
+import PersistenceFactory from '../daos/index.js';
+import getPersistence from '../utils/getPresistence.js';
 
-// const prueba = await PersistenceFactory.getPersistenceMethod(getPersistence())
-// console.log('probando', prueba);
+const prueba = PersistenceFactory.getPersistenceMethod(getPersistence())
+console.log('probando', prueba);
 
 const getAll = async (req,res)=>{   
   const idMongo = req.session && req.session.idMongo;
@@ -63,7 +63,7 @@ const addProductToCart = async (req,res) => {
       await cartsDao.agregarProductos(carritoID,productsList);
   }
       
-  const carritoActualizado = await cartsDao.getCarrito(carritoID);
+    const carritoActualizado = await cartsDao.getCarrito(carritoID);
   if(error.length!==0){
       logger.info({
           message: 'Se ha modificado el carrito',
@@ -182,12 +182,12 @@ const mekeTicket = async ( req , res ) => {
 
 }
 
-module.exports = {
-  getAll,
-  createCart,
-  addProductToCart,
-  getCartProducts,
-  removeCart,
-  removeCartProduct,
-  mekeTicket
+export default {
+    getAll,
+    addProductToCart,
+    createCart,
+    getCartProducts,
+    removeCart,
+    removeCartProduct,
+    mekeTicket
 }

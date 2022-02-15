@@ -1,6 +1,3 @@
-const dotenv = require('dotenv')
+import dotenv from 'dotenv'
 
-module.exports = dotenv.config({ 
-  path: './production.env',
-  silent: true
-})
+export default dotenv.config({ silent: true })

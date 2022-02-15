@@ -1,7 +1,7 @@
-const logger = require('../logger');
-const path = require('path')
+import logger from '../logger/index.js';
+import path from 'path'
 
-const { productDao } = require('../daos/index');
+// import { productDao } from '../daos/index.js';
 
 const getAll = async (req,res)=>{  
   const data = await productDao.getAll();
@@ -81,7 +81,7 @@ const setProduct = async (req,res)=>{
   }
 }
 
-module.exports = {
+export default {
   getAll,
   createProduct,
   deleteProduct,

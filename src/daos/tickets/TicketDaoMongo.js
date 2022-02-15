@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const MongoContainer = require("../../containers/MongoContainer");
+import MongoContainer from "../../containers/MongoContainer";
 
 class TicketsDaoMongo extends MongoContainer {
   constructor() {
@@ -17,4 +17,4 @@ class TicketsDaoMongo extends MongoContainer {
   }
 };
 
-module.exports = TicketsDaoMongo;
+export default TicketsDaoMongo;

@@ -1,19 +1,21 @@
-const express = require('express');
-const session = require('express-session')
-const path = require('path');
-const bCrypt = require('bcrypt');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+import express from 'express';
+import session from 'express-session'
+import path from 'path';
+import bCrypt from 'bcrypt';
+import passport from 'passport';
+import passportLocal from 'passport-local';
+
+const LocalStrategy = passportLocal.Strategy
 
 const app = express();
 
-const indexRouter = require('./router/index');
+import indexRouter from './router/index.js';
 
-const userController = require('./controllers/user');
+import userController from './controllers/user.js';
 
 // const { Router } = express;
 
-// const { getPersistenceMethod } = require('./daos');
+// const { getPersistenceMethod } from './daos');
 
 
 app.use(express.json());
@@ -47,4 +49,4 @@ app.use((req, res) => {
     )
 })
 
-module.exports = app
+export default app

@@ -1,10 +1,11 @@
-const options = require('../config');
-const knex = require('knex')(options.sqlite);
-const logger = require('./../logger')
+import options from '../config.js';
+import knex from 'knex';
+import logger from './../logger/index.js'
 
 class SqliteContainer {
   constructor(collection,table) {
     this.init(table);
+    this.knex = knex(options.sqlite)
     this.collection = collection;
   }
     
@@ -212,4 +213,4 @@ class SqliteContainer {
 }
 }
 
-module.exports = SqliteContainer;
+export default SqliteContainer;

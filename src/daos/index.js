@@ -1,146 +1,84 @@
-// const ProductDaoMySQL = require('./products/ProductDaoMySQL');
-// const ProductDaoMongo = require('./products/ProductDaoMongo');
-// const ProductDaoMemory = require('./products/ProductDaoMemory');
-// const ProductDaoSqlite = require('./products/ProductDaoSqlite.js');
-// const ProductDaoFirestore = require('./products/ProductDaoFirestore');
-
-// const CartDaoMySQL = require('./carts/CartDaoMySQL');
-// const CartDaoMongo = require('./carts/CartDaoMongo');
-// const CartDaoMemory = require('./carts/CartDaoMemory');
-// const CartDaoSqlite = require('./carts/CartDaoSqlite.js');
-// const CartDaoFirestore = require('./carts/CartDaoFirestore');
-
-// const UserDaoMongo = require('./users/UserDaoMongo')
-
-
-
-// const TicketsDaoMongo = require('./tickets/TicketDaoMongo')
-
-
-const logger = require('./../logger')
-const config = require('../config');
-
-const daos = {};
-
 class PersistenceFactory {
 
-  static getPersistenceMethod(pers) {
-
+  static async getPersistenceMethod(pers) {
     switch (pers) {
       case 'json':
-        const ProductDaoFile = require('./products/ProductDaoFile');
-        const CartDaoFile = require('./carts/CartDaoFile');
-        const UserDaoFile = require('./users/UserDaoFile');
-        const TicketsDaoFile = require('./tickets/TicketDaoFile');
+        const { default: ProductDaoFile } = await import('./products/ProductDaoFile.js');
+        const { default: CartDaoFile } = await import('./carts/CartDaoFile.js');
+        const { default: UserDaoFile } = await import('./users/UserDaoFile.js');
+        const { default: TicketsDaoFile } = await import('./tickets/TicketDaoFile.js');
 
-        return {
-          productDao : new ProductDaoFile,
-          cartDao : new CartDaoFile,
-          userDao : new UserDaoFile,
-          ticketDao : new TicketsDaoFile
+        return daos = {
+          productDao : new ProductDaoFile(),
+          cartDao : new CartDaoFile(),
+          userDao : new UserDaoFile(),
+          ticketDao : new TicketsDaoFile()
         }
       case 'firestore' :
-        const ProductDaoFirestore = require('./products/ProductDaoFirestore');
-        const CartDaoFirestore = require('./carts/CartDaoFirestore');
-        const UserDaoFirestore = require('./users/UserDaoFirestore');
-        const TicketsDaoFirestore = require('./tickets/ticketDaoFirestore');
+        const { default: ProductDaoFirestore } = await import('./products/ProductDaoFirestore.js');
+        const { default: CartDaoFirestore } = await import('./carts/CartDaoFirestore.js');
+        const { default: UserDaoFirestore } = await import('./users/UserDaoFirestore.js');
+        const { default: TicketsDaoFirestore } = await import('./tickets/ticketDaoFirestore.js');
 
-        return {
-          productDao : new ProductDaoFirestore,
-          cartDao : new CartDaoFirestore,
-          userDao : new UserDaoFirestore,
-          ticketDao : new TicketsDaoFirestore
+        return daos = {
+          productDao : new ProductDaoFirestore(),
+          cartDao : new CartDaoFirestore(),
+          userDao : new UserDaoFirestore(),
+          ticketDao : new TicketsDaoFirestore()
         }
         case 'mongodb':
-          const ProductDaoMongo = require('./products/ProductDaoMongo');
-          const CartDaoMongo = require('./carts/CartDaoMongo');
-          const UserDaoMongo = require('./users/UserDaoMongo');
-          const TicketsDaoMongo = require('./tickets/TicketDaoMongo');
+          const { default: ProductDaoMongo } = await import('./products/ProductDaoMongo.js');
+          const { default: CartDaoMongo } = await import('./carts/CartDaoMongo.js');
+          const { default: UserDaoMongo } = await import('./users/UserDaoMongo.js');
+          const { default: TicketsDaoMongo } = await import('./tickets/TicketDaoMongo.js');
   
-          return {
-            productDao : new ProductDaoMongo,
-            cartDao : new CartDaoMongo,
-            userDao : new UserDaoMongo,
-            ticketDao : new TicketsDaoMongo
+          return daos = {
+            productDao : new ProductDaoMongo(),
+            cartDao : new CartDaoMongo(),
+            userDao : new UserDaoMongo(),
+            ticketDao : new TicketsDaoMongo()
           }
         case 'mysql':
-          const ProductDaoMySQL = require('./products/ProductDaoMySQL');
-          const CartDaoMySQL = require('./carts/CartDaoMySQL');
-          const UserDaoMySQL = require('./users/UserDaoMySQL');
-          const TicketsDaoMySQL = require('./tickets/TicketDaoMySQL');
+          const { default: ProductDaoMySQL } = await import('./products/ProductDaoMySQL.js');
+          const { default: CartDaoMySQL } = await import('./carts/CartDaoMySQL.js');
+          const { default: UserDaoMySQL } = await import('./users/UserDaoMySQL.js');
+          const { default: TicketsDaoMySQL } = await import('./tickets/TicketDaoMySQL.js');
   
-          return {
-            productDao : new ProductDaoMySQL,
-            cartDao : new CartDaoMySQL,
-            userDao : new UserDaoMySQL,
-            ticketDao : new TicketsDaoMySQL
+          return daos = {
+            productDao : new ProductDaoMySQL(),
+            cartDao : new CartDaoMySQL(),
+            userDao : new UserDaoMySQL(),
+            ticketDao : new TicketsDaoMySQL()
           }
         case 'sqlite':
-          const ProductDaoSqlite = require('./products/ProductDaoSqlite');
-          const CartDaoSqlite = require('./carts/CartDaoSqlite');
-          const UserDaoSqlite = require('./users/UserDaoSqlite');
-          const TicketsDaoSqlite = require('./tickets/TicketDaoSqlite');
+
+          const { default: ProductDaoSqlite } = await import('./products/ProductDaoSqlite.js');
+          const { default: CartDaoSqlite } = await import('./carts/CartDaoSqlite.js');
+          const { default: UserDaoSqlite } = await import('./users/UserDaoSqlite.js');
+          const { default: TicketsDaoSqlite } = await import('./tickets/TicketDaoSqlite.js');
   
-          return {
-            productDao : new ProductDaoSqlite,
-            cartDao : new CartDaoSqlite,
-            userDao : new UserDaoSqlite,
-            ticketDao : new TicketsDaoSqlite
+          return daos = {
+            productDao : new ProductDaoSqlite(),
+            cartDao : new CartDaoSqlite(),
+            userDao : new UserDaoSqlite(),
+            ticketDao : new TicketsDaoSqlite()
           }
         default: 
-          const ProductDaoMemory = require('./products/ProductDaoMemory');
-          const CartDaoMemory = require('./carts/CartDaoMemory');
-          const UserDaoMemory = require('./users/UserDaoMemory');
-          const TicketsDaoMemory = require('./tickets/TicketDaoMemory');
 
-          return {
-            productDao : new ProductDaoMemory,
-            cartDao : new CartDaoMemory,
-            userDao : new UserDaoMemory,
-            ticketDao : new TicketsDaoMemory
+          const { default: ProductDaoMemory } = await import('./products/ProductDaoMemory.js');
+          const { default: CartDaoMemory } = await import('./carts/CartDaoMemory.js');
+          const { default: UserDaoMemory } = await import('./users/UserDaoMemory.js');
+          const { default: TicketsDaoMemory } = await import('./tickets/TicketDaoMemory.js');
+
+          return daos = {
+            productDao : new ProductDaoMemory(),
+            cartDao : new CartDaoMemory(),
+            userDao : new UserDaoMemory(),
+            ticketDao : new TicketsDaoMemory()
           }
     }
   }
 
 }
 
-// si setamos mongo vamos a exportar los daos de mongo
-// if (config.PERS === 'mongodb') {
-//   daos['productDao'] = new ProductDaoMongo;
-//   daos['cartDao'] = new CartDaoMongo;
-//   daos['userDao'] = new UserDaoMongo;
-//   daos['ticketDao'] = new TicketsDaoMongo;
-// }
-
-// si setamos memoria vamos a exportar los daos de memoria
-// if (config.PERS === 'memory') {
-//   daos['productDao'] = ProductDaoMemory;
-//   daos['cartDao'] = CartDaoMemory;
-// }
-
-// si setamos firestore vamos a exportar los daos de firestore
-// if (config.PERS === 'firestore') {
-//   daos['productDao'] = ProductDaoFirestore;
-//   daos['cartDao'] = CartDaoFirestore;
-// }
-// si setamos firestore vamos a exportar los daos de firestore
-// if (config.PERS === 'sqlite') {
-//   daos['productDao'] = ProductDaoSqlite;
-//   daos['cartDao'] = CartDaoSqlite;
-// }
-// si setamos firestore vamos a exportar los daos de firestore
-// if (config.PERS === 'mysql') {
-//   daos['productDao'] = ProductDaoMySQL;
-//   daos['cartDao'] = CartDaoMySQL;
-// }
-// si setamos archivo vamos a exportar los daos de archivo
-// if (config.PERS === 'json' || !config.PERS	) {
-//   daos['productDao'] = new ProductDaoFile;
-//   daos['cartDao'] = new CartDaoFile;
-//   daos['userDao'] = new UserDaoFile;
-
-// }
-
-// logger.info(`Se conecto a ${config.PERS} en modo ${config.MODE}`);
-
-module.exports = PersistenceFactory;
+export default PersistenceFactory

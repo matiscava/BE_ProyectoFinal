@@ -1,6 +1,8 @@
-const MySQLContainer = require("../../containers/MySQLContainer");
-const options = require('../../config');
-const knex = require('knex')(options.mysql);
+import MySQLContainer from "../../containers/MySQLContainer";
+import options from '../../config';
+import knex from 'knex'
+
+knex(options.mysql);
 
 class CartDaoMySQL extends MySQLContainer {
   constructor() {
@@ -12,4 +14,4 @@ class CartDaoMySQL extends MySQLContainer {
   }
 };
 
-module.exports = CartDaoMySQL;
+export default CartDaoMySQL;

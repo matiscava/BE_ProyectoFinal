@@ -1,11 +1,12 @@
-const options = require('../config');
-const knex = require('knex')(options.mysql);
-const logger = require('./../logger')
+import options from '../config.js';
+import knex from 'knex';
+import logger from './../logger/index.js'
 
 
 class MySQLContainer {
   constructor(collection,table) {
     this.init(table);
+    this.knex = knex(options.mysql)
     this.collection = collection;
   }
   async init (table) {
@@ -210,4 +211,4 @@ class MySQLContainer {
 }
 }
 
-module.exports = MySQLContainer;
+export default MySQLContainer;

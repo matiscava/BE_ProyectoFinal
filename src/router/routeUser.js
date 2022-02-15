@@ -1,52 +1,12 @@
-const express = require('express');
-// const bCrypt = require('bcrypt');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-// const nodemailer = require("nodemailer");
-// const smtpTransport = require('nodemailer-smtp-transport');
-// const logger = require('./../logger')
+import express from 'express';
+import passport from 'passport';
+import passportLocal from 'passport-local';
+
+const LocalStrategy = passportLocal.Strategy
 
 const usersRouter = express.Router();
 
-// const { userDao } = require('../daos');
-
-const userController = require('../controllers/user');
-// const { createHash , isValidPassword } = require('../utils/bCryptSettings') 
-
-/* FUNCIONES */
-// function createHash(password) {
-//   return bCrypt.hashSync(
-//       password,
-//       bCrypt.genSaltSync(10),
-//       null
-//   );
-// }
-// function isValidPassword( user , password ) {
-//   return bCrypt.compareSync( password , user.password )
-// }
-
-// const mailOptions = (username,photo) => ({
-//   from: 'jorgecoronabackend@gmail.com', // sender address
-//   to: ['jorgecoronabackend@gmail.com'], // list of receivers
-//   subject: "[ALERT] New User created", // Subject line
-//   // text: "Hello world?", // plain text body,
-//   attachments: 
-//   [
-//     {path: photo}
-//   ],
-//   html: `<h1 style="color: blue;">Se ha creado un nuevo usuario.</h1><p>UserName: ${username}</p>` // html body
-// })
-
-/* NODEMAILER */
-
-// const transporter = nodemailer.createTransport( {
-//   service: 'gmail',
-//   port: 587,
-//   auth: {
-//     user: 'jorgecoronabackend@gmail.com',
-//     pass: 'jorgecorona55'
-//   }
-// } )   
+import userController from '../controllers/user.js';
 
 /* PASSPORT */
 
@@ -70,6 +30,7 @@ passport.deserializeUser( async ( id , done ) => {
 
 } )
 //Login
+
 usersRouter.get( '/login' , userController.loginUser )
 
 usersRouter.post( '/login' , 
@@ -98,4 +59,4 @@ usersRouter.post( '/signup' ,
 
 usersRouter.get( '/info' , userController.infoUser )
 
-module.exports = usersRouter;
+export default usersRouter;

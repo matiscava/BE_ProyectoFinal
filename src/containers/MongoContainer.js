@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const options = require('../config');
-const logger = require('./../logger');
-const { asPOJO , renameField , removeField } = require('../utils/objectsUtils');
+import mongoose from 'mongoose';
+import options from '../config.js';
+import logger from './../logger/index.js';
+import { asPOJO , renameField , removeField } from '../utils/objectsUtils';
 
 class MongoContainer {
   constructor(collection, schema) {
@@ -202,4 +202,4 @@ class MongoContainer {
   }
 }
 
-module.exports = MongoContainer;
+export default MongoContainer;

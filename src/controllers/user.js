@@ -1,20 +1,14 @@
-const path = require('path');
+import path from 'path';
 
-const { newUserMailOptions , transporter } = require('../utils/nodemailerSettings');
-const { createHash , isValidPassword } = require('../utils/bCryptSettings') 
+import { newUserMailOptions , transporter } from '../utils/nodemailerSettings.js';
+import { createHash , isValidPassword } from '../utils/bCryptSettings.js';
 
-const PersistenceFactory = require('../daos');
-const getPersistence = require('../utils/getPresistence');
+import PersistenceFactory from '../daos/index.js';
+import getPersistence from '../utils/getPresistence.js';
 
-let recoveredFactory = null;
-// (async () => {
-//   recoveredFactory = await PersistenceFactory.getPersistenceMethod(getPersistence())
-//   }) ()
+const prueba = PersistenceFactory.getPersistenceMethod(getPersistence())
+console.log('prueba en user.js', prueba);
 
- recoveredFactory = PersistenceFactory.getPersistenceMethod(getPersistence())
-
-const factory = recoveredFactory;
-const { userDao } = factory
 
 const loginUser = async ( req , res ) => {
   if (req.isAuthenticated()) {
@@ -154,7 +148,7 @@ const getHome = async (req,res)=>{
   res.render(path.join(process.cwd(), '/views/pages/home.ejs'), {usuario: usuario, carritoID: carritoID})
 }
 
-module.exports = {
+export default {
   loginUser,
   postLoginUser,
   failLoginUser,

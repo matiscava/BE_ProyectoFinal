@@ -1,4 +1,4 @@
-const FirestoreContainer = require("../../containers/FirebaseContainer");
+import FirestoreContainer from "../../containers/FirebaseContainer";
 
 class TicketsDaoFirestore extends FirestoreContainer {
     constructor() {
@@ -6,4 +6,4 @@ class TicketsDaoFirestore extends FirestoreContainer {
     }
 }
 
-module.exports = TicketsDaoFirestore;
+export default TicketsDaoFirestore;

@@ -2,6 +2,7 @@
   "name": "be_proyectofinal",
   "version": "2.1.4",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"

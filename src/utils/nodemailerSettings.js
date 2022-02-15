@@ -1,6 +1,6 @@
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";
 
-const cartTicketMailOptions = (photo,mail,html) => ({
+export const cartTicketMailOptions = (photo,mail,html) => ({
   from: 'jorgecoronabackend@gmail.com', // sender address
   to: ['jorgecoronabackend@gmail.com',mail], // list of receivers
   subject: "[ALERT] Cart Ticket", // Subject line
@@ -11,7 +11,7 @@ const cartTicketMailOptions = (photo,mail,html) => ({
   html: html // html body
 })
 
-const newUserMailOptions = (username,photo) => ({
+export const newUserMailOptions = (username,photo) => ({
   from: 'jorgecoronabackend@gmail.com', // sender address
   to: ['jorgecoronabackend@gmail.com'], // list of receivers
   subject: "[ALERT] New User created", // Subject line
@@ -23,7 +23,7 @@ const newUserMailOptions = (username,photo) => ({
   html: `<h1 style="color: blue;">Se ha creado un nuevo usuario.</h1><p>UserName: ${username}</p>` // html body
 })
 
-const transporter = nodemailer.createTransport( {
+export const transporter = nodemailer.createTransport( {
   service: 'gmail',
   port: 587,
   auth: {
@@ -32,8 +32,3 @@ const transporter = nodemailer.createTransport( {
   }
 } )  
 
-module.exports = {
-  cartTicketMailOptions,
-  newUserMailOptions,
-  transporter
-}

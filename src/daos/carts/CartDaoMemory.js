@@ -1,4 +1,4 @@
-const MemoryContainer = require("../../containers/MemoryContainer");
+import MemoryContainer from "../../containers/MemoryContainer";
 
 class CartDaoMemory extends MemoryContainer {
  constructor () {
@@ -40,4 +40,4 @@ class CartDaoMemory extends MemoryContainer {
  }
 };
 
-module.exports = CartDaoMemory;
+export default CartDaoMemory;

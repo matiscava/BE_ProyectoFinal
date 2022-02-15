@@ -1,8 +1,8 @@
-const fs = require('fs');
-const logger = require('./../logger');
-const options = require('../config');
+import fs from 'fs';
+import logger from './../logger/index.js';
+import options from '../config.js';
 
-module.exports = class ObjetoFS {
+export default class FileContainer {
     constructor ( archivo ) {
         this.archivo = `${options.config.FILE_PATH}/${archivo}`;
     }

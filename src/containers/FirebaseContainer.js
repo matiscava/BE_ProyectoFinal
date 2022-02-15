@@ -1,7 +1,7 @@
-const admin = require('firebase-admin');
-const options = require('../config');
-const serviceAccount = require('../../db/firebase/proyectofinalbe-b686f-firebase-adminsdk-mnu25-7fa3d70aa9.json');
-const logger = require('./../logger');
+import admin from 'firebase-admin';
+import options from '../config.js';
+import serviceAccount from '../../db/firebase/proyectofinalbe-b686f-firebase-adminsdk-mnu25-7fa3d70aa9.json';
+import logger from './../logger/index.js';
 
 class FirestoreContainer {
     constructor(collection) {
@@ -181,4 +181,4 @@ class FirestoreContainer {
     }
 }
 
-module.exports = FirestoreContainer;
+export default FirestoreContainer;

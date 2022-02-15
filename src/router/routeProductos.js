@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const productosRouter = express.Router();
 
-const productController = require('../controllers/product')
+import productController from '../controllers/product.js'
 
 //MUESTRA LA LISTA DE PRODUCTOS
 
@@ -23,4 +23,4 @@ productosRouter.get('/:id', productController.getProduct );
 
 productosRouter.put('/:id', productController.setProduct );
 
-module.exports = productosRouter;
+export default productosRouter;

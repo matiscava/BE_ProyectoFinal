@@ -1,7 +1,6 @@
-const fs = require('fs');
-const logger = require('./../logger');
+import logger from './../logger/index.js';
 
-module.exports = class ObjetoFS {
+class MemoryContainer {
     constructor ( array ) {
         this.array = array;
     }
@@ -196,3 +195,5 @@ module.exports = class ObjetoFS {
         }
     }
 }
+
+export default MemoryContainer

@@ -1,6 +1,8 @@
-const SqliteContainer = require("../../containers/SqliteContainer");
-const options = require('../../config');
-const knex = require('knex')(options.sqlite);
+import SqliteContainer from "../../containers/SqliteContainer";
+import options from '../../config';
+import knex from 'knex'
+
+knex(options.sqlite);
 
 class CartDaoSqlite extends SqliteContainer {
   constructor() {
@@ -12,4 +14,4 @@ class CartDaoSqlite extends SqliteContainer {
   }
 };
 
-module.exports = CartDaoSqlite;
+export default CartDaoSqlite;
