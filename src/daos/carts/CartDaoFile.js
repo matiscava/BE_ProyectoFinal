@@ -1,5 +1,5 @@
 
-import FileContainer from "../../containers/FileContainer";
+import FileContainer from "../../containers/FileContainer.js";
 
 class CartDaoFile extends FileContainer {
  constructor () {

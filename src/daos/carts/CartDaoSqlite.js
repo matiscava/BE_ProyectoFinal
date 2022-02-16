@@ -1,5 +1,5 @@
-import SqliteContainer from "../../containers/SqliteContainer";
-import options from '../../config';
+import SqliteContainer from "../../containers/SqliteContainer.js";
+import options from '../../config.js';
 import knex from 'knex'
 
 knex(options.sqlite);

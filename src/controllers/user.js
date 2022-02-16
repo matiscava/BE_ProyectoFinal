@@ -3,13 +3,6 @@ import path from 'path';
 import { newUserMailOptions , transporter } from '../utils/nodemailerSettings.js';
 import { createHash , isValidPassword } from '../utils/bCryptSettings.js';
 
-import PersistenceFactory from '../daos/index.js';
-import getPersistence from '../utils/getPresistence.js';
-
-const prueba = PersistenceFactory.getPersistenceMethod(getPersistence())
-console.log('prueba en user.js', prueba);
-
-
 const loginUser = async ( req , res ) => {
   if (req.isAuthenticated()) {
       res.redirect('/')

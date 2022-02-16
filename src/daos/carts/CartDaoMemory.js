@@ -1,4 +1,4 @@
-import MemoryContainer from "../../containers/MemoryContainer";
+import MemoryContainer from "../../containers/MemoryContainer.js";
 
 class CartDaoMemory extends MemoryContainer {
  constructor () {

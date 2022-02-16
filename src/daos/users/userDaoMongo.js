@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import MongoContainer from "../../containers/MongoContainer";
+import MongoContainer from "../../containers/MongoContainer.js";
 
 class UserDaoMongo extends MongoContainer {
   constructor() {

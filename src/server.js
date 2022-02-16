@@ -13,6 +13,15 @@ import indexRouter from './router/index.js';
 
 import userController from './controllers/user.js';
 
+import PersistenceFactory from './daos/index.js';
+import getPersistence from './utils/getPresistence.js';
+
+const persistenceAsync = async () => {
+    const daoSelector = await PersistenceFactory.getPersistenceMethod(getPersistence())
+    return daoSelector
+}
+
+const userDao = await persistenceAsync().userDao
 // const { Router } = express;
 
 // const { getPersistenceMethod } from './daos');

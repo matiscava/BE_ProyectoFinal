@@ -1,5 +1,4 @@
 class PersistenceFactory {
-
   static async getPersistenceMethod(pers) {
     switch (pers) {
       case 'json':
@@ -8,7 +7,7 @@ class PersistenceFactory {
         const { default: UserDaoFile } = await import('./users/UserDaoFile.js');
         const { default: TicketsDaoFile } = await import('./tickets/TicketDaoFile.js');
 
-        return daos = {
+        return {
           productDao : new ProductDaoFile(),
           cartDao : new CartDaoFile(),
           userDao : new UserDaoFile(),
@@ -20,7 +19,7 @@ class PersistenceFactory {
         const { default: UserDaoFirestore } = await import('./users/UserDaoFirestore.js');
         const { default: TicketsDaoFirestore } = await import('./tickets/ticketDaoFirestore.js');
 
-        return daos = {
+        return {
           productDao : new ProductDaoFirestore(),
           cartDao : new CartDaoFirestore(),
           userDao : new UserDaoFirestore(),
@@ -32,7 +31,7 @@ class PersistenceFactory {
           const { default: UserDaoMongo } = await import('./users/UserDaoMongo.js');
           const { default: TicketsDaoMongo } = await import('./tickets/TicketDaoMongo.js');
   
-          return daos = {
+          return {
             productDao : new ProductDaoMongo(),
             cartDao : new CartDaoMongo(),
             userDao : new UserDaoMongo(),
@@ -44,7 +43,7 @@ class PersistenceFactory {
           const { default: UserDaoMySQL } = await import('./users/UserDaoMySQL.js');
           const { default: TicketsDaoMySQL } = await import('./tickets/TicketDaoMySQL.js');
   
-          return daos = {
+          return {
             productDao : new ProductDaoMySQL(),
             cartDao : new CartDaoMySQL(),
             userDao : new UserDaoMySQL(),
@@ -57,7 +56,7 @@ class PersistenceFactory {
           const { default: UserDaoSqlite } = await import('./users/UserDaoSqlite.js');
           const { default: TicketsDaoSqlite } = await import('./tickets/TicketDaoSqlite.js');
   
-          return daos = {
+          return {
             productDao : new ProductDaoSqlite(),
             cartDao : new CartDaoSqlite(),
             userDao : new UserDaoSqlite(),
@@ -70,7 +69,7 @@ class PersistenceFactory {
           const { default: UserDaoMemory } = await import('./users/UserDaoMemory.js');
           const { default: TicketsDaoMemory } = await import('./tickets/TicketDaoMemory.js');
 
-          return daos = {
+          return {
             productDao : new ProductDaoMemory(),
             cartDao : new CartDaoMemory(),
             userDao : new UserDaoMemory(),

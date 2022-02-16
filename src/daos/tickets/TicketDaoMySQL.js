@@ -1,5 +1,5 @@
-import MySQLContainer from "../../containers/MySQLContainer";
-import options from '../../config';
+import MySQLContainer from "../../containers/MySQLContainer.js";
+import options from '../../config.js';
 import knex from 'knex'
 
 knex(options.mysql);

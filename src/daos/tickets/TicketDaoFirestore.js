@@ -1,4 +1,4 @@
-import FirestoreContainer from "../../containers/FirebaseContainer";
+import FirestoreContainer from "../../containers/FirebaseContainer.js";
 
 class TicketsDaoFirestore extends FirestoreContainer {
     constructor() {
