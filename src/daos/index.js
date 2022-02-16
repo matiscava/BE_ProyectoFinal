@@ -1,79 +1,85 @@
 class PersistenceFactory {
-  static async getPersistenceMethod(pers) {
+  constructor(pers){
+    this.getPersistenceMethod(pers)
+  }
+
+  async getPersistenceMethod(pers) {
+    console.log('dentro del metodo', pers);
     switch (pers) {
       case 'json':
-        const { default: ProductDaoFile } = await import('./products/ProductDaoFile.js');
-        const { default: CartDaoFile } = await import('./carts/CartDaoFile.js');
-        const { default: UserDaoFile } = await import('./users/UserDaoFile.js');
-        const { default: TicketsDaoFile } = await import('./tickets/TicketDaoFile.js');
+        const ProductDaoFile = await import('./products/ProductDaoFile.js');
+        const CartDaoFile = await import('./carts/CartDaoFile.js');
+        const UserDaoFile = await import('./users/UserDaoFile.js');
+        const TicketsDaoFile = await import('./tickets/TicketDaoFile.js');
+        console.log('dentro del metodo', ProductDaoFile);
 
         return {
-          productDao : new ProductDaoFile(),
-          cartDao : new CartDaoFile(),
-          userDao : new UserDaoFile(),
-          ticketDao : new TicketsDaoFile()
+          productDao : ProductDaoFile,
+          cartDao : CartDaoFile,
+          userDao : UserDaoFile,
+          ticketDao : TicketsDaoFile
         }
       case 'firestore' :
-        const { default: ProductDaoFirestore } = await import('./products/ProductDaoFirestore.js');
-        const { default: CartDaoFirestore } = await import('./carts/CartDaoFirestore.js');
-        const { default: UserDaoFirestore } = await import('./users/UserDaoFirestore.js');
-        const { default: TicketsDaoFirestore } = await import('./tickets/ticketDaoFirestore.js');
+        const ProductDaoFirestore = await import('./products/ProductDaoFirestore.js');
+        const CartDaoFirestore = await import('./carts/CartDaoFirestore.js');
+        const UserDaoFirestore = await import('./users/UserDaoFirestore.js');
+        const TicketsDaoFirestore = await import('./tickets/ticketDaoFirestore.js');
 
         return {
-          productDao : new ProductDaoFirestore(),
-          cartDao : new CartDaoFirestore(),
-          userDao : new UserDaoFirestore(),
-          ticketDao : new TicketsDaoFirestore()
+          productDao : ProductDaoFirestore,
+          cartDao : CartDaoFirestore,
+          userDao : UserDaoFirestore,
+          ticketDao : TicketsDaoFirestore
         }
         case 'mongodb':
-          const { default: ProductDaoMongo } = await import('./products/ProductDaoMongo.js');
-          const { default: CartDaoMongo } = await import('./carts/CartDaoMongo.js');
-          const { default: UserDaoMongo } = await import('./users/UserDaoMongo.js');
-          const { default: TicketsDaoMongo } = await import('./tickets/TicketDaoMongo.js');
+          const ProductDaoMongo = await import('./products/ProductDaoMongo.js');
+          const CartDaoMongo = await import('./carts/CartDaoMongo.js');
+          const UserDaoMongo = await import('./users/UserDaoMongo.js');
+          const TicketsDaoMongo = await import('./tickets/TicketDaoMongo.js');
   
           return {
-            productDao : new ProductDaoMongo(),
-            cartDao : new CartDaoMongo(),
-            userDao : new UserDaoMongo(),
-            ticketDao : new TicketsDaoMongo()
+            productDao : ProductDaoMongo,
+            cartDao : CartDaoMongo,
+            userDao : UserDaoMongo,
+            ticketDao : TicketsDaoMongo
           }
         case 'mysql':
-          const { default: ProductDaoMySQL } = await import('./products/ProductDaoMySQL.js');
-          const { default: CartDaoMySQL } = await import('./carts/CartDaoMySQL.js');
-          const { default: UserDaoMySQL } = await import('./users/UserDaoMySQL.js');
-          const { default: TicketsDaoMySQL } = await import('./tickets/TicketDaoMySQL.js');
+          const ProductDaoMySQL = await import('./products/ProductDaoMySQL.js');
+          const CartDaoMySQL = await import('./carts/CartDaoMySQL.js');
+          const UserDaoMySQL = await import('./users/UserDaoMySQL.js');
+          const TicketsDaoMySQL = await import('./tickets/TicketDaoMySQL.js');
   
           return {
-            productDao : new ProductDaoMySQL(),
-            cartDao : new CartDaoMySQL(),
-            userDao : new UserDaoMySQL(),
-            ticketDao : new TicketsDaoMySQL()
+            productDao : ProductDaoMySQL,
+            cartDao : CartDaoMySQL,
+            userDao : UserDaoMySQL,
+            ticketDao : TicketsDaoMySQL
           }
         case 'sqlite':
 
-          const { default: ProductDaoSqlite } = await import('./products/ProductDaoSqlite.js');
-          const { default: CartDaoSqlite } = await import('./carts/CartDaoSqlite.js');
-          const { default: UserDaoSqlite } = await import('./users/UserDaoSqlite.js');
-          const { default: TicketsDaoSqlite } = await import('./tickets/TicketDaoSqlite.js');
+          const ProductDaoSqlite = await import('./products/ProductDaoSqlite.js');
+          const CartDaoSqlite = await import('./carts/CartDaoSqlite.js');
+          const UserDaoSqlite = await import('./users/UserDaoSqlite.js');
+          const TicketsDaoSqlite = await import('./tickets/TicketDaoSqlite.js');
   
           return {
-            productDao : new ProductDaoSqlite(),
-            cartDao : new CartDaoSqlite(),
-            userDao : new UserDaoSqlite(),
-            ticketDao : new TicketsDaoSqlite()
+            productDao : ProductDaoSqlite,
+            cartDao : CartDaoSqlite,
+            userDao : UserDaoSqlite,
+            ticketDao : TicketsDaoSqlite
           }
         default: 
 
-          const { default: ProductDaoMemory } = await import('./products/ProductDaoMemory.js');
-          const { default: CartDaoMemory } = await import('./carts/CartDaoMemory.js');
-          const { default: UserDaoMemory } = await import('./users/UserDaoMemory.js');
-          const { default: TicketsDaoMemory } = await import('./tickets/TicketDaoMemory.js');
+          const ProductDaoMemory = await import('./products/ProductDaoMemory.js');
+          const CartDaoMemory = await import('./carts/CartDaoMemory.js');
+          const UserDaoMemory = await import('./users/UserDaoMemory.js');
+          const TicketsDaoMemory = await import('./tickets/TicketDaoMemory.js');
 
           return {
-            productDao : new ProductDaoMemory(),
-            cartDao : new CartDaoMemory(),
-            userDao : new UserDaoMemory(),
-            ticketDao : new TicketsDaoMemory()
+            productDao : ProductDaoMemory,
+            cartDao : CartDaoMemory,
+            userDao : UserDaoMemory,
+            ticketDao : TicketsDaoMemory
           }
     }
   }
