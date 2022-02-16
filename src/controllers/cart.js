@@ -8,7 +8,7 @@ import { sendMessage } from '../utils/twilioSettings.js'
 import PersistenceFactory from '../daos/index.js';
 import getPersistence from '../utils/getPresistence.js';
 
-const {prueba} = new PersistenceFactory(getPersistence())
+const prueba = new PersistenceFactory(getPersistence())
 console.log('probando', prueba);
 
 const getAll = async (req,res)=>{   

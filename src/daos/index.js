@@ -2,7 +2,6 @@ class PersistenceFactory {
   constructor(pers){
     this.getPersistenceMethod(pers)
   }
-
   async getPersistenceMethod(pers) {
     console.log('dentro del metodo', pers);
     switch (pers) {
