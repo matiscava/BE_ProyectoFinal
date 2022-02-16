@@ -4,7 +4,7 @@ import options from '../config.js';
 
 export default class FileContainer {
     constructor ( archivo ) {
-        this.archivo = `${options.config.FILE_PATH}/${archivo}`;
+        this.archivo = `db/${archivo}`;
     }
     async getAll () {
         try{

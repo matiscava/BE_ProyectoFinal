@@ -1,12 +1,15 @@
 import logger from '../logger/index.js';
 import path from 'path'
 
-// import { productDao } from '../daos/index.js';
+import PersistenceFactory from '../daos/index.js';
+import getPersistence from '../utils/getPresistence.js';
+
+const { productsDao , usersDao } = new PersistenceFactory(getPersistence())
 
 const getAll = async (req,res)=>{  
-  const data = await productDao.getAll();
+  const data = await productsDao.getAll();
   const idMongo = req.session && req.session.idMongo;
-  const usuario = await userDao.getById(idMongo);
+  const usuario = await usersDao.getById(idMongo);
   // res.send(data)
   res.render(path.join(process.cwd(), '/views/pages/products.ejs'), {usuario: usuario, productsList: data})
 }
@@ -14,10 +17,10 @@ const getAll = async (req,res)=>{
 const createProduct = async (req,res)=>{
   const objetoNuevo = req.body;
   const idMongo = req.session && req.session.idMongo;
-  const usuario = await userDao.getById(idMongo);
+  const usuario = await usersDao.getById(idMongo);
   
   if(usuario.admin){
-      const productoNuevo = await productDao.createProduct(objetoNuevo);
+      const productoNuevo = await productsDao.createProduct(objetoNuevo);
       logger.info(`Se ha creado un nuevo producto: ${productoNuevo}`);
 
       res.redirect('/')
@@ -29,15 +32,15 @@ const createProduct = async (req,res)=>{
 
 const deleteProduct = async (req,res)=>{
   const findID = req.params.id;
-  const producto = await productDao.getById(findID);
+  const producto = await productsDao.getById(findID);
   const idMongo = req.session && req.session.idMongo;
-  const usuario = await userDao.getById(idMongo);
+  const usuario = await usersDao.getById(idMongo);
 
   if(producto===null){
       res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
   } else if(usuario.admin){
-      await productDao.deleteById(findID);
-      const productsList = await productDao.getAll()
+      await productsDao.deleteById(findID);
+      const productsList = await productsDao.getAll()
   
       res.send({
           message: 'Se ha eleiminado el producto',
@@ -51,7 +54,7 @@ const deleteProduct = async (req,res)=>{
 
 const getProduct = async (req,res)=>{   
   const findID = req.params.id;
-  const findObjeto = await productDao.getById(findID)
+  const findObjeto = await productsDao.getById(findID)
   if(findObjeto===null){
       res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
   }else{
@@ -63,14 +66,14 @@ const setProduct = async (req,res)=>{
 
   findID = req.params.id;
   const productoPostman = req.body;
-  const findObjeto = await productDao.getById(findID)
+  const findObjeto = await productsDao.getById(findID)
   const idMongo = req.session && req.session.idMongo;
-  const usuario = await userDao.getById(idMongo);
+  const usuario = await usersDao.getById(idMongo);
 
   if(findObjeto===null){
       res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
   }else if(usuario.admin){
-      const productoModificado = await productDao.update(findID,productoPostman)
+      const productoModificado = await productsDao.update(findID,productoPostman)
       
       res.send({
           message: 'Se modifico el producto',

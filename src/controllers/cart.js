@@ -1,15 +1,13 @@
 import logger from '../logger/index.js';
 import path from 'path'
 
-// import { cartsDao , productDao , ticketDao } from '../daos/index.js';
 import { cartTicketMailOptions , transporter } from '../utils/nodemailerSettings.js';
 import { sendMessage } from '../utils/twilioSettings.js'
 
 import PersistenceFactory from '../daos/index.js';
 import getPersistence from '../utils/getPresistence.js';
 
-const prueba = new PersistenceFactory(getPersistence())
-console.log('probando', prueba);
+const { productsDao , usersDao , cartsDao , ticketsDao} = new PersistenceFactory(getPersistence())
 
 const getAll = async (req,res)=>{   
   const idMongo = req.session && req.session.idMongo;
@@ -38,7 +36,7 @@ const addProductToCart = async (req,res) => {
   const error = []
   const productoReq = req.body;
   const carritoElegido = await cartsDao.getById(carritoID);
-  const producto = (await productDao.getById(productoReq._id)).toObject()
+  const producto = (await productsDao.getById(productoReq._id)).toObject()
   const productsList = []
   let cantidadReq = parseInt(productoReq.quantity)
   if( isNaN(cantidadReq) || cantidadReq === null) cantidadReq=1;
@@ -82,7 +80,7 @@ const addProductToCart = async (req,res) => {
 const getCartProducts = async (req,res) => {
   const carritoID = req.params.id;
   const carritoElegido = await cartsDao.getById(carritoID);
-  const productList = await productDao.getAll();
+  const productList = await productsDao.getAll();
   const idMongo = req.session && req.session.idMongo;
   const usuario = await usersDao.getById(idMongo);
   let precioFinal = 0;
@@ -114,7 +112,7 @@ const removeCart = async (req,res) => {
 const removeCartProduct = async (req,res) => {
   const carritoID = req.params.id;
   const productoID = req.params.id_prod;
-  const producto = await productDao.getById(productoID);
+  const producto = await productsDao.getById(productoID);
   const carritoElegido = await cartsDao.getCarrito(carritoID);
   if(producto===null){
       res.send({error: -3, descripcion: `el producto ID ${productoID} no existe ingrese otro ID`});
@@ -145,7 +143,7 @@ const mekeTicket = async ( req , res ) => {
   let ticketCompra = {...usuario,...cartList};
   let htmlItems = '';
   // logger.info(typeof ticketCompra.cart.products)
-  const ticketId = await ticketDao.createTicket(ticketCompra)
+  const ticketId = await ticketsDao.createTicket(ticketCompra)
 
   for (const product of ticketCompra.cart.products) {
       let cadenaString = `   <div class="cartItemsTexts">

@@ -3,13 +3,19 @@ import path from 'path';
 import { newUserMailOptions , transporter } from '../utils/nodemailerSettings.js';
 import { createHash , isValidPassword } from '../utils/bCryptSettings.js';
 
+import PersistenceFactory from '../daos/index.js';
+import getPersistence from '../utils/getPresistence.js';
+
+const { usersDao } = new PersistenceFactory(getPersistence())
+
+
 const loginUser = async ( req , res ) => {
   if (req.isAuthenticated()) {
       res.redirect('/')
   }else{
 
       const idMongo = req.session && req.session.idMongo;
-      const usuario = await userDao.getById(idMongo);
+      const usuario = await usersDao.getById(idMongo);
 
 
       if (usuario) {
@@ -23,7 +29,7 @@ const loginUser = async ( req , res ) => {
 
 const postLoginUser = async ( req , res ) => {
   const { username , password } = req.body;
-  const user = await userDao.findUser(username);
+  const user = await usersDao.findUser(username);
 
   req.session.idMongo = user.id;
 
@@ -36,7 +42,7 @@ const failLoginUser = (req , res) => {
 
 const logoutUser = async ( req , res ) => {
   const idMongo = req.session && req.session.idMongo;
-  const usuario = await userDao.getById(idMongo);
+  const usuario = await usersDao.getById(idMongo);
 
   if (usuario) {
       req.session.destroy(error => {
@@ -68,7 +74,7 @@ const failSingupUser = (req , res) => {
 
 const infoUser = async ( req , res ) => {
   const idMongo = req.session && req.session.idMongo;
-  const usuario = await userDao.getById(idMongo);
+  const usuario = await usersDao.getById(idMongo);
 
   if (!usuario) {
     res.redirect('/api/users/login')
@@ -81,7 +87,7 @@ const infoUser = async ( req , res ) => {
 //PASSPORT FUNCTIONS
 
 const loginPassportUser =   async (username , password , done ) => {
-  const user = await userDao.findUser(username);
+  const user = await usersDao.findUser(username);
   if (!user) {
       logger.info('User Not Found with username ',username);
       return done ( null , false )
@@ -97,7 +103,7 @@ const loginPassportUser =   async (username , password , done ) => {
 }
 
 const signupPassportUser =   async (req , username , email , done ) => {
-  const user = await userDao.findUser(username);
+  const user = await usersDao.findUser(username);
   let photo = '';
   if (user) {
       logger.info('User already exists');
@@ -119,7 +125,7 @@ const signupPassportUser =   async (req , username , email , done ) => {
       photo: photo
   }
 
-  const idUser = await userDao.createUser(newUser)
+  const idUser = await usersDao.createUser(newUser)
   logger.info('User register succesful iD ',idUser);
   req.session.idMongo = idUser;
   transporter.sendMail(newUserMailOptions(req.body.username , photo), ( err , info ) => {
@@ -137,7 +143,7 @@ const getHome = async (req,res)=>{
   const carritoID = req.session && req.session.carritoID;
 
 
-  const usuario = await userDao.getById(idMongo);
+  const usuario = await usersDao.getById(idMongo);
   res.render(path.join(process.cwd(), '/views/pages/home.ejs'), {usuario: usuario, carritoID: carritoID})
 }
 
