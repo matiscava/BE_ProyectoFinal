@@ -109,7 +109,6 @@ const loginPassportUser =   async (username , password , done ) => {
 }
 
 const signupPassportUser =   async (req , username , email , done ) => {
-  console.log('signunpPassport', email);
   const user = await usersDao.findUser(username);
   let photo = '';
   if (user) {

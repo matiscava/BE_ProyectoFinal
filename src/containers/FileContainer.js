@@ -181,7 +181,7 @@ export default class FileContainer {
             const carrito = JSON.parse(data);
             const carritoFiltrado = carrito.filter( (carro) => carro.id !== parseInt(carritoId));
             const dataToJSON = JSON.stringify(carritoFiltrado,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            fs.writeFileSync(`${this.archivo}` , dataToJSON);
         } catch (error) {
             logger.error('Error: ', error);
             throw error;
@@ -204,7 +204,7 @@ export default class FileContainer {
                 carritoElegido.products.push(...carritoFiltrado);    
                 carrito.splice(carritoElegidoIndex,1,carritoElegido);
                 const dataToJSON = JSON.stringify(carrito,null,2);
-                fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+                fs.writeFileSync(`${this.archivo}` , dataToJSON);
                 return true;
             }else{
                 return false;
@@ -224,15 +224,15 @@ export default class FileContainer {
                 agregarData= {...user, id: nextID}
             }else{
                 for (let i=0;i<usuarios.length ;i++) {
-                    while( objeto[i].id >= nextID ){
+                    while( usuarios[i].id >= nextID ){
                         nextID++;
                     }
                 }
-                agregarData= {...user, id: nextID}
+                agregarData= {...user, id: nextID,timestamp: fecha}
             }
             usuarios.push(agregarData)
             const dataToJSON = JSON.stringify(usuarios,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            fs.writeFileSync(`${this.archivo}` , dataToJSON);
             return agregarData;
         }catch(err){
           logger.error('Error: ', err);

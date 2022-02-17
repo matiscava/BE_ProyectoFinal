@@ -8,5 +8,16 @@
     "phone": "5491155633083",
     "photo": "https://i.pinimg.com/originals/dc/ab/b7/dcabb7fbb2f763d680d20a3d228cc6f9.jpg",
     "id": 1
+  },
+  {
+    "username": "narigonBilardo",
+    "password": "$2b$10$E3ouLQF59eGA1n6chw4vaey.mxCe3lGKaHcFWGG74UKszP/n51GtK",
+    "email": "bilardo@hotmail.com",
+    "name": "Carlos Salvador",
+    "lastname": "Bilardo",
+    "phone": "11556303083",
+    "photo": "https://www.rionegro.com.ar/wp-content/uploads/2021/09/bilardo0512-954879-e1632857231655.jpg",
+    "id": 2,
+    "timestamp": "17/2/2022 15:51:52"
   }
 ]
