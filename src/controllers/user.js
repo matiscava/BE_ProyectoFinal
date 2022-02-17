@@ -1,13 +1,15 @@
 import path from 'path';
 
+import logger from '../logger/index.js' 
+
 import { newUserMailOptions , transporter } from '../utils/nodemailerSettings.js';
 import { createHash , isValidPassword } from '../utils/bCryptSettings.js';
 
 import PersistenceFactory from '../daos/index.js';
 import getPersistence from '../utils/getPresistence.js';
 
-const { usersDao } = new PersistenceFactory(getPersistence())
-
+const {daos} = new PersistenceFactory(getPersistence());
+const {usersDao} = daos;
 
 const loginUser = async ( req , res ) => {
   if (req.isAuthenticated()) {
@@ -15,15 +17,18 @@ const loginUser = async ( req , res ) => {
   }else{
 
       const idMongo = req.session && req.session.idMongo;
-      const usuario = await usersDao.getById(idMongo);
-
-
-      if (usuario) {
-          res.redirect('/')
-
+      console.log('idMOngo loginUSer', idMongo);
+      if(idMongo !== undefined){
+        const usuario = await usersDao.getById(idMongo);
+        if (usuario) {
+            res.redirect('/')
+  
+        } 
       } else {
-          res.render(path.join(process.cwd(), '/views/pages/login.ejs'))
-      }
+        res.render(path.join(process.cwd(), '/views/pages/login.ejs'))
+    }
+
+
   }
 }
 
@@ -88,6 +93,8 @@ const infoUser = async ( req , res ) => {
 
 const loginPassportUser =   async (username , password , done ) => {
   const user = await usersDao.findUser(username);
+  
+  console.log('loginPassportUser',user);
   if (!user) {
       logger.info('User Not Found with username ',username);
       return done ( null , false )
@@ -103,6 +110,7 @@ const loginPassportUser =   async (username , password , done ) => {
 }
 
 const signupPassportUser =   async (req , username , email , done ) => {
+  console.log('signunpPassport', email);
   const user = await usersDao.findUser(username);
   let photo = '';
   if (user) {
@@ -141,10 +149,13 @@ const signupPassportUser =   async (req , username , email , done ) => {
 const getHome = async (req,res)=>{   
   const idMongo = req.session && req.session.idMongo;
   const carritoID = req.session && req.session.carritoID;
-
-
-  const usuario = await usersDao.getById(idMongo);
-  res.render(path.join(process.cwd(), '/views/pages/home.ejs'), {usuario: usuario, carritoID: carritoID})
+  if (idMongo===undefined){
+    res.render(path.join(process.cwd(), '/views/pages/home.ejs'), {usuario: null , carritoID: carritoID})
+  }else{  
+    const usuario = await usersDao.getById(idMongo);
+  
+    res.render(path.join(process.cwd(), '/views/pages/home.ejs'), {usuario: usuario, carritoID: carritoID})
+  }
 }
 
 export default {

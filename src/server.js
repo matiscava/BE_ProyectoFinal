@@ -13,17 +13,6 @@ import indexRouter from './router/index.js';
 
 import userController from './controllers/user.js';
 
-import PersistenceFactory from './daos/index.js';
-import getPersistence from './utils/getPresistence.js';
-
-const prueba = new PersistenceFactory(getPersistence())
-console.log('probando en server.js', prueba);
-
-// const { Router } = express;
-
-// const { getPersistenceMethod } from './daos');
-
-
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static('public'));

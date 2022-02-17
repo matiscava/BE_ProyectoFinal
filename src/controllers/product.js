@@ -4,7 +4,7 @@ import path from 'path'
 import PersistenceFactory from '../daos/index.js';
 import getPersistence from '../utils/getPresistence.js';
 
-const { productsDao , usersDao } = new PersistenceFactory(getPersistence())
+const { productsDao , usersDao } = new PersistenceFactory(getPersistence()).daos
 
 const getAll = async (req,res)=>{  
   const data = await productsDao.getAll();

@@ -1,8 +1,42 @@
 [
   {
     "id": 1,
-    "timestamp": "3/11/2021 20:57:50",
-    "products": []
+    "timestamp": "17/2/2022 11:16:57",
+    "products": [
+      {
+        "title": "Caramelo media hora",
+        "timestamp": "26/10/2021 11:47:36",
+        "description": "Caramelo de abuelo sabor Aníz",
+        "code": 1,
+        "stock": 6,
+        "price": 45,
+        "photo": "https://vinomanos.com/wp-content/uploads/2020/08/bazaart7-4-600x600-1.png",
+        "id": 1,
+        "quantity": 6
+      },
+      {
+        "title": "Pico Dulce",
+        "timestamp": "26/10/2021 11:47:36",
+        "description": "Chupetin multicolor",
+        "code": 2,
+        "stock": 10,
+        "price": 20,
+        "photo": "https://almacencooperativo.com.ar/wp-content/uploads/2020/11/picodulce.jpg",
+        "id": 2,
+        "quantity": 2
+      },
+      {
+        "title": "Chocolate Jack",
+        "timestamp": "26/10/2021 11:47:36",
+        "description": "Chocolate con juguete de regalo",
+        "code": 3,
+        "stock": 6,
+        "price": 45,
+        "photo": "http://d3ugyf2ht6aenh.cloudfront.net/stores/135/794/products/d_nq_np_665301-mla25956161225_092017-o1-f7e3f3d35fbf9f9e9016001697986976-640-0.jpg",
+        "id": 3,
+        "quantity": 2
+      }
+    ]
   },
   {
     "id": 2,

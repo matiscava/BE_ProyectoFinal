@@ -14,7 +14,7 @@ const options = {
     ...config,
     mongodb: {
       // host: 'mongodb://localhost/ecommerce',
-      cnxStr: `mongodb+srv://${config.DB_USER}:${config.DB_PASSWORD}@${config.DB_HOST}/${config.DB_DATABASE}?retryWrites=true&w=majority`,
+      cnxStr: `mongodb+srv://Matiscava:matinico11@proyectocoderhouse.uay7u.mongodb.net/ProyectoCoderHouse?retryWrites=true&w=majority`,
       options: {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -23,7 +23,7 @@ const options = {
       }
     },
     file: {
-      path: `./${config.FILE_PATH}`
+      path: `./DB/fs`
     },
     firestore: {
       "type": "service_account",
@@ -51,7 +51,7 @@ const options = {
     sqlite: {
       client: 'sqlite3',
       connection: {
-          filename: `./${config.FILE_PATH}`
+          filename: `./DB/sqlite`
       },
       useNullAsDefault: true
     }

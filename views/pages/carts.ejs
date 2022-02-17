@@ -51,12 +51,12 @@
 
         <div class="cartListContainer">
             <% listaCarritos.forEach( (cart) => { %>
-                <div class="cart" id="cart-<%=cart._id%>">
+                <div class="cart" id="cart-<%=cart.id%>">
                     <div class="cartTextos">
-                        <p class="cartId">Carrito id: <i><%= cart._id %></i></p>
+                        <p class="cartId">Carrito id: <i><%= cart.id %></i></p>
                         <p class="cartLength">productos cargados: <i><%= cart.products.length %></i></p>
                     </div>
-                    <button class="cartBtn" onclick="location.href='/api/carrito/<%=cart._id%>/productos'">Seleccionar Carrito</button>
+                    <button class="cartBtn" onclick="location.href='/api/carrito/<%=cart.id%>/productos'">Seleccionar Carrito</button>
                 </div>
             <% } ) %>
         </div>

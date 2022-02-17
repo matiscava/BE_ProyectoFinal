@@ -1,10 +1,11 @@
-import { Schema } from 'mongoose';
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
 import MongoContainer from "./../../containers/MongoContainer.js";
 
 class ProductDaoMongo extends MongoContainer {
   constructor() {
-    super('products', new Schema({
+    super('products', {
       title: { type: String, required: true },
       description: { type: String, required: true },
       code: { type: Number, required: true },
@@ -12,7 +13,7 @@ class ProductDaoMongo extends MongoContainer {
       stock: { type: Number, required: true },
       photo: { type: String, required: true },
       timestamp: {type: String, required: true}
-    }))
+    })
   }
 };
 

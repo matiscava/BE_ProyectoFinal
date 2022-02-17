@@ -2,22 +2,81 @@ import ProductDaoFile from './products/ProductDaoFile.js';
 import CartDaoFile from './carts/CartDaoFile.js';
 import UserDaoFile from './users/UserDaoFile.js';
 import TicketsDaoFile from './tickets/TicketDaoFile.js';
+
+// import ProductDaoFirestore from './products/ProductDaoFirestore.js';
+// import CartDaoFirestore from './carts/CartDaoFirestore.js';
+// import UserDaoFirestore from './users/UserDaoFirestore.js';
+// import TicketsDaoFirestore from './tickets/TicketDaoFirestore.js';
+
+import ProductDaoMongo from './products/ProductDaoMongo.js';
+import CartDaoMongo from './carts/CartDaoMongo.js';
+import UserDaoMongo from './users/UserDaoMongo.js';
+import TicketsDaoMongo from './tickets/TicketDaoMongo.js';
+
+import ProductDaoMySQL from './products/ProductDaoMySQL.js';
+import CartDaoMySQL from './carts/CartDaoMySQL.js';
+import UserDaoMySQL from './users/UserDaoMySQL.js';
+import TicketsDaoMySQL from './tickets/TicketDaoMySQL.js';
+
+import ProductDaoSqlite from './products/ProductDaoSqlite.js';
+import CartDaoSqlite from './carts/CartDaoSqlite.js';
+import UserDaoSqlite from './users/UserDaoSqlite.js';
+import TicketsDaoSqlite from './tickets/TicketDaoSqlite.js';
+
+import ProductDaoMemory from './products/ProductDaoMemory.js';
+import CartDaoMemory from './carts/CartDaoMemory.js';
+import UserDaoMemory from './users/UserDaoMemory.js';
+import TicketsDaoMemory from './tickets/TicketDaoMemory.js';
 class PersistenceFactory {
   constructor(pers){
     this.daos = {}
     this.getPersistenceMethod(pers)
   }
   async getPersistenceMethod(pers) {
-    if(pers ==='json'){
-      console.log('dentro del metodo', pers);
+    if(pers){
+      
+      if(pers ==='json'){
+        this.daos['productsDao'] = new ProductDaoFile;
+        this.daos['cartsDao'] = new CartDaoFile;
+        this.daos['usersDao'] = new UserDaoFile;
+        this.daos['ticketsDao'] = new TicketsDaoFile;
+      }
+      
+      // if(pers ==='firestore'){
+      //   this.daos['productsDao'] = new ProductDaoFirestore;
+      //   this.daos['cartsDao'] = new CartDaoFirestore;
+      //   this.daos['usersDao'] = new UserDaoFirestore;
+      //   this.daos['ticketsDao'] = new TicketsDaoFirestore;
+      // }
+  
+      if(pers ==='mongodb'){
+        this.daos['productsDao'] = new ProductDaoMongo();
+        this.daos['cartsDao'] = new CartDaoMongo();
+        this.daos['usersDao'] = new UserDaoMongo();
+        this.daos['ticketsDao'] = new TicketsDaoMongo();
+      }
+  
+      if(pers ==='mysql'){
+        this.daos['productsDao'] = new ProductDaoMySQL;
+        this.daos['cartsDao'] = new CartDaoMySQL;
+        this.daos['usersDao'] = new UserDaoMySQL;
+        this.daos['ticketsDao'] = new TicketsDaoMySQL;
+      }
+  
+      if(pers ==='sqlite'){
+        this.daos['productsDao'] = new ProductDaoSqlite;
+        this.daos['cartsDao'] = new CartDaoSqlite;
+        this.daos['usersDao'] = new UserDaoSqlite;
+        this.daos['ticketsDao'] = new TicketsDaoSqlite;
+      }
 
-      this.daos['productsDao'] = new ProductDaoFile;
-      this.daos['cartsDao'] = new CartDaoFile;
-      this.daos['usersDao'] = new UserDaoFile;
-      this.daos['ticketsDao'] = new TicketsDaoFile;
-
+    } else if (!pers || pers === 'memory'){
+      this.daos['productsDao'] = new ProductDaoMemory;
+      this.daos['cartsDao'] = new CartDaoMemory;
+      this.daos['usersDao'] = new UserDaoMemory;
+      this.daos['ticketsDao'] = new TicketsDaoMemory;    
     }
-    
+
     // switch (pers) {
     //   case 'json':
     //     console.log('dentro del metodo', ProductDaoFile);

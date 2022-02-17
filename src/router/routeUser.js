@@ -8,6 +8,12 @@ const usersRouter = express.Router();
 
 import userController from '../controllers/user.js';
 
+import PersistenceFactory from '../daos/index.js';
+import getPersistence from '../utils/getPresistence.js';
+
+const {daos} = new PersistenceFactory(getPersistence())
+const {usersDao} = daos
+
 /* PASSPORT */
 
 passport.use('login',  new LocalStrategy( userController.loginPassportUser ))
@@ -24,7 +30,7 @@ passport.serializeUser( ( user , done) => {
 } )
 passport.deserializeUser( async ( id , done ) => {
 
-      const user = await userDao.getById(id)
+      const user = await usersDao.getById(id)
 
       return done( null , user.id)
 

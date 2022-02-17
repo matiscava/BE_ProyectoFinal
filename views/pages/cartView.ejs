@@ -59,7 +59,7 @@
                 <p class="productCartStock">Stock: <%= product.stock %></p>
               </div>
               <form action="/api/carrito/<%= cartID %>/productos" method="post" class="productCartForm">
-                <input type="text" name="_id" id="_id" value="<%=product._id%>" style="display: none;">
+                <input type="text" name="id" id="id" value="<%=product.id%>" style="display: none;">
                 <label for="quantity" class="cartLabel">Cantidad: <input class="inputQuantity" type="number" name="quantity" id="quantity" min="0" max="<%= product.stock %>" ></label>
                 <button>Agregar al carrito</button>
               </form>

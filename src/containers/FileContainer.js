@@ -4,11 +4,11 @@ import options from '../config.js';
 
 export default class FileContainer {
     constructor ( archivo ) {
-        this.archivo = `db/${archivo}`;
+        this.archivo = `${process.cwd()}${archivo}`;
     }
     async getAll () {
         try{
-            const data = await fs.promises.readFile(this.archivo, 'utf-8' );
+            const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const objeto = JSON.parse(data);
             return objeto;
         } catch (error) {
@@ -48,7 +48,7 @@ export default class FileContainer {
             }
             objeto.push(agregarData);
             const dataToJSON = JSON.stringify(objeto,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            fs.writeFileSync(`${this.archivo}` , dataToJSON);
             return agregarData;
         } catch (error) {
             logger.error('Error: ', error);
@@ -60,7 +60,7 @@ export default class FileContainer {
             const objeto = await this.getAll();
             const objetoFiltrado = objeto.filter(obj => obj.id !== parseInt(idNum));
             const dataToJSON = JSON.stringify(objetoFiltrado,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            fs.writeFileSync(`${this.archivo}` , dataToJSON);
         } catch (error) {
             logger.error('Error: ', error);
             throw error;
@@ -68,7 +68,7 @@ export default class FileContainer {
     }
     async update(id,elemento){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
+            const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const lista = JSON.parse(data);
             const elementoGuardado = lista.find((obj)=> obj.id === parseInt(id))
             const elementoIndex = lista.findIndex((obj)=> obj.id === parseInt(id))
@@ -82,7 +82,7 @@ export default class FileContainer {
             }
             lista.splice(elementoIndex,1,elementoSubido)
             const dataToJSON = await JSON.stringify(lista,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            fs.writeFileSync(`${this.archivo}` , dataToJSON);
 
             return elementoSubido;
         } catch (error) {
@@ -92,7 +92,7 @@ export default class FileContainer {
     }
     async newCarrito(){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
+            const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const objeto = JSON.parse(data);
             let nextID = 1;
             let carritoNuevo;
@@ -109,7 +109,7 @@ export default class FileContainer {
             }
             objeto.push(carritoNuevo);
             const dataToJSON = JSON.stringify(objeto,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            fs.writeFileSync(`${this.archivo}` , dataToJSON);
             return nextID;
         } catch (error) {
             logger.error('Error: ', error);
@@ -118,17 +118,14 @@ export default class FileContainer {
     }
     async agregarProductos(carritoId,producto){
         try {
-            const data = await fs.promises.readFile(`./${this.archivo}` );
+            const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const carrito = JSON.parse(data);
             const carritoElegido = carrito.find( (carro) => carro.id === parseInt(carritoId) );
             const fecha = new Date().toLocaleString();
-        
             carritoElegido.timestamp = fecha;
-            const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === parseInt(carritoId));
-            carritoElegido.products.push(...producto);
-            carrito.splice(carritoElegidoIndex,1,carritoElegido);
+            carritoElegido.products = producto;
             const dataToJSON = JSON.stringify(carrito,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            fs.writeFileSync(`${this.archivo}` , dataToJSON);
         } catch (error) {
             logger.error('Error: ', error);
             throw error;
@@ -137,7 +134,7 @@ export default class FileContainer {
 
     async agregarXId(carritoId,arrayProductos){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
+            const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const carrito = JSON.parse(data);
             const carritoElegido = carrito.find( (carro) => carro.id === carritoId );
             const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === parseInt(carritoId));
@@ -159,7 +156,7 @@ export default class FileContainer {
     
             carrito.splice(carritoElegidoIndex,1,carritoElegido);
             const dataToJSON = JSON.stringify(carrito,null,2);
-            fs.writeFileSync(`./${this.archivo}` , dataToJSON);
+            fs.writeFileSync(`${this.archivo}` , dataToJSON);
         } catch (error) {
             logger.error('Error: ', error);
             throw error;
@@ -167,7 +164,7 @@ export default class FileContainer {
     }
     async getCarrito(carritoId){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
+            const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const carrito = JSON.parse(data);
             const carritoElegido = carrito.find( (carro) => carro.id === parseInt(carritoId) );
 
@@ -180,7 +177,7 @@ export default class FileContainer {
 
     async vaciarCarrito(carritoId){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
+            const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const carrito = JSON.parse(data);
             const carritoFiltrado = carrito.filter( (carro) => carro.id !== parseInt(carritoId));
             const dataToJSON = JSON.stringify(carritoFiltrado,null,2);
@@ -192,7 +189,7 @@ export default class FileContainer {
     }
     async borrarItem(carritoId, productoId){
         try{
-            const data = await fs.promises.readFile(`./${this.archivo}` );
+            const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const carrito = JSON.parse(data);
             const carritoElegido = carrito.find( (carro) => carro.id === parseInt(carritoId) );
             const fecha = new Date().toLocaleString();
@@ -242,7 +239,7 @@ export default class FileContainer {
           throw err
         }
       }
-      async findUser (email) {
+      async findUser(email) {
         try{
             const objeto = await this.getAll()
             const objetoFiltrado = objeto.filter(obj => obj.email === email);
@@ -262,7 +259,7 @@ export default class FileContainer {
             lastname:ticketCompra.lastname,
             email:ticketCompra.email,
             photo:ticketCompra.photo,
-            userId:ticketCompra._id,
+            userId:ticketCompra.id,
             cart:ticketCompra.cart,
             phone:ticketCompra.phone
           }
@@ -270,7 +267,7 @@ export default class FileContainer {
           const document = await new this.collection(newTicket);
           const response = await document.save()
           logger.info('Ticket creado', response);
-          return document._id;
+          return document.id;
         }catch(err){logger.error(`Error: ${err}`)}
       }
 }
