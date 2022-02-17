@@ -5,10 +5,9 @@ import logger from '../logger/index.js'
 import { newUserMailOptions , transporter } from '../utils/nodemailerSettings.js';
 import { createHash , isValidPassword } from '../utils/bCryptSettings.js';
 
-import PersistenceFactory from '../daos/index.js';
-import getPersistence from '../utils/getPresistence.js';
+import Singleton from '../utils/Singleton.js';
 
-const {daos} = new PersistenceFactory(getPersistence());
+const { daos } = Singleton.getInstance()
 const {usersDao} = daos;
 
 const loginUser = async ( req , res ) => {

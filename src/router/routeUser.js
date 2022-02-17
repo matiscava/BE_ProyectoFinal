@@ -8,10 +8,9 @@ const usersRouter = express.Router();
 
 import userController from '../controllers/user.js';
 
-import PersistenceFactory from '../daos/index.js';
-import getPersistence from '../utils/getPresistence.js';
+import Singleton from '../utils/Singleton.js';
 
-const {daos} = new PersistenceFactory(getPersistence())
+const { daos } = Singleton.getInstance()
 const {usersDao} = daos
 
 /* PASSPORT */

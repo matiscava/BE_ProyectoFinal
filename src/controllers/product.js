@@ -1,10 +1,10 @@
 import logger from '../logger/index.js';
 import path from 'path'
 
-import PersistenceFactory from '../daos/index.js';
-import getPersistence from '../utils/getPresistence.js';
+import Singleton from '../utils/Singleton.js';
 
-const { productsDao , usersDao } = new PersistenceFactory(getPersistence()).daos
+const { daos } = Singleton.getInstance()
+const { productsDao , usersDao } = daos
 
 const getAll = async (req,res)=>{  
   const data = await productsDao.getAll();

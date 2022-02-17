@@ -4,14 +4,9 @@ import path from 'path'
 import { cartTicketMailOptions , transporter } from '../utils/nodemailerSettings.js';
 import { sendMessage } from '../utils/twilioSettings.js'
 
-import PersistenceFactory from '../daos/index.js';
-import getPersistence from '../utils/getPresistence.js';
 import Singleton from '../utils/Singleton.js';
 
-const probando = Singleton.getInstance()
-console.log('singleton',probando);
-
-const { daos } = new PersistenceFactory(getPersistence())
+const { daos } = Singleton.getInstance()
 
 const { productsDao , usersDao , cartsDao , ticketsDao} = daos;
 

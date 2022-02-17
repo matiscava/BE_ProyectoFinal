@@ -1,14 +1,15 @@
-let instance = null;
-
+import PersistenceFactory from "../daos/index.js";
+import getPersistence from "./getPresistence.js";
 class Singleton {
-    constructor() { }
-
-    static getInstance(){
-      if(!instance) {
-        instance = new Singleton()
+    constructor() {
+      throw new Error('use Singleton.getInstace()')
+     }
+     static getInstance() {
+      if(!Singleton.instance){
+        Singleton.instance= new PersistenceFactory(getPersistence())
       }
-      return instance
-    }
+      return Singleton.instance
+     }
 }
 
 export default Singleton;
