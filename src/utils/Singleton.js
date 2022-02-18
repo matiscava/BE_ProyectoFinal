@@ -1,10 +1,11 @@
 import PersistenceFactory from "../daos/index.js";
 import getPersistence from "./getPresistence.js";
+
 class Singleton {
-    constructor() {
-      throw new Error('use Singleton.getInstace()')
-     }
-     static getInstance() {
+  constructor() {
+    throw new Error('use Singleton.getInstace()')
+  }
+  static getInstance() {
       if(!Singleton.instance){
         Singleton.instance= new PersistenceFactory(getPersistence())
       }

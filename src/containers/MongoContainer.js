@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 import options from '../config.js';
 import logger from './../logger/index.js';
 import { asPOJO , renameField , removeField } from '../utils/objectsUtils.js';
-
-
+import mongodb from "mongodb";
+const ObjectId = mongodb.ObjectId;
 class MongoContainer {
   constructor(collection, schema) {
     this.collection = mongoose.model(collection, schema);
@@ -35,11 +35,12 @@ class MongoContainer {
 
   async getById(id) {
     try {
-      const documents = await this.collection.find({ '_id': id },{__v:0})
+      const objID = new ObjectId(id)
+      const documents = await this.collection.find({ '_id': objID },{__v:0})
       if (documents.length === 0) {
         return null;
       } else {
-        const result = renameField(asPOJO(docs[0]), '_id', 'id')  
+        const result = renameField(asPOJO(documents[0]), '_id', 'id')  
         return result;
       }
     } catch (error) {
@@ -190,7 +191,7 @@ class MongoContainer {
         lastname:ticketCompra.lastname,
         email:ticketCompra.email,
         photo:ticketCompra.photo,
-        userId:ticketCompra._id,
+        userId:ticketCompra.id,
         cart:ticketCompra.cart,
         phone:ticketCompra.phone
       }

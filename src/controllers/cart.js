@@ -39,17 +39,13 @@ const addProductToCart = async (req,res) => {
   const productoReq = req.body;
   const carritoElegido = await cartsDao.getById(carritoID);
   const producto = await productsDao.getById(productoReq.id)
-  console.log('producto addProdcutToCart',producto.id);
   const productsList = []
   let cantidadReq = parseInt(productoReq.quantity)
   if( isNaN(cantidadReq) || cantidadReq === null) cantidadReq=1;
   productsList.push(...carritoElegido.products)
-  console.log('productsList addProdcutToCart',productsList);
 
   const prodRepetido = await productsList.find(prod => prod.id === producto.id )
   const filtroIndex = await productsList.findIndex(prod => prod.id === producto.id);
-  console.log('prodRepetido addProdcutToCart',prodRepetido);
-  console.log('filtroIndex addProdcutToCart',filtroIndex);
   
   
   if(prodRepetido && filtroIndex >= 0){
@@ -89,12 +85,14 @@ const addProductToCart = async (req,res) => {
 
 const getCartProducts = async (req,res) => {
     try{
-        console.log('getCArtProducts', cartsDao());
         const carritoID = req.params.id;
         const carritoElegido = await cartsDao.getById(carritoID);
         const productList = await productsDao.getAll();
         const idMongo = req.session && req.session.idMongo;
         const usuario = await usersDao.getById(idMongo);
+
+        console.log('user getCartProducts', usuario);
+
         let precioFinal = 0;
         carritoElegido.products.forEach( (producto) => {
             let subTotal = producto.quantity * producto.price
@@ -104,7 +102,6 @@ const getCartProducts = async (req,res) => {
         if (carritoElegido===undefined){
             res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
         }else{
-            // res.send(carritoElegido)
             res.render(path.join(process.cwd(), '/views/pages/cartView.ejs'), {usuario, cart: carritoElegido, cartID: carritoID, productsList: productList, precioFinal})
       
         }
@@ -147,7 +144,6 @@ const mekeTicket = async ( req , res ) => {
   const idMongo = req.session && req.session.idMongo;
   const usuario = await usersDao.getById(idMongo);
 
-  console.log('usuario make Ticket', typeof usuario);
   let precioFinal = 0;
   carritoElegido.products.forEach( (producto) => {
       let subTotal = producto.quantity * producto.price
