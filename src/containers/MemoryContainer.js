@@ -108,12 +108,8 @@ class MemoryContainer {
         const carrito = this.array;
         const carritoElegido = carrito.find( (carro) => carro.id === parseInt(carritoId) );
         const fecha = new Date().toLocaleString();
-       
         carritoElegido.timestamp = fecha;
-        const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === parseInt(carritoId));
-        carritoElegido.products.push(...producto);
-        this.array.splice(carritoElegidoIndex,1,carritoElegido);
-        
+        carritoElegido.products = producto;
     } catch (error) {
         logger.error('Error: ', error);
         throw error;
