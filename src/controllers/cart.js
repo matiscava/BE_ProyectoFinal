@@ -27,7 +27,7 @@ const createCart = async (req,res)=>{
   if (usuario) {
       logger.info({message: `Carrito creado con el ID ${carritoID}`})
       req.session.carritoID = carritoID;
-      res.redirect(`carrito/${carritoID}/productos`)
+      res.redirect(`carts/${carritoID}/products`)
   }else{
       res.redirect('api/users/login')
   }
@@ -80,7 +80,7 @@ const addProductToCart = async (req,res) => {
           data: carritoActualizado
       })
   }
-  res.redirect(`/api/carrito/${carritoID}/productos`)
+  res.redirect(`/api/carts/${carritoID}/products`)
   }
 
 const getCartProducts = async (req,res) => {

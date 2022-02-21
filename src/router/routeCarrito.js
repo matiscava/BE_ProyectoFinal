@@ -15,11 +15,11 @@ carritoRouter.post('/', cartController.createCart )
 
 //AGREGA LOS PRODUCTOS AL CARRITO INGRESANDO UN ARRAY CON LOS ID Y LA QUANTITY DE CADA UNO
 
-carritoRouter.post('/:id/productos', cartController.addProductToCart )
+carritoRouter.post('/:id/products', cartController.addProductToCart )
 
 //MUESTRA LOS PRODUCTOS DEL CARRITO
 
-carritoRouter.get('/:id/productos', cartController.getCartProducts )
+carritoRouter.get('/:id/products', cartController.getCartProducts )
 
 //BORRA EL CARRITO
 
@@ -27,10 +27,10 @@ carritoRouter.delete('/:id', cartController.removeCart )
 
 //BORRA UN PRODUCTO DEL CARRITO
 
-carritoRouter.delete('/:id/productos/:id_prod', cartController.removeCartProduct )
+carritoRouter.delete('/:id/products/:id_prod', cartController.removeCartProduct )
 
 //FINALIZAR LA COMPRA
 
-carritoRouter.get( '/:id/productos/compra', cartController.mekeTicket )
+carritoRouter.get( '/:id/products/compra', cartController.mekeTicket )
 
 export default carritoRouter;

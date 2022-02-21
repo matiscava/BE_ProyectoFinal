@@ -21,10 +21,10 @@
                 <button class="btnHome" onclick="location.href='/api/users/signup'">
                     Registrarse
                 </button>
-                <button class="btnHome" onclick="location.href='/api/productos'">
+                <button class="btnHome" onclick="location.href='/api/products'">
                     Ir a productos
                 </button>
-                <button class="btnHome" onclick="location.href='/api/carrito'">
+                <button class="btnHome" onclick="location.href='/api/carts'">
                   Ir a carritos
                 </button>
             </div>
@@ -36,10 +36,10 @@
                   <button class="btnHome" onclick="location.href='/api/users/logout'">
                     Desloguear
                   </button>
-                  <button class="btnHome" onclick="location.href='/api/productos'">
+                  <button class="btnHome" onclick="location.href='/api/products'">
                     Ir a productos
                   </button>
-                  <button class="btnHome" onclick="location.href='/api/carrito'">
+                  <button class="btnHome" onclick="location.href='/api/carts'">
                     Ir a carritos
                   </button>
                   <button class="btnHome" onclick="location.href='/api/users/info'">
@@ -61,7 +61,7 @@
                 <p class="productCartPrice">Valor: $<%= product.price %></p>
                 <p class="productCartStock">Stock: <%= product.stock %></p>
               </div>
-              <form action="/api/carrito/<%= cartID %>/productos" method="post" class="productCartForm">
+              <form action="/api/carts/<%= cartID %>/products" method="post" class="productCartForm">
                 <input type="text" name="id" id="id" value="<%=product.id%>" style="display: none;">
                 <label for="quantity" class="cartLabel">Cantidad: <input class="inputQuantity" type="number" name="quantity" id="quantity" min="0" max="<%= product.stock %>" ></label>
                 <button>Agregar al carrito</button>
@@ -93,7 +93,7 @@
 
           <button class="btnBuy" onclick="location.href='/api/users/login'"> Realizar compra </button>
           <% } else { %>
-            <button class="btnBuy" onclick="location.href='/api/carrito/<%= cartID %>/productos/compra'"> Realizar compra </button>
+            <button class="btnBuy" onclick="location.href='/api/carts/<%= cartID %>/products/compra'"> Realizar compra </button>
           <% }%>
         
         </div>

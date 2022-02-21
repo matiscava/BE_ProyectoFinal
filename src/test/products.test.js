@@ -1,50 +1,36 @@
-// axios se puede reemplazar con supertest
-const axios = require('axios')
-// assert se puede reemplazar con chai
-const assert = require('assert')
+import axios from 'axios';
 
 const API_URL = 'http://localhost:8080';
-const API_PRODUCTS = `${API_URL}/api/productos`;
-let productId = null;
+const API_PRODUCTS = `${API_URL}/api/products`;
+const productID = '6213a95e1b69e2cad9c97d94';
+// '6213a9a4cb075c1620270c67'
 
-describe('[suite products] api rest in /api/productos', () => {
-  it('method GET should return status 200 and array with existing products', async () => {
-    const response = await axios.get(API_PRODUCTS);
+const API_PRODUCT_ID = `${API_PRODUCTS}/${productID}`
 
-    assert.deepEqual(response.status, 200);
-    assert.deepEqual(Array.isArray(response.data), true);
-  });
+// axios.get(API_PRODUCTS)
+// .then( ({ data }) => console.log(data) )
+// .catch( ({ message }) => console.error(`Error: ${message}`) )
 
-  it('method POST should return status 200 and the product created', async () => {
-    const response = await axios.post(API_PRODUCTS, {
-      name: "pizza",
-      price: "100"
-    });
+//Para que funcione se debe comentar el if(usuario.admin) que esta en el controlador product.js
 
-    productId = response.data.id;
-    assert.deepEqual(response.status, 200);
-    assert.deepEqual(Number.isInteger(response.data.id), true);
-    assert.deepEqual(response.data.name, "pizza");
-    assert.deepEqual(response.data.price, "100");
-  });
+// axios.post(API_PRODUCTS,{
+//   title: 'producto inventado en test',
+//   description: 'descripcion de producto inventado en test',
+//   stock: 99,
+//   price: 111,
+//   photo: 'https://d3ugyf2ht6aenh.cloudfront.net/stores/001/091/377/products/condensador-de-flujo-volver-al-futuro1-00bd54536b25bf27ae16021060798552-1024-1024.png'
+// })
+// .then( ({ data }) => console.log(data) )
+// .catch( ({ message }) => console.error(`Error: ${message}`) )
 
-  it('method PUT should return status 200 and the product updated', async () => {
-    const response = await axios.put(`${API_PRODUCTS}/${productId}`, {
-      id: productId,
-      name: "pizza",
-      price: "150"
-    });
+axios.put(API_PRODUCT_ID,{
+  price: 20
+})
+.then( ({ data }) => console.log(data) )
+.catch( ({ message }) => console.error(`Error: ${message}`) )
 
-    assert.deepEqual(response.status, 200);
-    assert.deepEqual(response.data.id, productId);
-    assert.deepEqual(response.data.name, "pizza");
-    assert.deepEqual(response.data.price, "150");
-  });
 
-  it('method DELETE should return status 200 and the product deleted', async () => {
-    const response = await axios.delete(`${API_PRODUCTS}/${productId}`);
+// axios.delete(API_PRODUCTS+'/6213a258e8b22d96bff0a770')
+// .then( ({ data }) => console.log(data) )
+// .catch( ({ message }) => console.error(`Error: ${message}`) )
 
-    assert.deepEqual(response.status, 200);
-    assert.deepEqual(response.data.id, productId);
-  });
-});

@@ -91,20 +91,32 @@ class MongoContainer {
       logger.error('Error:', error);
     };
   }
-  async update(id, element) {
-    const fecha = new Date().toLocaleString();
+  async changeProduct(id, element) {
+    try{
 
-    const { n, nModified } = await this.collection.updateOne({ _id: id }, {
-      $set: {element,timestamp:fecha}
-    })
-    if (n == 0 || nModified == 0) {
-      logger.error(`Elemento con el id: '${id}' no fue encontrado`);
-      return null;
+      const fecha = new Date().toLocaleString();
+      const objID = new ObjectId(id)
+  
+      console.log('update element',element);
+
+      const newValues = { $set: {element, timestamp: fecha} };
+  
+      await this.collection.updateOne({ _id: objID }, newValues)
+      // console.log('update cambio', cambio);
+      // if ( cambio === undefined )
+      // if (n == 0 || nModified == 0) {
+        
+      //   logger.error(`Elemento con el id: '${id}' no fue encontrado`);
+      //   return null;
+      // }
+  
+      const elementUpdated = await this.getById(id);
+  
+      return elementUpdated;
+
+    } catch(err) {
+      console.error('Error: ',err);
     }
-
-    const elementUpdated = await this.getById(id);
-
-    return elementUpdated;
   }
   
   async newCarrito(){

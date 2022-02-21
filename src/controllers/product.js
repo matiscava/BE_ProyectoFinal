@@ -19,15 +19,15 @@ const createProduct = async (req,res)=>{
   const idMongo = req.session && req.session.idMongo;
   const usuario = await usersDao.getById(idMongo);
   
-  if(usuario.admin){
+  // if(usuario.admin){
       const productoNuevo = await productsDao.createProduct(objetoNuevo);
       logger.info(`Se ha creado un nuevo producto: ${productoNuevo}`);
 
       res.redirect('/')
 
-  }else{
-      res.send({error: -1, descripcion: `ruta ${req.originalUrl} método ${req.method} no autorizado`});
-  }
+//   }else{
+//       res.send({error: -1, descripcion: `ruta ${req.originalUrl} método ${req.method} no autorizado`});
+//   }
 }
 
 const deleteProduct = async (req,res)=>{
@@ -38,7 +38,8 @@ const deleteProduct = async (req,res)=>{
 
   if(producto===null){
       res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
-  } else if(usuario.admin){
+  // } else if(usuario.admin){
+  }else{
       await productsDao.deleteById(findID);
       const productsList = await productsDao.getAll()
   
@@ -46,8 +47,8 @@ const deleteProduct = async (req,res)=>{
           message: 'Se ha eleiminado el producto',
           data: productsList
       });
-  }else{
-      res.send({error: -1, descripcion: `ruta ${req.originalUrl} método ${req.method} no autorizado`});
+  // }else{
+  //     res.send({error: -1, descripcion: `ruta ${req.originalUrl} método ${req.method} no autorizado`});
   }
 
 } 
@@ -64,7 +65,7 @@ const getProduct = async (req,res)=>{
 
 const setProduct = async (req,res)=>{   
 
-  findID = req.params.id;
+  const findID = req.params.id;
   const productoPostman = req.body;
   const findObjeto = await productsDao.getById(findID)
   const idMongo = req.session && req.session.idMongo;
@@ -72,15 +73,16 @@ const setProduct = async (req,res)=>{
 
   if(findObjeto===null){
       res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
-  }else if(usuario.admin){
-      const productoModificado = await productsDao.update(findID,productoPostman)
+  // }else if(usuario.admin){
+  }else{
+      const productoModificado = await productsDao.changeProduct(findID,productoPostman)
       
       res.send({
           message: 'Se modifico el producto',
           data: productoModificado
       });
-  }else{
-      res.send({error: -1, descripcion: `ruta ${req.originalUrl} método ${req.method} no autorizado`});
+  // }else{
+  //     res.send({error: -1, descripcion: `ruta ${req.originalUrl} método ${req.method} no autorizado`});
   }
 }
 

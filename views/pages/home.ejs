@@ -19,10 +19,10 @@
             <button class="btnHome" onclick="location.href='/api/users/signup'">
                 Registrarse
             </button>
-            <button class="btnHome" onclick="location.href='/api/productos'">
+            <button class="btnHome" onclick="location.href='/api/products'">
                 Ir a productos
             </button>
-            <button class="btnHome" onclick="location.href='/api/carrito'">
+            <button class="btnHome" onclick="location.href='/api/carts'">
               Ver carritos creados
             </button>
             <button class="btnHome" onclick="location.href='/api/users/login'">
@@ -39,10 +39,10 @@
         <button class="btnHome" onclick="location.href='/api/users/logout'">
           Desloguear
        </button>
-        <button class="btnHome" onclick="location.href='/api/productos'">
+        <button class="btnHome" onclick="location.href='/api/products'">
           Ir a productos
         </button>
-        <button class="btnHome" onclick="location.href='/api/carrito'">
+        <button class="btnHome" onclick="location.href='/api/carts'">
           Ver carritos creados
         </button>
         <button class="btnHome" onclick="location.href='/api/users/info'">
@@ -50,11 +50,11 @@
         </button>
       </div>
       <% if (!carritoID){%>
-        <form action="/api/carrito" method="post" autocomplete="off">
+        <form action="/api/carts" method="post" autocomplete="off">
             <button class="formBtn" id="btnNewCarrito">Crear carrito nuevo</button>            
         </form> 
       <%}else{%>
-        <button class="btnHome" onclick="location.href='/api/carrito/<%=carritoID%>/productos'">
+        <button class="btnHome" onclick="location.href='/api/carts/<%=carritoID%>/products'">
           Ir al carrito <%=carritoID%>
        </button>
       <%}%>
