@@ -96,13 +96,14 @@ class MongoContainer {
 
       const fecha = new Date().toLocaleString();
       const objID = new ObjectId(id)
-  
-      console.log('update element',element);
+      const updateValues = {...element,timestamp: fecha}
+      console.log('update element',updateValues);
 
-      const newValues = { $set: {element, timestamp: fecha} };
+
+      const newValues = { $set: updateValues };
   
-      await this.collection.updateOne({ _id: objID }, newValues)
-      // console.log('update cambio', cambio);
+      const cambio = await this.collection.updateOne({ _id: objID }, newValues)
+      console.log('update cambio', cambio);
       // if ( cambio === undefined )
       // if (n == 0 || nModified == 0) {
         

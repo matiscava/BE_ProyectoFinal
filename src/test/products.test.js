@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080';
 const API_PRODUCTS = `${API_URL}/api/products`;
-const productID = 10;
+const productID = '6213a9a4cb075c1620270c67';
 // '6213a9a4cb075c1620270c67'
 // '6213a95e1b69e2cad9c97d94'
 
@@ -24,16 +24,16 @@ const API_PRODUCT_ID = `${API_PRODUCTS}/${productID}`
 // .then( ({ data }) => console.log(data) )
 // .catch( ({ message }) => console.error(`Error: ${message}`) )
 
-// axios.put(API_PRODUCT_ID,{
-//   price: 20,
-//   stock: 1,
-//   title: "producto modificado en test"
-// })
-// .then( ({ data }) => console.log(data) )
-// .catch( ({ message }) => console.error(`Error: ${message}`) )
-
-
-axios.delete(API_PRODUCT_ID)
+axios.put(API_PRODUCT_ID,{
+  price: 20,
+  stock: 1,
+  title: "producto modificado en test"
+})
 .then( ({ data }) => console.log(data) )
 .catch( ({ message }) => console.error(`Error: ${message}`) )
+
+
+// axios.delete(API_PRODUCT_ID)
+// .then( ({ data }) => console.log(data) )
+// .catch( ({ message }) => console.error(`Error: ${message}`) )
 

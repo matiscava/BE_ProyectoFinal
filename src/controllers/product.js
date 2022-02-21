@@ -72,16 +72,16 @@ const setProduct = async (req,res)=>{
 
   if(findObjeto===null){
       res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
-  }else if(usuario.admin){
-  // }else{
+  // }else if(usuario.admin){
+  }else{
       const productoModificado = await productsDao.changeProduct(findID,productoPostman)
       
       res.send({
           message: 'Se modifico el producto',
           data: productoModificado
       });
-  }else{
-      res.send({error: -1, descripcion: `ruta ${req.originalUrl} método ${req.method} no autorizado`});
+  // }else{
+  //     res.send({error: -1, descripcion: `ruta ${req.originalUrl} método ${req.method} no autorizado`});
   }
 }
 
