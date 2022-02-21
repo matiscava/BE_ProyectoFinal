@@ -30,7 +30,7 @@ export default class FileContainer {
             throw error;
         }
     }
-    async save(objetoNuevo){
+    async createProduct(objetoNuevo){
         try{
             const objeto = await this.getAll();
             const fecha = new Date().toLocaleString();
@@ -66,7 +66,7 @@ export default class FileContainer {
             throw error;
         }
     }
-    async update(id,elemento){
+    async changeProduct(id,elemento){
         try{
             const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const lista = JSON.parse(data);

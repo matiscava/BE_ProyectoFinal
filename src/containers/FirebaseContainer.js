@@ -37,7 +37,7 @@ class FirestoreContainer {
             throw error;
         }
     }
-    async save(producto) {
+    async createProduct(producto) {
         try{
             const productsList = await this.getAll();
             const fecha = new Date().toLocaleString();
@@ -93,7 +93,7 @@ class FirestoreContainer {
             throw error;
         }
     }
-    async update(id,element) {
+    async changeProduct(id,element) {
         try{
             const fecha = new Date().toLocaleString();
             const document = this.query.doc(id).update({...element,timestamp:fecha});

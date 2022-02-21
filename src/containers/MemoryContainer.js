@@ -25,7 +25,7 @@ class MemoryContainer {
             throw error;
         }
     }
-    async save(objetoNuevo){
+    async createProduct(objetoNuevo){
         try{
             const objeto = await this.getAll();
             const fecha = new Date().toLocaleString();
@@ -57,7 +57,7 @@ class MemoryContainer {
             throw error;
         }
     }
-    async update(id,elemento){
+    async changeProduct(id,elemento){
         try{
             const data = this.array;
             const elementoGuardado = data.find((obj)=> obj.id === parseInt(id))

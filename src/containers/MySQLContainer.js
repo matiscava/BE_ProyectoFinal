@@ -47,7 +47,7 @@ class MySQLContainer {
       logger.error('Error:', error);
     }
   }
-  async save(producto) {
+  async createProduct(producto) {
     try {
       const fecha = new Date().toLocaleString();
       let nextID = 1;
@@ -96,7 +96,7 @@ class MySQLContainer {
       logger.error('Error:', error);
     };
   }
-  async update(id, element) {
+  async changeProduct(id, element) {
     const fecha = new Date().toLocaleString();
     const productUpdate = {timestamp: fecha,...element};
     await knex.from(this.collection).where('id',id).update(productUpdate)
