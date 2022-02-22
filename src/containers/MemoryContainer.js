@@ -50,6 +50,7 @@ class MemoryContainer {
     }
     async deleteById(idNum){
         try{
+            const lista = await this.getAll();
             const elementoIndex = lista.findIndex((obj)=> obj.id === parseInt(idNum))
             this.array.splice(elementoIndex,1)
         } catch (error) {

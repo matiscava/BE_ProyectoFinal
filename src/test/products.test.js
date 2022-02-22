@@ -24,13 +24,13 @@ const API_PRODUCT_ID = `${API_PRODUCTS}/${productID}`
 // .then( ({ data }) => console.log(data) )
 // .catch( ({ message }) => console.error(`Error: ${message}`) )
 
-axios.put(API_PRODUCT_ID,{
-  price: 20,
-  stock: 1,
-  title: "producto modificado en test"
-})
-.then( ({ data }) => console.log(data) )
-.catch( ({ message }) => console.error(`Error: ${message}`) )
+// axios.put(API_PRODUCT_ID,{
+//   price: 20,
+//   stock: 1,
+//   title: "producto modificado en test"
+// })
+// .then( ({ data }) => console.log(data) )
+// .catch( ({ message }) => console.error(`Error: ${message}`) )
 
 
 // axios.delete(API_PRODUCT_ID)
