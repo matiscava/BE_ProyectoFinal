@@ -76,7 +76,8 @@ class MongoContainer {
   }
   async deleteById(id) {
     try {
-      const response = await this.collection.deleteOne({ _id: id });
+      const objID = new ObjectId(id)
+      const response = await this.collection.deleteOne({ _id: objID });
       logger.warn('deleteById: ', {response});
     }catch (error) {
       logger.error('Error:', error);
