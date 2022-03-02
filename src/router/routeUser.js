@@ -1,6 +1,8 @@
 import express from 'express';
 import passport from 'passport';
 import passportLocal from 'passport-local';
+import { asPOJO , renameField } from '../utils/objectsUtils.js';
+
 
 const LocalStrategy = passportLocal.Strategy
 
@@ -25,13 +27,18 @@ passport.use('signup', new LocalStrategy(
 ) )
 
 passport.serializeUser( ( user , done) => {
-  done( null , user.id);
+  if(typeof user.id === 'object'){
+    const result = asPOJO(user)  
+    done( null , result);
+  }else{
+    done( null , user.id);
+  }
 } )
 passport.deserializeUser( async ( id , done ) => {
-
-      const user = await usersDao.getById(id)
-
-      return done( null , user.id)
+  try{
+    const user = await usersDao.getById(id)
+    return done( null , user.id)
+  }catch(err){console.error('Error:', err);}
 
 } )
 //Login

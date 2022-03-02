@@ -19,5 +19,16 @@
     "photo": "https://www.rionegro.com.ar/wp-content/uploads/2021/09/bilardo0512-954879-e1632857231655.jpg",
     "id": 2,
     "timestamp": "17/2/2022 15:51:52"
+  },
+  {
+    "username": "aaaasss",
+    "password": "$2b$10$g7CcDBeprqCFie0n2guRse3.7AwGzyS6LsM.eU.zPHgn6cnFX3WVW",
+    "email": "matiscava@hotmail.com",
+    "name": "adasda",
+    "lastname": "asdasdad",
+    "phone": "5491155633083",
+    "photo": "asdasda",
+    "id": 3,
+    "timestamp": "2/3/2022 11:21:36"
   }
 ]

@@ -35,6 +35,7 @@ class MongoContainer {
 
   async getById(id) {
     try {
+      console.log('id getById', id);
       const objID = new ObjectId(id)
       const documents = await this.collection.find({ '_id': objID },{__v:0})
       if (documents.length === 0) {
@@ -97,20 +98,12 @@ class MongoContainer {
 
       const fecha = new Date().toLocaleString();
       const objID = new ObjectId(id)
+
       const updateValues = {...element,timestamp: fecha}
-      console.log('update element',updateValues);
-
-
       const newValues = { $set: updateValues };
   
       const cambio = await this.collection.updateOne({ _id: objID }, newValues)
       console.log('update cambio', cambio);
-      // if ( cambio === undefined )
-      // if (n == 0 || nModified == 0) {
-        
-      //   logger.error(`Elemento con el id: '${id}' no fue encontrado`);
-      //   return null;
-      // }
   
       const elementUpdated = await this.getById(id);
   
@@ -187,7 +180,7 @@ class MongoContainer {
       logger.info('Cliente creado', response);
       return document._id;
     }catch(err){
-      logger.error('Error: ', error);
+      logger.error('Error: ', err);
     }
   }
   async findUser (email) {
