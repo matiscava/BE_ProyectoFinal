@@ -35,7 +35,6 @@ class MongoContainer {
 
   async getById(id) {
     try {
-      console.log('id getById', id);
       const objID = new ObjectId(id)
       const documents = await this.collection.find({ '_id': objID },{__v:0})
       if (documents.length === 0) {
