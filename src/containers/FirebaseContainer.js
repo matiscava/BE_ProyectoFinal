@@ -104,7 +104,7 @@ class FirestoreContainer {
         }
     }
     //CARRITO
-    async newCarrito() {
+    async newCart() {
         try{
             const fecha = new Date().toLocaleString();
             let carritoNuevo={timestamp: fecha, products:[] };
@@ -116,7 +116,7 @@ class FirestoreContainer {
             throw error;
         }
     }
-    async getCarrito(carritoId){
+    async getCart(carritoId){
         try{
             const document = await this.query.doc(carritoId).get();
             if(document.empty) {
@@ -130,7 +130,7 @@ class FirestoreContainer {
             throw error;
         }
       }
-    async agregarProductos(carritoId, products) {
+    async addProducts(carritoId, products) {
         try{
             const fecha = new Date().toLocaleString();
             const carritoElegido = await this.getById(carritoId);
@@ -155,7 +155,7 @@ class FirestoreContainer {
             throw error;
           }
     }
-    async vaciarCarrito(carritoId) {
+    async emptyCart(carritoId) {
         try{
             const fecha = new Date().toLocaleString();
             await this.query.doc(carritoId).update({timestamp:fecha,products: []});
@@ -164,7 +164,7 @@ class FirestoreContainer {
             throw error;
         }
     }
-    async borrarItem(carritoId, productoId) {
+    async deleteItem(carritoId, productoId) {
         try{
             const fecha = new Date().toLocaleString();
             const carritoElegido = await this.getById(carritoId);
@@ -178,6 +178,26 @@ class FirestoreContainer {
             logger.error('Error: ', error);
             throw error;
         }
+    }
+    async refreshStock ( cart ) {
+        try{
+            const { products } = cart;
+            const productList = this.getAll();
+            const newStock = []
+            products.forEach(prod => {
+              const productRepeated =  productsList.find( (product) => product.id === prod.id )    
+              productRepeated.stock -= prod.quantity;
+        
+              if(productRepeated.stock < 0) productRepeated.stock=0;
+      
+              newStock.push({id: productRepeated.id, stock: productRepeated.stock})
+              
+            });
+            for( let i = 0 ; i < newStock.length ; i++){
+              const updatedProduct = await this.changeProduct(newStock[i].id , {stock: newStock[i].stock})
+              console.log(`Se ha modificado el producto ${newStock[i].title}`);
+             }
+        }catch(err){logger.error(`Error: ${err}`)}
     }
 }
 

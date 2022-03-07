@@ -106,7 +106,7 @@ class MySQLContainer {
     return elementUpdated;
   }
   
-  async newCarrito(){
+  async newCart(){
     try{
       const fecha = new Date().toLocaleString();
       let carritoNuevo={timestamp: fecha,products: '[]' };
@@ -122,7 +122,7 @@ class MySQLContainer {
     }
   }
 
-  async getCarrito(carritoId){
+  async getCart(carritoId){
     try{
         const item = [];
         await knex.from(this.collection).select('*').where('id',carritoId)
@@ -138,7 +138,7 @@ class MySQLContainer {
     }
   }
 
-  async agregarProductos(carritoId,productos){
+  async addProducts(carritoId,productos){
     try {
       const fecha = new Date().toLocaleString();
       let carritoModificado; 
@@ -174,7 +174,7 @@ class MySQLContainer {
     }
   }
 
-  async vaciarCarrito(carritoId){
+  async emptyCart(carritoId){
     try{
       const fecha = new Date().toLocaleString();
       await knex.from(this.collection).where('id',carritoId).update({timestamp:fecha,products: '[]'});
@@ -183,7 +183,7 @@ class MySQLContainer {
         throw error;
     }
   }
-  async borrarItem(carritoId, productoId){
+  async deleteItem(carritoId, productoId){
     try{
         const fecha = new Date().toLocaleString();
         const productsList = [];
@@ -208,6 +208,26 @@ class MySQLContainer {
         logger.error('Error: ', error);
         throw error;
     }
+}
+async refreshStock ( cart ) {
+  try{
+    const { products } = cart;
+    const productList = this.getAll();
+    const newStock = []
+    products.forEach(prod => {
+      const productRepeated =  productsList.find( (product) => product.id === prod.id )    
+      productRepeated.stock -= prod.quantity;
+
+      if(productRepeated.stock < 0) productRepeated.stock=0;
+
+      newStock.push({id: productRepeated.id, stock: productRepeated.stock})
+      
+    });
+    for( let i = 0 ; i < newStock.length ; i++){
+      const updatedProduct = await this.changeProduct(newStock[i].id , {stock: newStock[i].stock})
+      console.log(`Se ha modificado el producto ${newStock[i].title}`);
+     }
+  }catch(err){logger.error(`Error: ${err}`)}
 }
 }
 

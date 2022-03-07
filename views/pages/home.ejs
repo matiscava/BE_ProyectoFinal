@@ -51,7 +51,7 @@
       </div>
       <% if (!carritoID){%>
         <form action="/api/carts" method="post" autocomplete="off">
-            <button class="formBtn" id="btnNewCarrito">Crear carrito nuevo</button>            
+            <button class="formBtn" id="btnnewCart">Crear carrito nuevo</button>            
         </form> 
       <%}else{%>
         <button class="btnHome" onclick="location.href='/api/carts/<%=carritoID%>/products'">

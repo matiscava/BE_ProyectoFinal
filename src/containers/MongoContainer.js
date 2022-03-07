@@ -74,6 +74,7 @@ class MongoContainer {
       logger.error(error); throw error;
     }
   }
+
   async deleteById(id) {
     try {
       const objID = new ObjectId(id)
@@ -92,6 +93,7 @@ class MongoContainer {
       logger.error('Error:', error);
     };
   }
+
   async changeProduct(id, element) {
     try{
 
@@ -113,7 +115,7 @@ class MongoContainer {
     }
   }
   
-  async newCarrito(){
+  async newCart(){
     try{
         const fecha = new Date().toLocaleString();
         let carritoNuevo={timestamp: fecha, products:[] };
@@ -126,7 +128,8 @@ class MongoContainer {
         throw error;
     }
   }
-  async agregarProductos(carritoId,productos){
+
+  async addProducts(carritoId,productos){
     try {
       const prod = productos;
       // logger.info('produto',prod);
@@ -134,14 +137,14 @@ class MongoContainer {
       const documents = await this.collection.updateOne({ _id: carritoId },{
         $set:{products:prod,timestamp: fecha}
       })
-      // logger.info('document', await this.getCarrito(carritoId));
+      // logger.info('document', await this.getCart(carritoId));
     } catch (error) {
       logger.error('Error: ', error);
       throw error;
     }
   }
 
-  async getCarrito(carritoId){
+  async getCart(carritoId){
     try{
       const documents = await this.collection.find({ _id: carritoId },{__v:0})
         return documents;
@@ -150,7 +153,8 @@ class MongoContainer {
         throw error;
     }
   }
-  async vaciarCarrito(carritoId){
+
+  async emptyCart(carritoId){
     try{
       const fecha = new Date().toLocaleString();
 
@@ -162,7 +166,8 @@ class MongoContainer {
         throw error;
     }
   }
-  async borrarItem(carritoId, productoId){
+
+  async deleteItem(carritoId, productoId){
     try{
       this.collection.findOneAndDelete({ _id: carritoId },{products:[{_id:productoId}]});
       this.collection.updateOne({ _id: carritoId },{$set: {timestamp:fecha}});
@@ -172,6 +177,7 @@ class MongoContainer {
         throw error;
     }
   }
+
   async createUser (user) {
     try{
       const document = await this.collection(user);
@@ -182,6 +188,7 @@ class MongoContainer {
       logger.error('Error: ', err);
     }
   }
+
   async findUser (email) {
     try{
       const user = await this.collection.findOne({email: email}, {__v: 0});
@@ -207,6 +214,29 @@ class MongoContainer {
       logger.info('Ticket creado', response);
       return document._id;
     }catch(err){logger.error(`Error: ${err}`)}
+  }
+
+  async refreshStock (cart) {
+    try{
+      const { products } = cart;
+      const productsList = await this.getAll();
+      const newStock = []
+      products.forEach(prod => {
+        const productRepeated =  productsList.find( (product) => product.id === prod.id )    
+        productRepeated.stock -= prod.quantity;
+  
+        if(productRepeated.stock < 0) productRepeated.stock=0;
+
+        newStock.push({id: productRepeated.id, stock: productRepeated.stock})
+        
+      });
+
+   for( let i = 0 ; i < newStock.length ; i++){
+     const updatedProduct = await this.changeProduct(newStock[i].id , {stock: newStock[i].stock})
+     console.log(`Se ha modificado el producto ${newStock[i].title}`);
+    }
+    }catch(err){logger.error(`Error: ${err}`)}
+    
   }
 }
 

@@ -1,1 +1,37 @@
-[]
+{
+  "username": "matiscava",
+  "name": "mati",
+  "lastname": "scava",
+  "email": "matiscava@hotmail.com",
+  "photo": "https://i.pinimg.com/originals/dc/ab/b7/dcabb7fbb2f763d680d20a3d228cc6f9.jpg",
+  "userId": 1,
+  "cart": {
+    "id": 3,
+    "timestamp": "7/3/2022 16:10:11",
+    "products": [
+      {
+        "title": "Pico Dulce",
+        "timestamp": "26/10/2021 11:47:36",
+        "description": "Chupetin multicolor",
+        "code": 2,
+        "stock": 10,
+        "price": 20,
+        "photo": "https://almacencooperativo.com.ar/wp-content/uploads/2020/11/picodulce.jpg",
+        "id": 2,
+        "quantity": 1
+      },
+      {
+        "title": "Naranju",
+        "timestamp": "26/10/2021 11:47:36",
+        "description": "Jugo de fruta congelado en empaque de dudosa procedencia",
+        "code": 4,
+        "stock": 8,
+        "price": 50,
+        "photo": "https://cotillongonic.com.ar/wp-content/uploads/2020/10/NARANJUGONIC.jpg",
+        "id": 4,
+        "quantity": 1
+      }
+    ]
+  },
+  "phone": "5491155633083"
+}

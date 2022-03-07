@@ -16,7 +16,6 @@ const loginUser = async ( req , res ) => {
   }else{
 
       const idMongo = req.session && req.session.idMongo;
-      console.log('idMOngo loginUSer', idMongo);
       if(idMongo !== undefined){
         const usuario = await usersDao.getById(idMongo);
         if (usuario) {
@@ -93,7 +92,6 @@ const infoUser = async ( req , res ) => {
 const loginPassportUser =   async (username , password , done ) => {
   const user = await usersDao.findUser(username);
   
-  console.log('loginPassportUser',user);
   if (!user) {
       logger.info('User Not Found with username ',username);
       return done ( null , false )

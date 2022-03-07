@@ -79,7 +79,7 @@ class MemoryContainer {
             throw error;
         }
     }
-    async newCarrito(){
+    async newCart(){
         try{
             const objeto = this.array;
             let nextID = 1;
@@ -103,7 +103,7 @@ class MemoryContainer {
             throw error;
         }
     }
-    async agregarProductos(carritoId,producto){
+    async addProducts(carritoId,producto){
         try {
         
         const carrito = this.array;
@@ -144,7 +144,7 @@ class MemoryContainer {
             throw error;
         }
     }
-    async getCarrito(carritoId){
+    async getCart(carritoId){
         try{
             const carrito = this.array;
             const carritoElegido = await carrito.find( (carro) => carro.id === parseInt(carritoId) );
@@ -156,7 +156,7 @@ class MemoryContainer {
         }
     }
 
-    async vaciarCarrito(carritoId){
+    async emptyCart(carritoId){
         try{
             const carrito = this.array;
             const carritoElegidoIndex = carrito.findIndex((carro) => carro.id === parseInt(carritoId));
@@ -166,7 +166,7 @@ class MemoryContainer {
             throw error;
         }
     }
-    async borrarItem(carritoId, productoId){
+    async deleteItem(carritoId, productoId){
         try{
             const carrito = this.array;
 
@@ -190,6 +190,47 @@ class MemoryContainer {
             logger.error('Error: ', error);
             throw error;
         }
+    }
+
+    async createTicket (ticketCompra) {
+        try{
+            const newTicket = {
+                username: ticketCompra.username,
+                name:ticketCompra.name,
+                lastname:ticketCompra.lastname,
+                email:ticketCompra.email,
+                photo:ticketCompra.photo,
+                userId:ticketCompra.id,
+                cart:ticketCompra.cart,
+                phone:ticketCompra.phone
+              }
+              logger.info(newTicket);
+              this.array.push(newTicket);
+                
+            //   logger.info('Ticket creado', dataToJSON);
+              return document.id;
+            }catch(err){logger.error(`Error: ${err}`)}
+      }
+
+    async refreshStock ( cart ) {
+        try{
+            const { products } = cart;
+            const productsList = await this.getAll();
+            const newStock = []
+            products.forEach(prod => {
+              const productRepeated =  productsList.find( (product) => product.id === prod.id )    
+              productRepeated.stock -= prod.quantity;
+        
+              if(productRepeated.stock < 0) productRepeated.stock=0;
+      
+              newStock.push({id: productRepeated.id, stock: productRepeated.stock})
+              
+            });
+            for( let i = 0 ; i < newStock.length ; i++){
+              const updatedProduct = await this.changeProduct(newStock[i].id , {stock: newStock[i].stock})
+              console.log(`Se ha modificado el producto ${newStock[i].title}`);
+             }
+        }catch(err){logger.error(`Error: ${err}`)}
     }
 }
 

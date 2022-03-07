@@ -8,7 +8,7 @@ import Singleton from '../utils/Singleton.js';
 
 const { daos } = Singleton.getInstance()
 
-const { productsDao , usersDao , cartsDao , ticketsDao} = daos;
+const { productsDao , usersDao , cartsDao , ticketsDao } = daos;
 
 
 const getAll = async (req,res)=>{   
@@ -16,20 +16,20 @@ const getAll = async (req,res)=>{
   const carritoID = req.session && req.session.carritoID;
   const usuario = await usersDao.getById(idMongo);
   const listaCarritos = await cartsDao.getAll();
-  const carrito = await cartsDao.getCarrito(carritoID)
+  const carrito = await cartsDao.getCart(carritoID)
   res.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario, carrito: carrito, listaCarritos})
 }
 
 const createCart = async (req,res)=>{
-  const carritoID = await cartsDao.newCarrito();
-  const idMongo = req.session && req.session.idMongo;
-  const usuario = await usersDao.getById(idMongo);
-  if (usuario) {
+    const idMongo = req.session && req.session.idMongo;
+    const usuario = await usersDao.getById(idMongo);
+    if (usuario) {
+      const carritoID = await cartsDao.newCart();
       logger.info({message: `Carrito creado con el ID ${carritoID}`})
       req.session.carritoID = carritoID;
       res.redirect(`carts/${carritoID}/products`)
   }else{
-      res.redirect('api/users/login')
+      res.redirect('users/login')
   }
 }
 
@@ -49,14 +49,11 @@ const addProductToCart = async (req,res) => {
   
   
   if(prodRepetido && filtroIndex >= 0){
-      console.log('repetido');
       productsList[filtroIndex].quantity += cantidadReq;
       if (productsList[filtroIndex].quantity > productsList[filtroIndex].stock){
           productsList[filtroIndex].quantity = productsList[filtroIndex].stock
       }
   }else{
-    console.log('no repetido');
-
       let productoACargar = {...producto,quantity:cantidadReq}
       productsList.push(productoACargar)
   }
@@ -64,10 +61,10 @@ const addProductToCart = async (req,res) => {
   if (carritoElegido===undefined){
       res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
   }else{
-      await cartsDao.agregarProductos(carritoID,productsList);
+      await cartsDao.addProducts(carritoID,productsList);
   }
       
-    const carritoActualizado = await cartsDao.getCarrito(carritoID);
+    const carritoActualizado = await cartsDao.getCart(carritoID);
   if(error.length!==0){
       logger.info({
           message: 'Se ha modificado el carrito',
@@ -91,8 +88,6 @@ const getCartProducts = async (req,res) => {
         const idMongo = req.session && req.session.idMongo;
         const usuario = await usersDao.getById(idMongo);
 
-        console.log('user getCartProducts', usuario);
-
         let precioFinal = 0;
         carritoElegido.products.forEach( (producto) => {
             let subTotal = producto.quantity * producto.price
@@ -110,11 +105,11 @@ const getCartProducts = async (req,res) => {
 
 const removeCart = async (req,res) => {
   const carritoID = req.params.id;
-  const carritoElegido = await cartsDao.getCarrito(carritoID);
+  const carritoElegido = await cartsDao.getCart(carritoID);
   if (carritoElegido===undefined){
       res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
   }else{
-      await cartsDao.vaciarCarrito(carritoID);
+      await cartsDao.emptyCart(carritoID);
       res.send({message: `Se ha vaciado el carrito ID ${carritoID}`})
   }
 }
@@ -123,13 +118,13 @@ const removeCartProduct = async (req,res) => {
   const carritoID = req.params.id;
   const productoID = req.params.id_prod;
   const producto = await productsDao.getById(productoID);
-  const carritoElegido = await cartsDao.getCarrito(carritoID);
+  const carritoElegido = await cartsDao.getCart(carritoID);
   if(producto===null){
       res.send({error: -3, descripcion: `el producto ID ${productoID} no existe ingrese otro ID`});
   }else if (carritoElegido===undefined){
       res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
   }else{
-      const eliminado =  await cartsDao.borrarItem(carritoID, productoID);
+      const eliminado =  await cartsDao.deleteItem(carritoID, productoID);
       if(eliminado){
           res.send({message: `Se ha eliminado el producto ID ${productoID} del carrito ID ${carritoID}`})
       }else{
@@ -183,6 +178,8 @@ const mekeTicket = async ( req , res ) => {
       }
       logger.info(info);
     })
+
+    await productsDao.refreshStock(carritoElegido)
   await cartsDao.deleteById(carritoID)
   
 

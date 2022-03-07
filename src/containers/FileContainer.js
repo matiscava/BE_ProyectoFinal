@@ -90,7 +90,7 @@ export default class FileContainer {
             throw error;
         }
     }
-    async newCarrito(){
+    async newCart(){
         try{
             const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const objeto = JSON.parse(data);
@@ -116,7 +116,7 @@ export default class FileContainer {
             throw error;
         }
     }
-    async agregarProductos(carritoId,producto){
+    async addProducts(carritoId,producto){
         try {
             const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const carrito = JSON.parse(data);
@@ -162,7 +162,7 @@ export default class FileContainer {
             throw error;
         }
     }
-    async getCarrito(carritoId){
+    async getCart(carritoId){
         try{
             const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const carrito = JSON.parse(data);
@@ -175,7 +175,7 @@ export default class FileContainer {
         }
     }
 
-    async vaciarCarrito(carritoId){
+    async emptyCart(carritoId){
         try{
             const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const carrito = JSON.parse(data);
@@ -187,7 +187,7 @@ export default class FileContainer {
             throw error;
         }
     }
-    async borrarItem(carritoId, productoId){
+    async deleteItem(carritoId, productoId){
         try{
             const data = await fs.promises.readFile(this.archivo, 'utf-8');
             const carrito = JSON.parse(data);
@@ -264,10 +264,30 @@ export default class FileContainer {
             phone:ticketCompra.phone
           }
           logger.info(newTicket);
-          const document = await new this.collection(newTicket);
-          const response = await document.save()
-          logger.info('Ticket creado', response);
+          const dataToJSON = JSON.stringify(newTicket,null,2);
+            fs.writeFileSync(`${this.archivo}` , dataToJSON);
+          logger.info('Ticket creado', dataToJSON);
           return document.id;
         }catch(err){logger.error(`Error: ${err}`)}
+      }
+      async refreshStock ( cart ) {
+          try{
+              const { products } = cart;
+              const productsList = await this.getAll();
+              const newStock = []
+              products.forEach(prod => {
+                const productRepeated =  productsList.find( (product) => product.id === prod.id )    
+                productRepeated.stock -= prod.quantity;
+          
+                if(productRepeated.stock < 0) productRepeated.stock=0;
+        
+                newStock.push({id: productRepeated.id, stock: productRepeated.stock})
+                
+              });
+              for( let i = 0 ; i < newStock.length ; i++){
+                const updatedProduct = await this.changeProduct(newStock[i].id , {stock: newStock[i].stock})
+                console.log(`Se ha modificado el producto ${newStock[i].title}`);
+               }
+          }catch(err){logger.error(`Error: ${err}`)}
       }
 }
