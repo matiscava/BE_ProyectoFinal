@@ -1,5 +1,11 @@
-import express from 'express';
-const carritoRouter = express.Router();
+// import express from 'express';
+// const carritoRouter = express.Router();
+
+import Router from 'koa-router';
+
+const carritoRouter = new Router({
+  prefix: '/carts'
+});
 
 import cartController from './../controllers/cart.js';
 

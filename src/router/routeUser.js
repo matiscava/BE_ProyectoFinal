@@ -1,10 +1,14 @@
-import express from 'express';
+// import express from 'express';
 import passport from 'passport';
 import passportLocal from 'passport-local';
+import Router from 'koa-router';
 
 const LocalStrategy = passportLocal.Strategy
 
-const usersRouter = express.Router();
+// const usersRouter = express.Router();
+const usersRouter = new Router({
+  prefix: '/users'
+});
 
 import userController from '../controllers/user.js';
 

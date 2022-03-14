@@ -11,20 +11,20 @@ const { daos } = Singleton.getInstance()
 const {usersDao} = daos;
 
 const loginUser = async ( req , res ) => {
-  if (req.isAuthenticated()) {
-      res.redirect('/')
+  if (ctx.request.isAuthenticated()) {
+      ctx.response.redirect('/')
   }else{
 
-      const idMongo = req.session && req.session.idMongo;
+      const idMongo = ctx.request.session && ctx.request.session.idMongo;
       console.log('idMOngo loginUSer', idMongo);
       if(idMongo !== undefined){
         const usuario = await usersDao.getById(idMongo);
         if (usuario) {
-            res.redirect('/')
+            ctx.response.redirect('/')
   
         } 
       } else {
-        res.render(path.join(process.cwd(), '/views/pages/login.ejs'))
+        ctx.response.render(path.join(process.cwd(), '/views/pages/login.ejs'))
     }
 
 
@@ -32,58 +32,58 @@ const loginUser = async ( req , res ) => {
 }
 
 const postLoginUser = async ( req , res ) => {
-  const { username , password } = req.body;
+  const { username , password } = ctx.request.body;
   const user = await usersDao.findUser(username);
 
-  req.session.idMongo = user.id;
+  ctx.request.session.idMongo = user.id;
 
-  res.redirect('/');
+  ctx.response.redirect('/');
 }
 
 const failLoginUser = (req , res) => {
-  res.render(path.join(process.cwd(), '/views/pages/faillogin.ejs'))
+  ctx.response.render(path.join(process.cwd(), '/views/pages/faillogin.ejs'))
 }
 
 const logoutUser = async ( req , res ) => {
-  const idMongo = req.session && req.session.idMongo;
+  const idMongo = ctx.request.session && ctx.request.session.idMongo;
   const usuario = await usersDao.getById(idMongo);
 
   if (usuario) {
-      req.session.destroy(error => {
+      ctx.request.session.destroy(error => {
           if (!error) {
-              res.render(path.join(process.cwd(), '/views/pages/logout.ejs'), { nombre: usuario.username})
+              ctx.response.render(path.join(process.cwd(), '/views/pages/logout.ejs'), { nombre: usuario.username})
           } else {
-              res.redirect('/')
+              ctx.response.redirect('/')
           }
       })
   } else {
-      res.redirect('/')
+      ctx.response.redirect('/')
   }
 }
 
 const signupUser = ( req , res ) => {
-  res.render(path.join(process.cwd(), '/views/pages/signup.ejs'))
+  ctx.response.render(path.join(process.cwd(), '/views/pages/signup.ejs'))
 }
 const postSingupUser = async ( req , res ) => {
-  const user = req.user;
-  if ( user) res.redirect('/')
+  const user = ctx.request.user;
+  if ( user) ctx.response.redirect('/')
   else {
       let problema = 'user error signup';
-      res.render(path.join(process.cwd(), '/views/pages/error.ejs'),{problema: problema, link: '/signup'})
+      ctx.response.render(path.join(process.cwd(), '/views/pages/error.ejs'),{problema: problema, link: '/signup'})
   }
 }
 const failSingupUser = (req , res) => {
-  res.render(path.join(process.cwd(), '/views/pages/failsignup.ejs'))
+  ctx.response.render(path.join(process.cwd(), '/views/pages/failsignup.ejs'))
 }
 
 const infoUser = async ( req , res ) => {
-  const idMongo = req.session && req.session.idMongo;
+  const idMongo = ctx.request.session && ctx.request.session.idMongo;
   const usuario = await usersDao.getById(idMongo);
 
   if (!usuario) {
-    res.redirect('/api/users/login')
+    ctx.response.redirect('/api/users/login')
   }else{
-    res.render(path.join(process.cwd(), '/views/pages/info.ejs'),{usuario})
+    ctx.response.render(path.join(process.cwd(), '/views/pages/info.ejs'),{usuario})
   }
 
 }
@@ -115,26 +115,26 @@ const signupPassportUser =   async (req , username , email , done ) => {
       logger.info('User already exists');
       return done( null , false )
   } 
-  logger.info('prueba passport',req.body);
-  if( req.body.photo === '') {
+  logger.info('prueba passport',ctx.request.body);
+  if( ctx.request.body.photo === '') {
     photo = 'https://static.diariosur.es/www/pre2017/multimedia/RC/201501/12/media/cortadas/avatar--320x378.jpg'
   }else{
-    photo = req.body.photo
+    photo = ctx.request.body.photo
   }
   const newUser = {
-      username: req.body.username,
-      password: createHash(req.body.password),
-      email: req.body.email,
-      name: req.body.name,
-      lastname: req.body.lastname,
-      phone: req.body.phone,
+      username: ctx.request.body.username,
+      password: createHash(ctx.request.body.password),
+      email: ctx.request.body.email,
+      name: ctx.request.body.name,
+      lastname: ctx.request.body.lastname,
+      phone: ctx.request.body.phone,
       photo: photo
   }
 
   const idUser = await usersDao.createUser(newUser)
   logger.info('User register succesful iD ',idUser);
-  req.session.idMongo = idUser;
-  transporter.sendMail(newUserMailOptions(req.body.username , photo), ( err , info ) => {
+  ctx.request.session.idMongo = idUser;
+  transporter.sendMail(newUserMailOptions(ctx.request.body.username , photo), ( err , info ) => {
     if(err) {
       logger.error(err);
       return err
@@ -144,15 +144,15 @@ const signupPassportUser =   async (req , username , email , done ) => {
   return done( null , idUser)
 }
 
-const getHome = async (req,res)=>{   
-  const idMongo = req.session && req.session.idMongo;
-  const carritoID = req.session && req.session.carritoID;
+const getHome = async (ctx)=>{   
+  const idMongo = ctx.request.session && ctx.request.session.idMongo;
+  const carritoID = ctx.request.session && ctx.request.session.carritoID;
   if (idMongo===undefined){
-    res.render(path.join(process.cwd(), '/views/pages/home.ejs'), {usuario: null , carritoID: carritoID})
+    ctx.response.render(path.join(process.cwd(), '/views/pages/home.ejs'), {usuario: null , carritoID: carritoID})
   }else{  
     const usuario = await usersDao.getById(idMongo);
   
-    res.render(path.join(process.cwd(), '/views/pages/home.ejs'), {usuario: usuario, carritoID: carritoID})
+    ctx.response.render(path.join(process.cwd(), '/views/pages/home.ejs'), {usuario: usuario, carritoID: carritoID})
   }
 }
 

@@ -1,5 +1,11 @@
-import express from 'express';
-const productosRouter = express.Router();
+// import express from 'express';
+import Router from 'koa-router';
+
+// const productosRouter = express.Router();
+
+const productosRouter = new Router({
+  prefix: '/products'
+});
 
 import productController from '../controllers/product.js'
 

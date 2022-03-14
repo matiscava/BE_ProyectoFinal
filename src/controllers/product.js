@@ -6,81 +6,81 @@ import Singleton from '../utils/Singleton.js';
 const { daos } = Singleton.getInstance()
 const { productsDao , usersDao } = daos
 
-const getAll = async (req,res)=>{  
+const getAll = async (ctx)=>{  
   const data = await productsDao.getAll();
-  const idMongo = req.session && req.session.idMongo;
+  const idMongo = ctx.request.session && ctx.request.session.idMongo;
   const usuario = await usersDao.getById(idMongo);
-  // res.send(data)
-  res.render(path.join(process.cwd(), '/views/pages/products.ejs'), {usuario: usuario, productsList: data})
+  // ctx.response.send(data)
+  ctx.response.render(path.join(process.cwd(), '/views/pages/products.ejs'), {usuario: usuario, productsList: data})
 }
 
-const createProduct = async (req,res)=>{
-  const objetoNuevo = req.body;
-  const idMongo = req.session && req.session.idMongo;
+const createProduct = async (ctx)=>{
+  const objetoNuevo = ctx.request.body;
+  const idMongo = ctx.request.session && ctx.request.session.idMongo;
   const usuario = await usersDao.getById(idMongo);
   
   if(usuario.admin){
       const productoNuevo = await productsDao.createProduct(objetoNuevo);
       logger.info(`Se ha creado un nuevo producto: ${productoNuevo}`);
 
-      res.redirect('/')
+      ctx.response.redirect('/')
 
   }else{
-      res.send({error: -1, descripcion: `ruta ${req.originalUrl} método ${req.method} no autorizado`});
+      ctx.response.send({error: -1, descripcion: `ruta ${ctx.request.originalUrl} método ${ctx.request.method} no autorizado`});
   }
 }
 
-const deleteProduct = async (req,res)=>{
-  const findID = req.params.id;
+const deleteProduct = async (ctx)=>{
+  const findID = ctx.request.params.id;
   const producto = await productsDao.getById(findID);
-  const idMongo = req.session && req.session.idMongo;
+  const idMongo = ctx.request.session && ctx.request.session.idMongo;
   const usuario = await usersDao.getById(idMongo);
 
   if(producto===null){
-      res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
+      ctx.response.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
   } else if(usuario.admin){
       await productsDao.deleteById(findID);
       const productsList = await productsDao.getAll()
   
-      res.send({
+      ctx.response.send({
           message: 'Se ha eleiminado el producto',
           data: productsList
       });
   }else{
-      res.send({error: -1, descripcion: `ruta ${req.originalUrl} método ${req.method} no autorizado`});
+      ctx.response.send({error: -1, descripcion: `ruta ${ctx.request.originalUrl} método ${ctx.request.method} no autorizado`});
   }
 
 } 
 
-const getProduct = async (req,res)=>{   
-  const findID = req.params.id;
+const getProduct = async (ctx)=>{   
+  const findID = ctx.request.params.id;
   const findObjeto = await productsDao.getById(findID)
   if(findObjeto===null){
-      res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
+      ctx.response.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
   }else{
-      res.json(findObjeto);
+      ctx.response.json(findObjeto);
   }
 }
 
-const setProduct = async (req,res)=>{   
+const setProduct = async (ctx)=>{   
 
-  findID = req.params.id;
-  const productoPostman = req.body;
+  findID = ctx.request.params.id;
+  const productoPostman = ctx.request.body;
   const findObjeto = await productsDao.getById(findID)
-  const idMongo = req.session && req.session.idMongo;
+  const idMongo = ctx.request.session && ctx.request.session.idMongo;
   const usuario = await usersDao.getById(idMongo);
 
   if(findObjeto===null){
-      res.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
+      ctx.response.send({error: -3, descripcion: `el objeto ID ${findID} no existe ingrese otro ID`});
   }else if(usuario.admin){
       const productoModificado = await productsDao.update(findID,productoPostman)
       
-      res.send({
+      ctx.response.send({
           message: 'Se modifico el producto',
           data: productoModificado
       });
   }else{
-      res.send({error: -1, descripcion: `ruta ${req.originalUrl} método ${req.method} no autorizado`});
+      ctx.response.send({error: -1, descripcion: `ruta ${ctx.request.originalUrl} método ${ctx.request.method} no autorizado`});
   }
 }
 

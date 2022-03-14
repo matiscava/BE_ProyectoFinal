@@ -11,32 +11,32 @@ const { daos } = Singleton.getInstance()
 const { productsDao , usersDao , cartsDao , ticketsDao} = daos;
 
 
-const getAll = async (req,res)=>{   
-  const idMongo = req.session && req.session.idMongo;
-  const carritoID = req.session && req.session.carritoID;
+const getAll = async (ctx)=>{   
+  const idMongo = ctx.request.session && ctx.request.session.idMongo;
+  const carritoID = ctx.request.session && ctx.request.session.carritoID;
   const usuario = await usersDao.getById(idMongo);
   const listaCarritos = await cartsDao.getAll();
   const carrito = await cartsDao.getCarrito(carritoID)
-  res.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario, carrito: carrito, listaCarritos})
+  ctx.response.render(path.join(process.cwd(), '/views/pages/carts.ejs'), {usuario: usuario, carrito: carrito, listaCarritos})
 }
 
-const createCart = async (req,res)=>{
+const createCart = async (ctx)=>{
   const carritoID = await cartsDao.newCarrito();
-  const idMongo = req.session && req.session.idMongo;
+  const idMongo = ctx.request.session && ctx.request.session.idMongo;
   const usuario = await usersDao.getById(idMongo);
   if (usuario) {
-      logger.info({message: `Carrito creado con el ID ${carritoID}`})
-      req.session.carritoID = carritoID;
-      res.redirect(`carrito/${carritoID}/productos`)
+    logger.info({message: `Carrito creado con el ID ${carritoID}`})
+    ctx.request.session.carritoID = carritoID;
+    ctx.response.redirect(`carrito/${carritoID}/productos`)
   }else{
-      res.redirect('api/users/login')
+    ctx.response.redirect('api/users/login')
   }
 }
 
-const addProductToCart = async (req,res) => {
-  const carritoID = req.params.id;
+const addProductToCart = async (ctx) => {
+  const carritoID = ctx.request.params.id;
   const error = []
-  const productoReq = req.body;
+  const productoReq = ctx.request.body;
   const carritoElegido = await cartsDao.getById(carritoID);
   const producto = await productsDao.getById(productoReq.id)
   const productsList = []
@@ -62,33 +62,33 @@ const addProductToCart = async (req,res) => {
   }
   
   if (carritoElegido===undefined){
-      res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
+      ctx.response.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
   }else{
       await cartsDao.agregarProductos(carritoID,productsList);
   }
       
     const carritoActualizado = await cartsDao.getCarrito(carritoID);
   if(error.length!==0){
-      logger.info({
-          message: 'Se ha modificado el carrito',
-          data: carritoActualizado,
-          error: error
-      })
+    logger.info({
+        message: 'Se ha modificado el carrito',
+        data: carritoActualizado,
+        error: error
+    })
   }else{
-      logger.info({
-          message: 'Se ha modificado el carrito',
-          data: carritoActualizado
-      })
+    logger.info({
+        message: 'Se ha modificado el carrito',
+        data: carritoActualizado
+    })
   }
-  res.redirect(`/api/carrito/${carritoID}/productos`)
+    ctx.response.redirect(`/api/carrito/${carritoID}/productos`)
   }
 
-const getCartProducts = async (req,res) => {
+const getCartProducts = async (ctx) => {
     try{
-        const carritoID = req.params.id;
+        const carritoID = ctx.request.params.id;
         const carritoElegido = await cartsDao.getById(carritoID);
         const productList = await productsDao.getAll();
-        const idMongo = req.session && req.session.idMongo;
+        const idMongo = ctx.request.session && ctx.request.session.idMongo;
         const usuario = await usersDao.getById(idMongo);
 
         console.log('user getCartProducts', usuario);
@@ -100,48 +100,48 @@ const getCartProducts = async (req,res) => {
         });
       
         if (carritoElegido===undefined){
-            res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
+            ctx.response.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingresponsee otro ID`});
         }else{
-            res.render(path.join(process.cwd(), '/views/pages/cartView.ejs'), {usuario, cart: carritoElegido, cartID: carritoID, productsList: productList, precioFinal})
+            ctx.response.render(path.join(process.cwd(), '/views/pages/cartView.ejs'), {usuario, cart: carritoElegido, cartID: carritoID, productsList: productList, precioFinal})
       
         }
     }catch(err){console.error('error:',err);}
 }
 
-const removeCart = async (req,res) => {
-  const carritoID = req.params.id;
+const removeCart = async (ctx) => {
+  const carritoID = ctx.request.params.id;
   const carritoElegido = await cartsDao.getCarrito(carritoID);
   if (carritoElegido===undefined){
-      res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
+      ctx.response.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
   }else{
       await cartsDao.vaciarCarrito(carritoID);
-      res.send({message: `Se ha vaciado el carrito ID ${carritoID}`})
+      ctx.response.send({message: `Se ha vaciado el carrito ID ${carritoID}`})
   }
 }
 
-const removeCartProduct = async (req,res) => {
-  const carritoID = req.params.id;
-  const productoID = req.params.id_prod;
+const removeCartProduct = async (ctx) => {
+  const carritoID = ctx.request.params.id;
+  const productoID = ctx.request.params.id_prod;
   const producto = await productsDao.getById(productoID);
   const carritoElegido = await cartsDao.getCarrito(carritoID);
   if(producto===null){
-      res.send({error: -3, descripcion: `el producto ID ${productoID} no existe ingrese otro ID`});
+    ctx.response.send({error: -3, descripcion: `el producto ID ${productoID} no existe ingrese otro ID`});
   }else if (carritoElegido===undefined){
-      res.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
+    ctx.response.send({error: -4, descripcion: `el carrito ID ${carritoID} no existe ingrese otro ID`});
   }else{
       const eliminado =  await cartsDao.borrarItem(carritoID, productoID);
       if(eliminado){
-          res.send({message: `Se ha eliminado el producto ID ${productoID} del carrito ID ${carritoID}`})
+        ctx.response.send({message: `Se ha eliminado el producto ID ${productoID} del carrito ID ${carritoID}`})
       }else{
-          res.send({error: -3, descripcion: `el producto ID ${productoID} no existe en el carrito ID ${carritoID}`});
+        ctx.response.send({error: -3, descripcion: `el producto ID ${productoID} no existe en el carrito ID ${carritoID}`});
       }
   }
 }
 
-const mekeTicket = async ( req , res ) => {
-  const carritoID = req.params.id;
+const mekeTicket = async ( ctx ) => {
+  const carritoID = ctx.request.params.id;
   const carritoElegido = await cartsDao.getById(carritoID);
-  const idMongo = req.session && req.session.idMongo;
+  const idMongo = ctx.request.session && ctx.request.session.idMongo;
   const usuario = await usersDao.getById(idMongo);
 
   let precioFinal = 0;
@@ -186,7 +186,7 @@ const mekeTicket = async ( req , res ) => {
   await cartsDao.deleteById(carritoID)
   
 
-  res.render(path.join(process.cwd(), '/views/pages/cartBuy.ejs'), { cartTicket: ticketCompra, ticketId: ticketId, precioFinal})
+  ctx.response.render(path.join(process.cwd(), '/views/pages/cartBuy.ejs'), { cartTicket: ticketCompra, ticketId: ticketId, precioFinal})
 
 }
 
